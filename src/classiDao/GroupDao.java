@@ -1,0 +1,43 @@
+package classiDao;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+public class GroupDao {
+    private Connection connection;
+
+    public GroupDao(Connection connection) {
+        this.connection = connection;
+    }
+
+    public List<String> getGroupsByUser(String userId) throws SQLException {
+        List<String> groups = new ArrayList<>();
+        String query = "SELECT g.nomeGruppo " +
+                       "FROM gruppi g " +
+                       "JOIN iscritto i ON g.idGruppo = i.idGruppo " +
+                       "JOIN utente U ON i.idUtente = U.idUtente " +
+                       "WHERE U.nickname = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String groupName = resultSet.getString("nomeGruppo");
+                groups.add(groupName);
+            }
+        }
+
+        return groups;
+    }
+    public boolean searchGroupByName(String userId, String groupName) throws SQLException {
+        String query = "SELECT nomeGruppo AS count FROM Gruppo WHERE  nomeGruppo = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(2, groupName);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count") > 0;
+            }
+        }
+        return false;
+    }
+}
