@@ -27,7 +27,7 @@ public class DbConnection
     }
 
     // metodo pubblico per ottenere la connessione
-    public Connection getConnection() throws IOException
+    public Connection getConnection() throws SQLException 
     {
         String pwd = null;
         BufferedReader b = null;
@@ -49,3 +49,4 @@ public class DbConnection
         return conn;
     }
 }
+

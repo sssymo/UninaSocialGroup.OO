@@ -3,7 +3,7 @@ package controller;
 import classiDao.GroupDao;
 import classiDao.NotificationDao;
 import classiDao.UserDao;
-import gui.Home;
+import gui.home;
 import gui.LoginInterface;
 
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class Controller {
 
     private void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new Home(currentUser, groupDao, notificationDao, this);
+        currentFrame = new home(currentUser, groupDao, notificationDao, this);
     }
 
    

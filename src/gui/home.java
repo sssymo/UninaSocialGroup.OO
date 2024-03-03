@@ -9,14 +9,14 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import controller.Controller;
 
-public class Home extends JFrame {
+public class home extends JFrame {
 
     private String currentUser;
     private GroupDao groupDao;
     private NotificationDao notificationDao;
     private Controller controller;
 
-    public Home(String currentUser, GroupDao groupDao, NotificationDao notificationDao, Controller controller) {
+    public home(String currentUser, GroupDao groupDao, NotificationDao notificationDao, Controller controller) {
         this.currentUser = currentUser;
         this.groupDao = groupDao;
         this.notificationDao = notificationDao;
@@ -46,15 +46,15 @@ public class Home extends JFrame {
                 try {
                     boolean groupFound = groupDao.searchGroupByName(currentUser, searchTerm);
                     if (groupFound) {
-                        JOptionPane.showMessageDialog(Home.this,
+                        JOptionPane.showMessageDialog(home.this,
                                 "Gruppo trovato: " + searchTerm);
                     } else {
-                        JOptionPane.showMessageDialog(Home.this,
+                        JOptionPane.showMessageDialog(home.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(Home.this,
+                    JOptionPane.showMessageDialog(home.this,
                             "Si è verificato un errore durante la ricerca del gruppo.",
                             "Errore", JOptionPane.ERROR_MESSAGE);
                 }

@@ -2,6 +2,7 @@ package gui;
 
 
 import classiDao.UserDao;
+import controller.Controller;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,7 @@ public class LoginInterface extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    public LoginInterface(final UserDao userDao) {
+    public LoginInterface(final UserDao userDao, Controller controller) {
         this.userDao = userDao;
 
         setTitle("Unina Social Network - Login");
