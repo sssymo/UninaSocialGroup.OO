@@ -5,14 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import database.DbConnection;
 import controller.Controller;
-public class main {
+public class Main {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		DbConnection dbconn = null;
 		Connection connection = null;
 		try {
-			dbconn = DbConnection.getInstance();
+			dbconn = DbConnection.getDBConnection();
 			connection = dbconn.getConnection();
 
 			Controller c = new Controller(connection);
