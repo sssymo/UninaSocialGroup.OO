@@ -34,8 +34,8 @@ public class DbConnection
         try
         {   // se la connessione non esiste oppure è stata chiusa
             if(conn==null || conn.isClosed())
-            {   
-                pwd = "";
+            {   //legge la pwd dal file
+                pwd = "Luxifer483";
                 // registra il driver
                 Class.forName("org.postgresql.Driver");
                 // chiama il DriverManager e chiedi la connessione
@@ -49,4 +49,3 @@ public class DbConnection
         return conn;
     }
 }
-
