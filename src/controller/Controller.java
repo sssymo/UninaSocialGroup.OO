@@ -5,6 +5,7 @@ import classiDao.NotificationDao;
 import classiDao.UserDao;
 import gui.home;
 import gui.LoginInterface;
+import gui.*;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -26,7 +27,8 @@ public class Controller {
         showLoginInterface();
     }
 
-    private void showLoginInterface() {
+    public void showLoginInterface() {
+    
         currentFrame = new LoginInterface(userDao, this);
     }
 
@@ -34,7 +36,12 @@ public class Controller {
         currentUser = username;
         showHomePage();
     }
-
+    
+    public void showRegistrationInterface() {
+    	currentFrame.dispose();
+    	currentFrame = new RegistrationInterface(userDao, this);
+    }
+    
     private void showHomePage() {
         currentFrame.dispose();
         currentFrame = new home(currentUser, groupDao, notificationDao, this);
