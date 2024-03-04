@@ -30,13 +30,16 @@ public class GroupDao {
         return groups;
     }
     public boolean searchGroupByName(String userId, String groupName) throws SQLException {
-        String query = "SELECT nomeGruppo AS count FROM Gruppo WHERE  nomeGruppo = ?";
+        String query = "SELECT gruppo.nome_gruppo FROM gruppo WHERE gruppo.nome_gruppo  = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(2, groupName);
+            statement.setString(1, groupName);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt("count") > 0;
-            }
+                if (resultSet.next()) {
+                	System.out.println("Query SQL: " + statement.toString());
+                    return true;
+                }
+            
+ 
         }
         return false;
     }

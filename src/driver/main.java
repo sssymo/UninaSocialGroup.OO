@@ -12,7 +12,7 @@ public class main {
 		DbConnection dbconn = null;
 		Connection connection = null;
 		try {
-			dbconn = DbConnection.getInstance();
+			dbconn = DbConnection.getDBConnection();
 			connection = dbconn.getConnection();
 
 			Controller c = new Controller(connection);
