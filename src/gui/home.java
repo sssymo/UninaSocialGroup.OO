@@ -1,9 +1,14 @@
 package gui;
-
 import classiDao.GroupDao;
+<<<<<<< HEAD
 import classiDao.NotificaDAO;
 import controller.Controller;
 import classi.notifica;
+=======
+import classiDao.NotificationDao;
+import controller.Controller;
+
+>>>>>>> branch 'main' of https://github.com/sssymo/UninaSocialGroup.OO.git
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,6 +45,7 @@ public class home extends JFrame {
 
         // Imposta il font e il colore dei componenti
         Font buttonFont = new Font("Arial", Font.PLAIN, 14);
+<<<<<<< HEAD
         JLabel usernameLabel = new JLabel("Benvenuto " + currentUser);
         searchField.setFont(buttonFont);
         searchButton.setFont(buttonFont);
@@ -67,7 +73,37 @@ public class home extends JFrame {
         gbc.gridy++;
         contentPane.add(notificationsButton, gbc);
 
+=======
+        JLabel usernameLabel = new JLabel("Benvenuto "+currentUser);
+        searchField.setFont(buttonFont);
+        searchButton.setFont(buttonFont);
+        groupsButton.setFont(buttonFont);
+        notificationsButton.setFont(buttonFont);
+        searchButton.setForeground(Color.WHITE);
+        groupsButton.setForeground(Color.WHITE);
+        notificationsButton.setForeground(Color.WHITE);
+        searchButton.setBackground(new Color(88, 10, 180)); 
+        groupsButton.setBackground(new Color(88, 10, 180)); 
+        notificationsButton.setBackground(new Color(88, 10, 180)); 
+>>>>>>> branch 'main' of https://github.com/sssymo/UninaSocialGroup.OO.git
 
+  
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        contentPane.add(usernameLabel,gbc);
+        gbc.gridy++;
+        contentPane.add(searchField, gbc);
+
+        gbc.gridy++;
+        contentPane.add(searchButton, gbc);
+
+        gbc.gridy++;
+        contentPane.add(groupsButton, gbc);
+
+        gbc.gridy++;
+        contentPane.add(notificationsButton, gbc);
+
+    
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,7 +141,11 @@ public class home extends JFrame {
         });
 
         setContentPane(contentPane);
+<<<<<<< HEAD
         setLocationRelativeTo(null);
+=======
+        setLocationRelativeTo(null); 
+>>>>>>> branch 'main' of https://github.com/sssymo/UninaSocialGroup.OO.git
         setVisible(true);
     }
 }

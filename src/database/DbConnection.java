@@ -35,7 +35,11 @@ public class DbConnection
         {   // se la connessione non esiste oppure è stata chiusa
             if(conn==null || conn.isClosed())
             {   //legge la pwd dal file
+<<<<<<< HEAD
                 pwd = "luxifer483";
+=======
+                pwd = "";
+>>>>>>> branch 'main' of https://github.com/sssymo/UninaSocialGroup.OO.git
                 // registra il driver
                 Class.forName("org.postgresql.Driver");
                 // chiama il DriverManager e chiedi la connessione
