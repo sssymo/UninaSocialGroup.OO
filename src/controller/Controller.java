@@ -1,19 +1,23 @@
 package controller;
 
 import classiDao.GroupDao;
-import classiDao.NotificationDao;
+import classiDao.NotificaDAO;
 import classiDao.UserDao;
-import gui.home;
-import gui.LoginInterface;
+import gui.*;
+import gui.*;
 
 import javax.swing.*;
+
+import classi.notifica;
+
 import java.sql.Connection;
+import java.util.List;
 
 public class Controller {
 
     private UserDao userDao;
     private GroupDao groupDao;
-    private NotificationDao notificationDao;
+    private NotificaDAO notificationDao;
     private JFrame currentFrame;
     private String currentUser;
     private Connection connection;
@@ -22,11 +26,12 @@ public class Controller {
         this.connection = connection;
         userDao = new UserDao(connection);
         groupDao = new GroupDao(connection);
-        notificationDao = new NotificationDao(connection);
+        notificationDao = new NotificaDAO(connection);
         showLoginInterface();
     }
 
-    private void showLoginInterface() {
+    public void showLoginInterface() {
+    
         currentFrame = new LoginInterface(userDao, this);
     }
 
@@ -34,12 +39,20 @@ public class Controller {
         currentUser = username;
         showHomePage();
     }
-
+    
+    public void showRegistrationInterface() {
+    	currentFrame.dispose();
+    	currentFrame = new RegistrationInterface(userDao, this);
+    }
+    
     private void showHomePage() {
         currentFrame.dispose();
         currentFrame = new home(currentUser, groupDao, notificationDao, this);
     }
-
+    public void showNotificationsInterface(List<notifica> notifications) {
+        currentFrame.dispose();
+        currentFrame = new NotificationInterface(currentUser, notifications, this);
+    }
    
 }
 

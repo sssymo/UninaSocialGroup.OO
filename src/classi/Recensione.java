@@ -29,23 +29,5 @@ public class Recensione {
     }
 }
 
-// Classe per l'accesso ai dati degli utenti
-class UtenteDAO {
-    // Metodi per interagire con il database o il sistema di archiviazione dei dati
-    public void salvaUtente(Utente utente) {
-        // Implementazione per salvare l'utente nel database
-    }
-
-    public Utente caricaUtente(int idUtente) {
-        // Implementazione per caricare un utente dal database
-        return null; // Solo a scopo di esempio
-    }
-
-    public void aggiornaUtente(Utente utente) {
-        // Implementazione per aggiornare l'utente nel database
-    }
-
-    public void eliminaUtente(int idUtente) {
-        // Implementazione per eliminare un utente dal database
-    }
-}
+    // Classe per l'accesso ai dati degli utenti
+	

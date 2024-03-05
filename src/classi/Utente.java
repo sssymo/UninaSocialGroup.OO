@@ -21,6 +21,7 @@ public class Utente {
         this.numGruppiPartecipanti = 0; // Inizialmente l'utente non partecipa a nessun gruppo
         this.recensioni = new ArrayList<>();
     }
+    
 
     // Metodi getter e setter per gli attributi
     public String getUsername() {

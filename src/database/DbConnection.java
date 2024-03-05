@@ -25,7 +25,7 @@ public class DbConnection
         // e la restituisce
         return dbcon;
     }
-
+ 
     // metodo pubblico per ottenere la connessione
     public Connection getConnection() throws SQLException 
     {
@@ -35,7 +35,7 @@ public class DbConnection
         {   // se la connessione non esiste oppure è stata chiusa
             if(conn==null || conn.isClosed())
             {   //legge la pwd dal file
-                pwd = "Luxifer483";
+                pwd = "luxifer483";
                 // registra il driver
                 Class.forName("org.postgresql.Driver");
                 // chiama il DriverManager e chiedi la connessione
@@ -49,4 +49,3 @@ public class DbConnection
         return conn;
     }
 }
-

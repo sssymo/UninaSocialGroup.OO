@@ -13,8 +13,21 @@ public class UserDao {
         this.connection = connection;
     }
 
+    public boolean CheckUserAlreadyExistDuringRegistration(String username) {
+    	String query = "SELECT * FROM utente WHERE nickname = ?";
+    	 try (PreparedStatement statement = connection.prepareStatement(query)) {
+             statement.setString(1, username);
+             try (ResultSet resultSet = statement.executeQuery()) {
+                 return resultSet.next(); // Se c'è almeno una riga corrispondente, l'autenticazione è avvenuta con successo
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+             return false; // Gestione dell'eccezione: ritorna false in caso di errore di accesso al database
+         }
+    }
+    
     public boolean authenticateUser(String username, String password) throws SQLException{
-        String query = "SELECT * FROM Users WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM utente WHERE nickname = ? AND password = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
@@ -26,17 +39,17 @@ public class UserDao {
             return false; // Gestione dell'eccezione: ritorna false in caso di errore di accesso al database
         }
     }
- // Metodo per salvare un utente nel database
+ // Metodo per salvare un utente nel database 
     public void salvaUtente(Utente utente) throws SQLException {
-        String query = "INSERT INTO Utenti (username, idUtente, password, bio, numPubblicazioni, numGruppiPartecipanti) " +
-                       "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO utente (nickname,  password,idutente, bio ) " +
+                       "VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, utente.getUsername());
-            stmt.setInt(2, utente.getIdUtente());
-            stmt.setString(3, utente.getPassword());
-            stmt.setString(4, utente.getBio());
-            stmt.setInt(5, utente.getNumPubblicazioni());
-            stmt.setInt(6, utente.getNumGruppiPartecipanti());
+            stmt.setInt(3, utente.getIdUtente());
+            stmt.setString(2, utente.getPassword());
+            stmt.setString(4, utente.getBio()); 
+            //stmt.setInt(5, utente.getNumPubblicazioni());
+            //stmt.setInt(6, utente.getNumGruppiPartecipanti());
             stmt.executeUpdate();
             System.out.println("Utente salvato nel database: " + utente.getUsername());
         }
@@ -93,4 +106,3 @@ public class UserDao {
         }
     }
 }
-
