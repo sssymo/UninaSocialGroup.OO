@@ -49,7 +49,7 @@ public class Controller {
     }
     public void showNotificationsInterface(List<notifica> notifications) {
         currentFrame.dispose();
-        currentFrame = new NotificationInterface(currentUser, notifications, this);
+        //currentFrame = new NotificationInterface(currentUser, notifications, this);
     }
    
 }

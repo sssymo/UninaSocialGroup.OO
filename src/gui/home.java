@@ -101,10 +101,10 @@ public class home extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Recupera le notifiche per l'utente corrente
-                List<notifica> notifications = notificationDao.getNotificheForUser(currentUser);
+           //     List<notifica> notifications = notificationDao.getNotificheForUser(currentUser);
 
                 // Visualizza la schermata delle notifiche
-                controller.showNotificationsInterface(notifications);
+          //      controller.showNotificationsInterface(notifications);
             }
         });
 
