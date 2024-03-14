@@ -27,7 +27,7 @@ public class DbConnection
     }
  
     // metodo pubblico per ottenere la connessione
-    public Connection getConnection() throws SQLException 
+    public static Connection getConnection() throws SQLException 
     {
         String pwd = null;
         BufferedReader b = null;

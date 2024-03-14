@@ -1,29 +1,38 @@
-package gui;
-import classiDao.GroupDao;
-
-import classiDao.NotificaDAO;
-import controller.Controller;
+import classi.gruppo;
 import classi.notifica;
-import classiDao.NotificationDao;
+import classiDao.GroupDao;
 import controller.Controller;
+import classiDao.richiestaDAO;
+import classiDao.NotificationDao;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class home extends JFrame {
 
     private String currentUser;
     private GroupDao groupDao;
-    private NotificaDAO notificationDao;
+    private richiestaDAO richiestaDao;
+    private NotificationDao notificationDao;
     private Controller controller;
 
-    public home(final String currentUser, final GroupDao groupDao, NotificaDAO notificationDao, Controller controller) {
+    public home(final String currentUser, Controller controller) {
         this.currentUser = currentUser;
-        this.groupDao = groupDao;
-        this.notificationDao = notificationDao;
         this.controller = controller;
+
+        groupDao = GroupDao.getInstance();
+        richiestaDao = richiestaDAO.getInstance();
+        notificationDao = NotificationDao.getInstance();
 
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,8 +79,6 @@ public class home extends JFrame {
         gbc.gridy++;
         contentPane.add(notificationsButton, gbc);
 
-
-      
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,10 +86,35 @@ public class home extends JFrame {
                 System.out.println("Azione eseguita!"); // Aggiungi una stampa di debug per verificare se l'evento viene catturato
 
                 try {
-                    boolean groupFound = groupDao.searchGroupByName(currentUser, searchTerm);
-                    if (groupFound) {
-                        JOptionPane.showMessageDialog(home.this,
-                                "Gruppo trovato: " + searchTerm);
+                    List<gruppo> groups = groupDao.searchGroupByName(currentUser, searchTerm);
+                    if (!groups.isEmpty()) {
+                        JPanel groupPanel = new JPanel(new GridLayout(groups.size(), 1));
+                        for (gruppo group : groups) {
+                            JButton joinButton= new JButton("+");
+                            JLabel groupNameLabel = new JLabel(group.getName());
+
+                            joinButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    try {
+                                        richiestaDao.insertRichiesta(currentUser, group.getId(), LocalDateTime.now());
+                                        JOptionPane.showMessageDialog(home.this,
+                                                "Richiesta inviata per unirsi al gruppo: " + group.getName());
+                                    } catch (SQLException ex) {
+                                        ex.printStackTrace();
+                                        JOptionPane.showMessageDialog(home.this,
+                                                "Si è verificato un errore durante l'invio della richiesta.",
+                                                "Errore", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                }
+                            });
+
+                            JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                            groupRow.add(joinButton);
+                            groupRow.add(groupNameLabel);
+                            groupPanel.add(groupRow);
+                        }
+                        JOptionPane.showMessageDialog(home.this, groupPanel);
                     } else {
                         JOptionPane.showMessageDialog(home.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
@@ -101,10 +133,10 @@ public class home extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Recupera le notifiche per l'utente corrente
-           //     List<notifica> notifications = notificationDao.getNotificheForUser(currentUser);
+                List<notifica> notifications = notificationDao.getAllUserNotifications(currentUser);
 
                 // Visualizza la schermata delle notifiche
-          //      controller.showNotificationsInterface(notifications);
+                controller.showNotificationsInterface(notifications);
             }
         });
 
@@ -113,4 +145,3 @@ public class home extends JFrame {
         setLocationRelativeTo(null); 
         setVisible(true);
     }
-}
