@@ -12,6 +12,20 @@ public class UserDao {
     public UserDao(Connection connection) {
         this.connection = connection;
     }
+    public int getUserIdByUsername(String username,String password) throws SQLException {
+        String query = "SELECT idUtente FROM Utenti WHERE username = ? and password = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idUtente");
+                } else {
+                    throw new SQLException("Utente non trovato");
+                }
+            }
+        }
+    }
 
     public boolean CheckUserAlreadyExistDuringRegistration(String username) {
     	String query = "SELECT * FROM utente WHERE nickname = ?";

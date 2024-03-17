@@ -7,8 +7,10 @@ import gui.*;
 import javax.swing.*;
 
 import classi.notifica;
+import classiDao.richiestaDAO;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Controller {
@@ -16,6 +18,7 @@ public class Controller {
     private UserDao userDao;
     private GroupDao groupDao;
     private NotificaDAO notificationDao;
+    private richiestaDAO richiestaDao;
     private JFrame currentFrame;
     private String currentUser;
     private Connection connection;
@@ -25,6 +28,7 @@ public class Controller {
         userDao = new UserDao(connection);
         groupDao = new GroupDao(connection);
         notificationDao = new NotificaDAO(connection);
+        richiestaDao = new richiestaDAO(connection);
         showLoginInterface();
     }
 
@@ -33,9 +37,14 @@ public class Controller {
         currentFrame = new LoginInterface(userDao, this);
     }
 
-    public void loginSuccessful(String username) {
-        currentUser = username;
-        showHomePage();
+    public void loginSuccessful(String username,String password) {
+        try {
+            int userId = userDao.getUserIdByUsername(username,password);
+            currentUser = Integer.toString(userId);
+            showHomePage();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(currentFrame, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public void showRegistrationInterface() {
@@ -45,7 +54,7 @@ public class Controller {
     
     private void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new home(currentUser, groupDao, notificationDao, this);
+        currentFrame = new home(currentUser, groupDao, notificationDao, richiestaDao, this);
     }
     public void showNotificationsInterface(List<notifica> notifications) {
         currentFrame.dispose();

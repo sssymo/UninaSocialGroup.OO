@@ -78,7 +78,7 @@ public class LoginInterface extends JFrame {
                                 "Login successful! Welcome to Unina Social Network!",
                                 "Success", JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);
-                        controller.loginSuccessful(username);
+                        controller.loginSuccessful(username,password);
                     } else {
                         JOptionPane.showMessageDialog(LoginInterface.this,
                                 "Invalid username or password. Please try again.",

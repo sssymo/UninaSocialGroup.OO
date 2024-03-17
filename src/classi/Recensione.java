@@ -4,11 +4,15 @@ import java.util.List;
 
 public class Recensione {
     private int idRecensione;
+    private int idUtente;
+    private int idPost;
     private String testo;
 
     // Costruttore, getter e setter
-    public Recensione(int idRecensione, String testo) {
+    public Recensione(int idRecensione, int idUtente, int idPost, String testo) {
         this.idRecensione = idRecensione;
+        this.idUtente = idUtente;
+        this.idPost = idPost;
         this.testo = testo;
     }
 
@@ -20,6 +24,22 @@ public class Recensione {
         this.idRecensione = idRecensione;
     }
 
+    public int getIdUtente() {
+        return idUtente;
+    }
+
+    public void setIdUtente(int idUtente) {
+        this.idUtente = idUtente;
+    }
+
+    public int getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(int idPost) {
+        this.idPost = idPost;
+    }
+
     public String getTesto() {
         return testo;
     }
@@ -28,6 +48,3 @@ public class Recensione {
         this.testo = testo;
     }
 }
-
-    // Classe per l'accesso ai dati degli utenti
-	

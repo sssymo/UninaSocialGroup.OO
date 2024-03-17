@@ -2,6 +2,8 @@ package classiDao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import classi.gruppo;
 public class GroupDao {
     private Connection connection;
 
@@ -29,18 +31,10 @@ public class GroupDao {
 
         return groups;
     }
-    public boolean searchGroupByName(String userId, String groupName) throws SQLException {
-        String query = "SELECT gruppo.nome_gruppo FROM gruppo WHERE gruppo.nome_gruppo  = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, groupName);
-            ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
-                	System.out.println("Query SQL: " + statement.toString());
-                    return true;
-                }
-            
- 
-        }
-        return false;
+    public List<gruppo> searchGroupByName( String groupName) throws SQLException {
+      /*
+       * da aggiungere metodo che cerca gruppo per nome
+       * */
+       */
     }
 }

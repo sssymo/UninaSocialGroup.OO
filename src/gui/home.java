@@ -3,6 +3,7 @@ package gui;
 import classi.gruppo;
 import classi.notifica;
 import classiDao.GroupDao;
+import classiDao.NotificaDAO;
 import controller.Controller;
 import classiDao.richiestaDAO;
 import classiDao.NotificationDao;
@@ -25,16 +26,14 @@ public class home extends JFrame {
     private String currentUser;
     private GroupDao groupDao;
     private richiestaDAO richiestaDao;
-    private NotificationDao notificationDao;
+    private NotificaDAO notificationDao;
     private Controller controller;
 
-    public home(final String currentUser, Controller controller) {
+    public home(final String currentUser, GroupDao groupDao, NotificaDAO notificationDao2,richiestaDAO richiestaDao,Controller controller) {
         this.currentUser = currentUser;
         this.controller = controller;
-
-        groupDao = GroupDao.getInstance();
-        richiestaDao = richiestaDAO.getInstance();
-        notificationDao = NotificationDao.getInstance();
+        this.notificationDao = notificationDao2;
+        this.richiestaDao = richiestaDao;
 
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,7 +87,7 @@ public class home extends JFrame {
                 System.out.println("Azione eseguita!"); // Aggiungi una stampa di debug per verificare se l'evento viene catturato
 
                 try {
-                    List<gruppo> groups = groupDao.searchGroupByName(currentUser, searchTerm);
+                    List<gruppo> groups = groupDao.searchGroupByName(searchTerm);
                     if (!groups.isEmpty()) {
                         JPanel groupPanel = new JPanel(new GridLayout(groups.size(), 1));
                         for (gruppo group : groups) {
@@ -134,8 +133,10 @@ public class home extends JFrame {
         notificationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Recupera le notifiche per l'utente corrente
-                List<notifica> notifications = notificationDao.getAllUserNotifications(currentUser);
+                
+            	// Recupera le notifiche per l'utente corrente
+          
+            	List<notifica> notifications = notificationDao2.getAllUserNotifications(currentUser);
 
                 // Visualizza la schermata delle notifiche
                 controller.showNotificationsInterface(notifications);
