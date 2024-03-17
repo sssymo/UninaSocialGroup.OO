@@ -1,3 +1,5 @@
+package gui;
+
 import classi.gruppo;
 import classi.notifica;
 import classiDao.GroupDao;
@@ -91,15 +93,15 @@ public class home extends JFrame {
                         JPanel groupPanel = new JPanel(new GridLayout(groups.size(), 1));
                         for (gruppo group : groups) {
                             JButton joinButton= new JButton("+");
-                            JLabel groupNameLabel = new JLabel(group.getName());
+                            JLabel groupNameLabel = new JLabel(group.getNomeGruppo());
 
                             joinButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     try {
-                                        richiestaDao.insertRichiesta(currentUser, group.getId(), LocalDateTime.now());
+                                        richiestaDao.insertRichiesta(currentUser, group.getIdGruppo(), LocalDateTime.now());
                                         JOptionPane.showMessageDialog(home.this,
-                                                "Richiesta inviata per unirsi al gruppo: " + group.getName());
+                                                "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
                                     } catch (SQLException ex) {
                                         ex.printStackTrace();
                                         JOptionPane.showMessageDialog(home.this,

@@ -20,12 +20,12 @@ public class richiestaDAO {
         return instance;
     }
 
-    public void insertRichiesta(String username, int idUtente, int idGruppo) throws SQLException {
+    public void insertRichiesta(String username, int idUtente, LocalDateTime localDateTime) throws SQLException {
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RICHIESTA_SQL)) {
             preparedStatement.setString(1, username);
             preparedStatement.setInt(2, idUtente);
-            preparedStatement.setInt(3, idGruppo);
+            preparedStatement.setInt(3, localDateTime);
             preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.executeUpdate();
         }
