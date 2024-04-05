@@ -1,5 +1,6 @@
 package gui;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.*;
 import javax.swing.*;
@@ -17,9 +18,12 @@ public class RegistrationInterface extends JFrame {
 
     public RegistrationInterface(final UserDao userDao, Controller controller) {
         this.userDao = userDao;
-
+        setTitle("Unina Social Network - Registration");
+      
+        setSize(600, 400);
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
+        JButton returnToLoginButton = new JButton("Ritorna al Login");
         JLabel bioLabel = new JLabel("Bio:");
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
@@ -27,37 +31,67 @@ public class RegistrationInterface extends JFrame {
         JScrollPane bioScrollPane = new JScrollPane(bioArea);
         registerButton = new JButton("Register");
 
-        // Impostazione del layout GridBagLayout
-        JPanel contentPane = new JPanel(new GridBagLayout());
+        JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        contentPane.setLayout(new BorderLayout());
+        contentPane.setBackground(new Color(155, 10, 222));
+
+        JPanel RegistrationPanel = new JPanel();
+        RegistrationPanel.setLayout(new GridBagLayout());
+        RegistrationPanel.setBackground(new Color(222, 240, 255)); 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Aggiunta dei componenti al pannello con GridBagConstraints
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        contentPane.add(usernameLabel, gbc);
-        gbc.gridy++;
-        contentPane.add(passwordLabel, gbc);
-        gbc.gridy++;
-        contentPane.add(bioLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        contentPane.add(usernameField, gbc);
-        gbc.gridy++;
-        contentPane.add(passwordField, gbc);
-        gbc.gridy++;
-        contentPane.add(bioScrollPane, gbc);
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel titleLabel = new JLabel("Registration");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); 
+        titlePanel.add(titleLabel);
 
         gbc.gridx = 0;
-        gbc.gridy++;
+        gbc.gridy = 0;
         gbc.gridwidth = 3;
-        contentPane.add(registerButton, gbc);
-        gbc.gridy++;
-
+        RegistrationPanel.add(titlePanel, gbc);
        
+        
+        returnToLoginButton.addActionListener((ActionListener) new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                dispose();
+                // Torno al login
+                controller.showLoginInterface(); 
+            }
+        });
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        RegistrationPanel.add(usernameLabel, gbc);
+        gbc.gridx = 1;
+        RegistrationPanel.add(usernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        RegistrationPanel.add(passwordLabel, gbc);
+        gbc.gridx = 1;
+        RegistrationPanel.add(passwordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        RegistrationPanel.add(bioLabel, gbc);
+        gbc.gridx = 1;
+        RegistrationPanel.add(bioScrollPane, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        RegistrationPanel.add(registerButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        RegistrationPanel.add(returnToLoginButton, gbc);
+        contentPane.add(RegistrationPanel);
         registerButton.addActionListener(e -> {
            
             String username = usernameField.getText();
@@ -85,7 +119,7 @@ public class RegistrationInterface extends JFrame {
             	}
             	else {
             		//inserimento dei dati
-            		Utente u =new Utente(username,2,password,bio);
+            		Utente u =new Utente(username,3,password,bio);
             		try {
 						userDao.salvaUtente(u);
 					} catch (SQLException e1) {
@@ -109,12 +143,12 @@ public class RegistrationInterface extends JFrame {
 
         });
 
-        // Impostazione delle proprietà della finestra
+    
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("User Registration");
+        
         setContentPane(contentPane);
-        pack();
-        setLocationRelativeTo(null); // Posiziona la finestra al centro dello schermo
+      
+        setLocationRelativeTo(null); 
         setVisible(true);
     }
 }

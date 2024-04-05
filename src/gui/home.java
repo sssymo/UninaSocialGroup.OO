@@ -4,9 +4,10 @@ import classi.gruppo;
 import classi.notifica;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
+import classiDao.UserDao;
 import controller.Controller;
 import classiDao.richiestaDAO;
-import classiDao.NotificationDao;
+import classiDao.NotificaDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,7 @@ public class home extends JFrame {
     private NotificaDAO notificationDao;
     private Controller controller;
 
-    public home(final String currentUser, GroupDao groupDao, NotificaDAO notificationDao2,richiestaDAO richiestaDao,Controller controller) {
+    public home(final String currentUser, String nickname,GroupDao groupDao, NotificaDAO notificationDao2,richiestaDAO richiestaDao,Controller controller) {
         this.currentUser = currentUser;
         this.controller = controller;
         this.notificationDao = notificationDao2;
@@ -37,8 +38,8 @@ public class home extends JFrame {
 
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
-        setLocationRelativeTo(null); // Centra la finestra
+        setSize(800, 600);
+        setLocationRelativeTo(null); 
 
         JPanel contentPane = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -49,37 +50,53 @@ public class home extends JFrame {
         JButton searchButton = new JButton("Cerca gruppo");
         JButton groupsButton = new JButton("Visualizza i gruppi");
         JButton notificationsButton = new JButton("Visualizza le notifiche");
-
+        JButton backButton = new JButton("Indietro");
+        
         // Imposta il font e il colore dei componenti
-        Font buttonFont = new Font("Arial", Font.PLAIN, 14);
+        Font buttonFont = new Font("Arial", Font.BOLD, 14);
 
-        JLabel usernameLabel = new JLabel("Benvenuto " + currentUser);
+        JLabel usernameLabel = new JLabel("Benvenuto " + nickname);
+        
+        usernameLabel.setFont(buttonFont);
         searchField.setFont(buttonFont);
         searchButton.setFont(buttonFont);
         groupsButton.setFont(buttonFont);
+        backButton.setFont(buttonFont);
         notificationsButton.setFont(buttonFont);
         searchButton.setForeground(Color.WHITE);
         groupsButton.setForeground(Color.WHITE);
         notificationsButton.setForeground(Color.WHITE);
+        backButton.setBackground(Color.RED);
         searchButton.setBackground(new Color(88, 10, 180));
         groupsButton.setBackground(new Color(88, 10, 180));
         notificationsButton.setBackground(new Color(88, 10, 180));
-
+        
+        
+        // Aggiungi i componenti al pannello con il layout a griglia
         gbc.gridx = 0;
         gbc.gridy = 0;
         contentPane.add(usernameLabel, gbc);
         gbc.gridy++;
         contentPane.add(searchField, gbc);
-
         gbc.gridy++;
         contentPane.add(searchButton, gbc);
-
         gbc.gridy++;
         contentPane.add(groupsButton, gbc);
-
         gbc.gridy++;
         contentPane.add(notificationsButton, gbc);
+        gbc.gridy++;
+        gbc.anchor = GridBagConstraints.SOUTH; 
+        contentPane.add(backButton, gbc);
 
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Torna alla LoginInterface
+                controller.showLoginInterface();
+                dispose(); 
+            }
+        });
+        
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -97,16 +114,9 @@ public class home extends JFrame {
                             joinButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    try {
-                                        richiestaDao.insertRichiesta(currentUser, group.getIdGruppo(), LocalDateTime.now());
-                                        JOptionPane.showMessageDialog(home.this,
-                                                "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
-                                    } catch (SQLException ex) {
-                                        ex.printStackTrace();
-                                        JOptionPane.showMessageDialog(home.this,
-                                                "Si è verificato un errore durante l'invio della richiesta.",
-                                                "Errore", JOptionPane.ERROR_MESSAGE);
-                                    }
+                                    richiestaDao.insertRichiesta(currentUser, group.getIdGruppo(), LocalDateTime.now());
+									JOptionPane.showMessageDialog(home.this,
+									        "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
                                 }
                             });
 
@@ -147,4 +157,4 @@ public class home extends JFrame {
         setLocationRelativeTo(null);
         setLocationRelativeTo(null); 
         setVisible(true);
-    }
+    }}

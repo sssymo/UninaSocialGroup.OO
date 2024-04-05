@@ -34,4 +34,9 @@ public class NotificaDAO {
         }
         return notifiche;
     }
+
+	public List<notifica> getAllUserNotifications(String currentUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

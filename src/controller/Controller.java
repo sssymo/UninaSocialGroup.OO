@@ -21,6 +21,7 @@ public class Controller {
     private richiestaDAO richiestaDao;
     private JFrame currentFrame;
     private String currentUser;
+    private String Username;
     private Connection connection;
 
     public Controller(Connection connection) {
@@ -41,6 +42,7 @@ public class Controller {
         try {
             int userId = userDao.getUserIdByUsername(username,password);
             currentUser = Integer.toString(userId);
+            Username=username;
             showHomePage();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(currentFrame, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -54,7 +56,7 @@ public class Controller {
     
     private void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new home(currentUser, groupDao, notificationDao, richiestaDao, this);
+        currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this);
     }
     public void showNotificationsInterface(List<notifica> notifications) {
         currentFrame.dispose();

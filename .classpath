@@ -6,16 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/luigi/Downloads/postgresql-42.7.2.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/luigi/Downloads/javafx.graphics.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/module-info.java"/>
+	<classpathentry kind="lib" path="C:/Users/simon/Desktop/postgresql-42.7.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/simon/Desktop/javafx-graphics-17.0.11-ea+1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

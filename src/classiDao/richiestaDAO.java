@@ -52,4 +52,9 @@ public class richiestaDAO {
         }
         return richieste;
     }
+
+	public void insertRichiesta(String currentUser, int idGruppo, LocalDateTime now) {
+		// TODO Auto-generated method stub
+		
+	}
 }

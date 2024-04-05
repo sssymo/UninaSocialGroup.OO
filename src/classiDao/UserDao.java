@@ -13,7 +13,7 @@ public class UserDao {
         this.connection = connection;
     }
     public int getUserIdByUsername(String username,String password) throws SQLException {
-        String query = "SELECT idUtente FROM Utenti WHERE username = ? and password = ?";
+        String query = "SELECT idutente FROM utente WHERE nickname = ? and password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -119,4 +119,5 @@ public class UserDao {
             }
         }
     }
+
 }

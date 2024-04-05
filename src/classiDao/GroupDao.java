@@ -35,6 +35,6 @@ public class GroupDao {
       /*
        * da aggiungere metodo che cerca gruppo per nome
        * */
-       */
+       return null;
     }
 }
