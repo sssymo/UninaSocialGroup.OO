@@ -1,21 +1,22 @@
 package classi;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class gruppo {
     private String nomeGruppo;
-    private int idGruppo;
+    private String idGruppo;
     private String descrizioneGruppo;
-    private LocalDate dataCreazione;
+    private Date dataCreazione;
     private List<Tag> tagList;
 
-    public gruppo(String nomeGruppo, int idGruppo, String descrizioneGruppo, LocalDate dataCreazione) {
+    public gruppo(String nomeGruppo, String i, String descrizioneGruppo, Date data) {
         this.nomeGruppo = nomeGruppo;
-        this.idGruppo = idGruppo;
+        this.idGruppo = i;
         this.descrizioneGruppo = descrizioneGruppo;
-        this.dataCreazione = dataCreazione;
+        this.dataCreazione = data;
         this.tagList = new ArrayList<>();
     }
 
@@ -32,11 +33,11 @@ public class gruppo {
         this.nomeGruppo = nomeGruppo;
     }
 
-    public int getIdGruppo() {
+    public String getIdGruppo() {
         return idGruppo;
     }
 
-    public void setIdGruppo(int idGruppo) {
+    public void setIdGruppo(String idGruppo) {
         this.idGruppo = idGruppo;
     }
 
@@ -48,11 +49,11 @@ public class gruppo {
         this.descrizioneGruppo = descrizioneGruppo;
     }
 
-    public LocalDate getDataCreazione() {
+    public Date getDataCreazione() {
         return dataCreazione;
     }
 
-    public void setDataCreazione(LocalDate dataCreazione) {
+    public void setDataCreazione(Date dataCreazione) {
         this.dataCreazione = dataCreazione;
     }
 

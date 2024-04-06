@@ -3,6 +3,8 @@ import classiDao.UserDao;
 import controller.Controller;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,12 +35,19 @@ public class LoginInterface extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        JPanel form=new JPanel(new FlowLayout(FlowLayout.CENTER));
+        form.setLayout(new BorderLayout());
+        form.setBackground(new Color(255, 83, 22));
+        
+        
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel titleLabel = new JLabel("Login");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); 
+        
         titlePanel.add(titleLabel);
-
+        
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -72,8 +81,10 @@ public class LoginInterface extends JFrame {
         loginPanel.add(loginButton, gbc);
         gbc.gridx = 1;
         loginPanel.add(registerButton, gbc);
+        
+        form.add(loginPanel);
 
-        contentPane.add(loginPanel, BorderLayout.CENTER);
+        contentPane.add(form, BorderLayout.CENTER);
 //quando premo invio dopo aver digitato username e password 
 //posso accedere senza premere sul tasto invio
         usernameField.addKeyListener(new KeyAdapter() {

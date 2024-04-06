@@ -13,13 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class home extends JFrame {
@@ -30,7 +25,7 @@ public class home extends JFrame {
     private NotificaDAO notificationDao;
     private Controller controller;
 
-    public home(final String currentUser, String nickname,GroupDao groupDao, NotificaDAO notificationDao2,richiestaDAO richiestaDao,Controller controller) {
+    public home(final String currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao2, richiestaDAO richiestaDao, Controller controller) {
         this.currentUser = currentUser;
         this.controller = controller;
         this.notificationDao = notificationDao2;
@@ -39,7 +34,7 @@ public class home extends JFrame {
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
 
         JPanel contentPane = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -51,12 +46,11 @@ public class home extends JFrame {
         JButton groupsButton = new JButton("Visualizza i gruppi");
         JButton notificationsButton = new JButton("Visualizza le notifiche");
         JButton backButton = new JButton("Indietro");
-        
-        // Imposta il font e il colore dei componenti
+
         Font buttonFont = new Font("Arial", Font.BOLD, 14);
 
         JLabel usernameLabel = new JLabel("Benvenuto " + nickname);
-        
+
         usernameLabel.setFont(buttonFont);
         searchField.setFont(buttonFont);
         searchButton.setFont(buttonFont);
@@ -70,9 +64,7 @@ public class home extends JFrame {
         searchButton.setBackground(new Color(88, 10, 180));
         groupsButton.setBackground(new Color(88, 10, 180));
         notificationsButton.setBackground(new Color(88, 10, 180));
-        
-        
-        // Aggiungi i componenti al pannello con il layout a griglia
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         contentPane.add(usernameLabel, gbc);
@@ -85,47 +77,70 @@ public class home extends JFrame {
         gbc.gridy++;
         contentPane.add(notificationsButton, gbc);
         gbc.gridy++;
-        gbc.anchor = GridBagConstraints.SOUTH; 
+        gbc.anchor = GridBagConstraints.SOUTH;
         contentPane.add(backButton, gbc);
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Torna alla LoginInterface
                 controller.showLoginInterface();
-                dispose(); 
+                dispose();
             }
         });
-        
+
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
-                System.out.println("Azione eseguita!"); // Aggiungi una stampa di debug per verificare se l'evento viene catturato
+                System.out.println("Azione eseguita!");
 
                 try {
                     List<gruppo> groups = groupDao.searchGroupByName(searchTerm);
                     if (!groups.isEmpty()) {
-                        JPanel groupPanel = new JPanel(new GridLayout(groups.size(), 1));
+                        JPanel groupPanel = new JPanel(new GridLayout(1, 1));
+                        JPanel scrollPanel = new JPanel();
+                        scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
+
                         for (gruppo group : groups) {
-                            JButton joinButton= new JButton("+");
+                            JButton joinButton = new JButton("+");
                             JLabel groupNameLabel = new JLabel(group.getNomeGruppo());
 
                             joinButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    richiestaDao.insertRichiesta(currentUser, group.getIdGruppo(), LocalDateTime.now());
-									JOptionPane.showMessageDialog(home.this,
-									        "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
+                                	//da aggiungere
+                                    boolean a = false;
+									try {
+										a = richiestaDao.insertRichiesta(currentUser, group.getIdGruppo());
+									} catch (SQLException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									//to do , pulsante "-" che permetta di fare una delete della richiesta.
+                                    if(a==true) {
+                                        JOptionPane.showMessageDialog(home.this,
+                                                "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
+                                    }
+                                    else {
+                                        JOptionPane.showMessageDialog(home.this,
+                                                "E' stata già inviata una richiesta, attendere l'accettazione da parte del creatore",
+                                                "Errore", JOptionPane.ERROR_MESSAGE);
+                                   
+                                    }
+
                                 }
                             });
 
                             JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
                             groupRow.add(joinButton);
                             groupRow.add(groupNameLabel);
-                            groupPanel.add(groupRow);
+                            scrollPanel.add(groupRow);
                         }
-                        JOptionPane.showMessageDialog(home.this, groupPanel);
+
+                        JScrollPane scrollPane = new JScrollPane(scrollPanel);
+                        scrollPane.setPreferredSize(new Dimension(150, 200));
+                        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                        JOptionPane.showMessageDialog(home.this, scrollPane);
                     } else {
                         JOptionPane.showMessageDialog(home.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
@@ -139,22 +154,17 @@ public class home extends JFrame {
             }
         });
 
-        // Aggiungi ActionListener per il pulsante delle notifiche
         notificationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-            	// Recupera le notifiche per l'utente corrente
-          
-            	List<notifica> notifications = notificationDao2.getAllUserNotifications(currentUser);
-
-                // Visualizza la schermata delle notifiche
+                List<notifica> notifications = notificationDao.getAllUserNotifications(currentUser);
                 controller.showNotificationsInterface(notifications);
             }
         });
 
         setContentPane(contentPane);
         setLocationRelativeTo(null);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setVisible(true);
-    }}
+    }
+}

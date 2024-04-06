@@ -1,6 +1,6 @@
 package classiDao;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.postgresql.util.PGTimestamp;
+
 import classi.richiesta;
 
 public class richiestaDAO {
-    private static final String INSERT_RICHIESTA_SQL = "INSERT INTO richiesta (username, id_utente, id_gruppo, data_ora) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_RICHIESTA_SQL = "INSERT INTO richiesta (idrichiedente, idgruppo, data_richiesta , orario_richiesta, accettata) VALUES (?, ?, ?, ?,?)";
     private static final String GET_RICHIESTE_FOR_USER_SQL = "SELECT * FROM richiesta WHERE id_utente = ?";
 
     public static richiestaDAO getInstance(Connection conn) {
@@ -25,13 +27,27 @@ public class richiestaDAO {
         this.conn = conn;
     }
 
-    public void insertRichiesta(String username, int idUtente, int idGruppo, java.sql.Timestamp localDateTime) throws SQLException {
+    public boolean insertRichiesta(String currentUser, String i) throws SQLException {
         try (PreparedStatement preparedStatement = conn.prepareStatement(INSERT_RICHIESTA_SQL)) {
-            preparedStatement.setString(1, username);
-            preparedStatement.setInt(2, idUtente);
-            preparedStatement.setInt(3, idGruppo);
-            preparedStatement.setTimestamp(4, localDateTime);
+            //funziona
+            preparedStatement.setString(1, currentUser);
+            preparedStatement.setString(2, i);
+            
+            
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            
+            
+            preparedStatement.setTimestamp(3, currentTime);
+            preparedStatement.setTimestamp(4, currentTime);
+            
+         
+            preparedStatement.setBoolean(5, false);
+            
+          
             preparedStatement.executeUpdate();
+            
+        
+            return true;
         }
     }
 
@@ -53,8 +69,5 @@ public class richiestaDAO {
         return richieste;
     }
 
-	public void insertRichiesta(String currentUser, int idGruppo, LocalDateTime now) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }
