@@ -2,13 +2,15 @@
 	package gui;
 
 	import classi.notifica;
-	import javax.swing.*;
+import controller.Controller;
+
+import javax.swing.*;
 	import java.awt.*;
 	import java.util.List;
 
 	public class NotificationInterface extends JFrame {
 
-	    public NotificationInterface(String currentUser, List<notifica> notifiche) {
+	    public NotificationInterface(int currentUser, List<notifica> notifiche,Controller controller) {
 	        setTitle("Notifiche per " + currentUser);
 	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        setSize(400, 300);

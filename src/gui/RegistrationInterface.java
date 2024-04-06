@@ -119,7 +119,7 @@ public class RegistrationInterface extends JFrame {
             	}
             	else {
             		//inserimento dei dati
-            		Utente u =new Utente(username,3,password,bio);
+            		Utente u =new Utente(username,2,password,bio);
             		try {
 						userDao.salvaUtente(u);
 					} catch (SQLException e1) {

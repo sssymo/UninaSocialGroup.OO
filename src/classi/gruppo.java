@@ -7,12 +7,12 @@ import java.util.List;
 
 public class gruppo {
     private String nomeGruppo;
-    private String idGruppo;
+    private int idGruppo;
     private String descrizioneGruppo;
     private Date dataCreazione;
     private List<Tag> tagList;
 
-    public gruppo(String nomeGruppo, String i, String descrizioneGruppo, Date data) {
+    public gruppo(String nomeGruppo, int i, String descrizioneGruppo, Date data) {
         this.nomeGruppo = nomeGruppo;
         this.idGruppo = i;
         this.descrizioneGruppo = descrizioneGruppo;
@@ -33,11 +33,11 @@ public class gruppo {
         this.nomeGruppo = nomeGruppo;
     }
 
-    public String getIdGruppo() {
+    public int getIdGruppo() {
         return idGruppo;
     }
 
-    public void setIdGruppo(String idGruppo) {
+    public void setIdGruppo(int idGruppo) {
         this.idGruppo = idGruppo;
     }
 

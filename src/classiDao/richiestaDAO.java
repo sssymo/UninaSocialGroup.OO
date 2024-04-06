@@ -14,8 +14,8 @@ import org.postgresql.util.PGTimestamp;
 import classi.richiesta;
 
 public class richiestaDAO {
-    private static final String INSERT_RICHIESTA_SQL = "INSERT INTO richiesta (idrichiedente, idgruppo, data_richiesta , orario_richiesta, accettata) VALUES (?, ?, ?, ?,?)";
-    private static final String GET_RICHIESTE_FOR_USER_SQL = "SELECT * FROM richiesta WHERE id_utente = ?";
+    private static final String INSERT_RICHIESTA_SQL = "INSERT INTO richiesta (idrichiedente, idgruppo, data_richiesta , orario_richiesta) VALUES (?, ?, ?, ?)";
+    private static final String GET_RICHIESTE_FOR_USER_SQL = "SELECT * FROM richiesta WHERE idrichiedente = ?";
 
     public static richiestaDAO getInstance(Connection conn) {
         return new richiestaDAO(conn);
@@ -27,21 +27,21 @@ public class richiestaDAO {
         this.conn = conn;
     }
 
-    public boolean insertRichiesta(String currentUser, String i) throws SQLException {
+    public boolean insertRichiesta(int currentUser, int i) throws SQLException {
         try (PreparedStatement preparedStatement = conn.prepareStatement(INSERT_RICHIESTA_SQL)) {
             //funziona
-            preparedStatement.setString(1, currentUser);
-            preparedStatement.setString(2, i);
+            preparedStatement.setInt(1, currentUser);
+            preparedStatement.setInt(2, i);
             
             
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             
             
-            preparedStatement.setTimestamp(3, currentTime);
             preparedStatement.setTimestamp(4, currentTime);
+            preparedStatement.setTimestamp(3, currentTime);
             
          
-            preparedStatement.setBoolean(5, false);
+         
             
           
             preparedStatement.executeUpdate();
@@ -58,9 +58,10 @@ public class richiestaDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     richiesta richiesta = new richiesta(
-                            rs.getInt("id_utente"),
-                            rs.getInt("id_gruppo"),
+                            rs.getInt("idutente"),
+                            rs.getInt("idgruppo"),
                             rs.getTimestamp("data_ora").toLocalDateTime()
+                            
                     );
                     richieste.add(richiesta);
                 }

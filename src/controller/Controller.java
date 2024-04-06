@@ -20,7 +20,7 @@ public class Controller {
     private NotificaDAO notificationDao;
     private richiestaDAO richiestaDao;
     private JFrame currentFrame;
-    private String currentUser;
+    private int currentUser;
     private String Username;
     private Connection connection;
 
@@ -40,8 +40,7 @@ public class Controller {
 
     public void loginSuccessful(String username,String password) {
         try {
-            int userId = userDao.getUserIdByUsername(username,password);
-            currentUser = Integer.toString(userId);
+            currentUser = userDao.getUserIdByUsername(username,password);
             Username=username;
             showHomePage();
         } catch (SQLException e) {
@@ -60,7 +59,7 @@ public class Controller {
     }
     public void showNotificationsInterface(List<notifica> notifications) {
         currentFrame.dispose();
-        //currentFrame = new NotificationInterface(currentUser, notifications, this);
+        currentFrame = new NotificationInterface(currentUser, notifications, this);
     }
    
 }

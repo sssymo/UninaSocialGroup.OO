@@ -7,28 +7,26 @@ import classiDao.NotificaDAO;
 import classiDao.UserDao;
 import controller.Controller;
 import classiDao.richiestaDAO;
-import classiDao.NotificaDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class home extends JFrame {
 
-    private String currentUser;
+    private int currentUser;
     private GroupDao groupDao;
     private richiestaDAO richiestaDao;
     private NotificaDAO notificationDao;
     private Controller controller;
 
-    public home(final String currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao2, richiestaDAO richiestaDao, Controller controller) {
+    public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller) {
         this.currentUser = currentUser;
         this.controller = controller;
-        this.notificationDao = notificationDao2;
+        this.notificationDao = notificationDao;
         this.richiestaDao = richiestaDao;
 
         setTitle("Unina Social Network - Home");
@@ -37,6 +35,7 @@ public class home extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel contentPane = new JPanel(new GridBagLayout());
+        contentPane.setBackground(new Color(222, 240, 255));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -80,6 +79,69 @@ public class home extends JFrame {
         gbc.anchor = GridBagConstraints.SOUTH;
         contentPane.add(backButton, gbc);
 
+        groupsButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		
+				
+				try {
+					List<String> gruppi_iscritto= groupDao.getGroupsByUser(currentUser);
+					List<String> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+					
+					if (!gruppi_richiesti.isEmpty() || !gruppi_iscritto.isEmpty() ) {
+					    JPanel groupPanel = new JPanel(new GridLayout(1, 1));
+					    JPanel scrollPanel = new JPanel();
+					    scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
+					    
+
+					    for (String group : gruppi_richiesti) {
+					        
+					        JLabel groupNameLabel = new JLabel(group);
+					        JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
+					        
+					      
+
+					        JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+					        
+					        groupRow.add(groupNameLabel);
+					        groupRow.add(groupNameDetails);
+					        scrollPanel.add(groupRow);
+					    }
+				       
+					    for (String group : gruppi_iscritto) {
+					        
+					        JLabel groupNameLabel = new JLabel(group);
+					        JButton groupNameDetails = new JButton("Accedi");
+					        
+					      
+
+					        JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+					        
+					        groupRow.add(groupNameLabel);
+					        groupRow.add(groupNameDetails);
+					        scrollPanel.add(groupRow);
+					    }
+
+					    
+					    JScrollPane scrollPane = new JScrollPane(scrollPanel);
+					    scrollPane.setPreferredSize(new Dimension(300, 150));
+					    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					    JOptionPane.showMessageDialog(home.this, scrollPane);
+					} else {
+	             
+					    JOptionPane.showMessageDialog(home.this,
+					            "Nessun gruppo trovato");
+					}
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}		
+				        	}});
+
+        		
+        
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -142,6 +204,7 @@ public class home extends JFrame {
                         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                         JOptionPane.showMessageDialog(home.this, scrollPane);
                     } else {
+                 
                         JOptionPane.showMessageDialog(home.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
                     }
@@ -164,7 +227,7 @@ public class home extends JFrame {
 
         setContentPane(contentPane);
         setLocationRelativeTo(null);
-        setLocationRelativeTo(null);
+        
         setVisible(true);
     }
 }

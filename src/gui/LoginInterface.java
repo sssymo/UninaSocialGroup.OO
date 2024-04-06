@@ -55,10 +55,10 @@ public class LoginInterface extends JFrame {
         
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 14)); 
-        usernameField = new JTextField(15);
+        usernameField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 14)); 
-        passwordField = new JPasswordField(15);
+        passwordField = new JPasswordField(20);
         JButton loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14)); 
         

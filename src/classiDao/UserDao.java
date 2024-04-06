@@ -55,13 +55,13 @@ public class UserDao {
     }
  // Metodo per salvare un utente nel database 
     public void salvaUtente(Utente utente) throws SQLException {
-        String query = "INSERT INTO utente (nickname,  password,idutente, bio ) " +
-                       "VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO utente (nickname,  password, bio ) " +
+                       "VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, utente.getUsername());
-            stmt.setInt(3, utente.getIdUtente());
+           
             stmt.setString(2, utente.getPassword());
-            stmt.setString(4, utente.getBio()); 
+            stmt.setString(3, utente.getBio()); 
             //stmt.setInt(5, utente.getNumPubblicazioni());
             //stmt.setInt(6, utente.getNumGruppiPartecipanti());
             stmt.executeUpdate();
