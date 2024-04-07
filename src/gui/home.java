@@ -44,11 +44,12 @@ public class home extends JFrame {
                 g.setColor(new Color(60, 92, 156));
                 g.fillRect(0, 0, getWidth(), getHeight());
                 
-                g.setColor(Color.WHITE);
+                g.setColor(new Color(213,220,233));
                 
                 g.setFont(new Font("Georgia", Font.ITALIC, 24));
                 FontMetrics fm = g.getFontMetrics();
                 String bannerText = "UNINA SOCIAL NETWORK";
+                
                 int x = (getWidth() - fm.stringWidth(bannerText)) / 2;
                 int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
                 g.drawString(bannerText, x, y);
@@ -63,6 +64,7 @@ public class home extends JFrame {
         leftPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel usernameLabel = new JLabel("Benvenuto " + nickname);
+        usernameLabel.setFont(new Font("Georgia",Font.ITALIC,12));
         leftPanel.add(usernameLabel);
 
         JTextField searchField = new JTextField();
@@ -74,6 +76,19 @@ public class home extends JFrame {
      Image img1 = originalIcon1.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
      ImageIcon resizedIcon1 = new ImageIcon(img1);
         JButton searchButton = new JButton(resizedIcon1);
+        searchButton.setToolTipText("Cerca");
+        //questo è per fargli cambiare colo re quando ci passi sopra col mosue
+        searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                searchButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            }
+        });
+        searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                searchButton.setBackground(UIManager.getColor("control")); // Rcosì reimpoosto il colore del pulsante al colore di defaudefault
+        }
+        });
+        
         leftPanel.add(searchButton);
 
         //icona per visualizza gruppi
@@ -81,21 +96,59 @@ public class home extends JFrame {
         Image img2 = originalIcon2.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon2 = new ImageIcon(img2);
         JButton groupsButton = new JButton(resizedIcon2);
+        groupsButton.setToolTipText("Visualizza Gruppi");
         leftPanel.add(groupsButton);
 
+        groupsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	groupsButton.setBackground(new Color(200, 200, 200)); // Cambio il colore del pulsante
+            }
+        });
+        groupsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	groupsButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di default
+        }
+        });
+        
         //icona per visualizza notifiche
         ImageIcon originalIcon = new ImageIcon("./src/img/campanellina.png");
      Image img = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
      ImageIcon resizedIcon = new ImageIcon(img);
         JButton notificationsButton = new JButton(resizedIcon);
+        notificationsButton.setToolTipText("Visualizza Notifiche");
+        notificationsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	notificationsButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            }
+        });
+        notificationsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	notificationsButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defauefault
+        }
+        });
+        
+        
         
         //icona per tornare indietro
         ImageIcon originalIcon3 = new ImageIcon("./src/img/GoBackIcon.png");
      Image img3 = originalIcon3.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
      ImageIcon resizedIcon3 = new ImageIcon(img3);
+     
         leftPanel.add(notificationsButton);
         JButton backButton = new JButton(resizedIcon3);
+        backButton.setToolTipText("Torna Indietro");
      
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	backButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            }
+        });
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	backButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defaudefault
+        }
+        });
+        
         leftPanel.add(backButton);
         contentPane.add(leftPanel, BorderLayout.WEST);
 
@@ -107,8 +160,14 @@ public class home extends JFrame {
 
         //posts
         List<String> Posts = generatepost();
+        
         for (String Post : Posts) {
             JLabel postLabel = new JLabel(Post);
+            postLabel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(140,164,196), 4), // Bordo nero sottile
+                    BorderFactory.createEmptyBorder(30, 10, 30, 10) // Margine interno
+                ));
+            
             PostPanel.add(postLabel);
         }
 

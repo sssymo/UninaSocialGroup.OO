@@ -18,18 +18,23 @@ public class RegistrationInterface extends JFrame {
 
     public RegistrationInterface(final UserDao userDao, Controller controller) {
         this.userDao = userDao;
-        setTitle("Unina Social Network - Registration");
+        setTitle("Unina Social Network - Registrazione");
       
         setSize(600, 400);
         JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(new Font("Georgia",Font.ITALIC,14));
         JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(new Font("Georgia",Font.ITALIC,14));
         JButton returnToLoginButton = new JButton("Ritorna al Login");
+        returnToLoginButton.setFont(new Font("Georgia",Font.ITALIC,14));
         JLabel bioLabel = new JLabel("Bio:");
+        bioLabel.setFont(new Font("Georgia",Font.ITALIC,14));
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         bioArea = new JTextArea(5, 20);
         JScrollPane bioScrollPane = new JScrollPane(bioArea);
-        registerButton = new JButton("Register");
+        registerButton = new JButton("Registrati");
+        registerButton.setFont(new Font("Georgia",Font.ITALIC,14));
 
         JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentPane.setLayout(new BorderLayout());
@@ -37,14 +42,15 @@ public class RegistrationInterface extends JFrame {
 
         JPanel RegistrationPanel = new JPanel();
         RegistrationPanel.setLayout(new GridBagLayout());
-        RegistrationPanel.setBackground(new Color(222, 240, 255)); 
+        RegistrationPanel.setBackground(new Color(137,156,196)); 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel titleLabel = new JLabel("Registration");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); 
+        JLabel titleLabel = new JLabel("Registrazione");
+        titlePanel.setBackground(new Color(213,220,233));
+        titleLabel.setFont(new Font("Georgia",Font.ITALIC,20));
         titlePanel.add(titleLabel);
 
         gbc.gridx = 0;

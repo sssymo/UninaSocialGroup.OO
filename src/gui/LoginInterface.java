@@ -27,24 +27,27 @@ public class LoginInterface extends JFrame {
 
         JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentPane.setLayout(new BorderLayout());
-        contentPane.setBackground(new Color(155, 10, 222));
+        contentPane.setBackground(new Color(137,156,196));
 
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new GridBagLayout());
-        loginPanel.setBackground(new Color(222, 240, 255)); 
+        loginPanel.setBackground(new Color(137,156,196)); 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
         JPanel form=new JPanel(new FlowLayout(FlowLayout.CENTER));
         form.setLayout(new BorderLayout());
-        form.setBackground(new Color(255, 83, 22));
+        form.setBackground(new Color(137,156,196));
         
         
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        
+        titlePanel.setBackground(new Color(213,220,233));
         JLabel titleLabel = new JLabel("Login");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); 
+        titleLabel.setFont(new Font("Georgia",Font.ITALIC,20));
+        
         
         titlePanel.add(titleLabel);
         
@@ -54,16 +57,16 @@ public class LoginInterface extends JFrame {
         loginPanel.add(titlePanel, gbc);
         
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(new Font("Arial", Font.BOLD, 14)); 
+        usernameLabel.setFont(new Font("Georgia",Font.ITALIC,14));
         usernameField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Arial", Font.BOLD, 14)); 
+        passwordLabel.setFont(new Font("Georgia",Font.ITALIC,14));
         passwordField = new JPasswordField(20);
-        JButton loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Arial", Font.BOLD, 14)); 
+        JButton loginButton = new JButton("Accedi");
+        loginButton.setFont(new Font("Georgia",Font.ITALIC,14));
         
-        JButton registerButton = new JButton("Register"); // 
-        registerButton.setFont(new Font("Arial", Font.BOLD, 14)); 
+        JButton registerButton = new JButton("Registrati"); // 
+        registerButton.setFont(new Font("Georgia",Font.ITALIC,14));
 
        
         gbc.gridx = 0;
