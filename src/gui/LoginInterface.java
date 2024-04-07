@@ -156,8 +156,7 @@ public class LoginInterface extends JFrame {
                 }
             }
         });
-        
-        // Gestione dell'evento di login
+     
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

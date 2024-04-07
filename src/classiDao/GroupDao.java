@@ -44,7 +44,7 @@ public class GroupDao {
     			String nome= res.getString(2);
     			String desc=res.getString(4);
     			Date data=res.getDate(3);
-    			//1 andrà sostituito con un valore null quando il db avrà una pk che sarà autogenerata
+    			
     			gruppo g = new gruppo(nome,id,desc,data);
     			groups.add(g);
     		}

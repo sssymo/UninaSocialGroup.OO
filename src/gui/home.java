@@ -34,114 +34,146 @@ public class home extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        JPanel contentPane = new JPanel(new GridBagLayout());
-        contentPane.setBackground(new Color(222, 240, 255));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        JPanel contentPane = new JPanel(new BorderLayout());
 
-        final JTextField searchField = new JTextField();
-        JButton searchButton = new JButton("Cerca gruppo");
-        JButton groupsButton = new JButton("Visualizza i gruppi");
-        JButton notificationsButton = new JButton("Visualizza le notifiche");
-        JButton backButton = new JButton("Indietro");
+        JPanel bannerPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+               
+                g.setColor(new Color(60, 92, 156));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                
+                g.setColor(Color.WHITE);
+                
+                g.setFont(new Font("Georgia", Font.ITALIC, 24));
+                FontMetrics fm = g.getFontMetrics();
+                String bannerText = "UNINA SOCIAL NETWORK";
+                int x = (getWidth() - fm.stringWidth(bannerText)) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g.drawString(bannerText, x, y);
+            }
+        };
+        bannerPanel.setPreferredSize(new Dimension(800, 100));
+        contentPane.add(bannerPanel, BorderLayout.NORTH);
 
-        Font buttonFont = new Font("Arial", Font.BOLD, 14);
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setBackground(new Color(137, 156, 196));
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel usernameLabel = new JLabel("Benvenuto " + nickname);
+        leftPanel.add(usernameLabel);
 
-        usernameLabel.setFont(buttonFont);
-        searchField.setFont(buttonFont);
-        searchButton.setFont(buttonFont);
-        groupsButton.setFont(buttonFont);
-        backButton.setFont(buttonFont);
-        notificationsButton.setFont(buttonFont);
-        searchButton.setForeground(Color.WHITE);
-        groupsButton.setForeground(Color.WHITE);
-        notificationsButton.setForeground(Color.WHITE);
-        backButton.setBackground(Color.RED);
-        searchButton.setBackground(new Color(88, 10, 180));
-        groupsButton.setBackground(new Color(88, 10, 180));
-        notificationsButton.setBackground(new Color(88, 10, 180));
+        JTextField searchField = new JTextField();
+        searchField.setMaximumSize(new Dimension(200, 30));
+        leftPanel.add(searchField);
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        contentPane.add(usernameLabel, gbc);
-        gbc.gridy++;
-        contentPane.add(searchField, gbc);
-        gbc.gridy++;
-        contentPane.add(searchButton, gbc);
-        gbc.gridy++;
-        contentPane.add(groupsButton, gbc);
-        gbc.gridy++;
-        contentPane.add(notificationsButton, gbc);
-        gbc.gridy++;
-        gbc.anchor = GridBagConstraints.SOUTH;
-        contentPane.add(backButton, gbc);
+        //icona per il bottone di ricerca , le ridimensiono perchè altrimenti sarebbero enormi
+        ImageIcon originalIcon1 = new ImageIcon("./src/img/SearchIcon.png");
+     Image img1 = originalIcon1.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+     ImageIcon resizedIcon1 = new ImageIcon(img1);
+        JButton searchButton = new JButton(resizedIcon1);
+        leftPanel.add(searchButton);
 
-        groupsButton.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		
-        		
-				
-				try {
-					List<String> gruppi_iscritto= groupDao.getGroupsByUser(currentUser);
-					List<String> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
-					
-					if (!gruppi_richiesti.isEmpty() || !gruppi_iscritto.isEmpty() ) {
-					    JPanel groupPanel = new JPanel(new GridLayout(1, 1));
-					    JPanel scrollPanel = new JPanel();
-					    scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
-					    
+        //icona per visualizza gruppi
+        ImageIcon originalIcon2 = new ImageIcon("./src/img/GroupsIcon.png");
+        Image img2 = originalIcon2.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon2 = new ImageIcon(img2);
+        JButton groupsButton = new JButton(resizedIcon2);
+        leftPanel.add(groupsButton);
 
-					    for (String group : gruppi_richiesti) {
-					        
-					        JLabel groupNameLabel = new JLabel(group);
-					        JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
-					        
-					      
-
-					        JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
-					        
-					        groupRow.add(groupNameLabel);
-					        groupRow.add(groupNameDetails);
-					        scrollPanel.add(groupRow);
-					    }
-				       
-					    for (String group : gruppi_iscritto) {
-					        
-					        JLabel groupNameLabel = new JLabel(group);
-					        JButton groupNameDetails = new JButton("Accedi");
-					        
-					      
-
-					        JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
-					        
-					        groupRow.add(groupNameLabel);
-					        groupRow.add(groupNameDetails);
-					        scrollPanel.add(groupRow);
-					    }
-
-					    
-					    JScrollPane scrollPane = new JScrollPane(scrollPanel);
-					    scrollPane.setPreferredSize(new Dimension(300, 150));
-					    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-					    JOptionPane.showMessageDialog(home.this, scrollPane);
-					} else {
-	             
-					    JOptionPane.showMessageDialog(home.this,
-					            "Nessun gruppo trovato");
-					}
-
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}		
-				        	}});
-
-        		
+        //icona per visualizza notifiche
+        ImageIcon originalIcon = new ImageIcon("./src/img/campanellina.png");
+     Image img = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+     ImageIcon resizedIcon = new ImageIcon(img);
+        JButton notificationsButton = new JButton(resizedIcon);
         
+        //icona per tornare indietro
+        ImageIcon originalIcon3 = new ImageIcon("./src/img/GoBackIcon.png");
+     Image img3 = originalIcon3.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+     ImageIcon resizedIcon3 = new ImageIcon(img3);
+        leftPanel.add(notificationsButton);
+        JButton backButton = new JButton(resizedIcon3);
+     
+        leftPanel.add(backButton);
+        contentPane.add(leftPanel, BorderLayout.WEST);
+
+        // Pannello per Posts
+        JPanel PostPanel = new JPanel();
+        PostPanel.setLayout(new BoxLayout(PostPanel, BoxLayout.Y_AXIS));
+        PostPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        PostPanel.setBackground(new Color(213,220,233));
+
+        //posts
+        List<String> Posts = generatepost();
+        for (String Post : Posts) {
+            JLabel postLabel = new JLabel(Post);
+            PostPanel.add(postLabel);
+        }
+
+        JScrollPane postsScrollPane = new JScrollPane(PostPanel);
+        postsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        contentPane.add(postsScrollPane, BorderLayout.CENTER);
+
+        
+        setContentPane(contentPane);
+        setVisible(true);
+
+      
+        groupsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    List<String> gruppi_iscritto = groupDao.getGroupsByUser(currentUser);
+                    List<String> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+
+                    if (!gruppi_richiesti.isEmpty() || !gruppi_iscritto.isEmpty()) {
+                        JPanel groupPanel = new JPanel(new GridLayout(1, 1));
+                        JPanel scrollPanel = new JPanel();
+                        scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
+
+                        for (String group : gruppi_richiesti) {
+
+                            JLabel groupNameLabel = new JLabel(group);
+                            JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
+
+                            JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+                            groupRow.add(groupNameLabel);
+                            groupRow.add(groupNameDetails);
+                            scrollPanel.add(groupRow);
+                        }
+
+                        for (String group : gruppi_iscritto) {
+
+                            JLabel groupNameLabel = new JLabel(group);
+                            JButton groupNameDetails = new JButton("Accedi");
+
+                            JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+                            groupRow.add(groupNameLabel);
+                            groupRow.add(groupNameDetails);
+                            scrollPanel.add(groupRow);
+                        }
+
+                        JScrollPane scrollPane = new JScrollPane(scrollPanel);
+                        scrollPane.setPreferredSize(new Dimension(300, 150));
+                        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                        JOptionPane.showMessageDialog(home.this, scrollPane);
+                    } else {
+
+                        JOptionPane.showMessageDialog(home.this,
+                                "Nessun gruppo trovato");
+                    }
+
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,26 +202,20 @@ public class home extends JFrame {
                             joinButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                	//da aggiungere
                                     boolean a = false;
-									try {
-										a = richiestaDao.insertRichiesta(currentUser, group.getIdGruppo());
-									} catch (SQLException e1) {
-										// TODO Auto-generated catch block
-										e1.printStackTrace();
-									}
-									//to do , pulsante "-" che permetta di fare una delete della richiesta.
-                                    if(a==true) {
+                                    try {
+                                        a = richiestaDao.insertRichiesta(currentUser, group.getIdGruppo());
+                                    } catch (SQLException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                    if (a) {
                                         JOptionPane.showMessageDialog(home.this,
                                                 "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
-                                    }
-                                    else {
+                                    } else {
                                         JOptionPane.showMessageDialog(home.this,
                                                 "E' stata già inviata una richiesta, attendere l'accettazione da parte del creatore",
                                                 "Errore", JOptionPane.ERROR_MESSAGE);
-                                   
                                     }
-
                                 }
                             });
 
@@ -204,7 +230,7 @@ public class home extends JFrame {
                         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                         JOptionPane.showMessageDialog(home.this, scrollPane);
                     } else {
-                 
+
                         JOptionPane.showMessageDialog(home.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
                     }
@@ -224,10 +250,15 @@ public class home extends JFrame {
                 controller.showNotificationsInterface(notifications);
             }
         });
+    }
 
-        setContentPane(contentPane);
-        setLocationRelativeTo(null);
-        
-        setVisible(true);
+   
+    private List<String> generatepost() {
+    	//questo poi va tolto è giusto per un idea
+        List<String> posts= new java.util.ArrayList<>();
+        posts.add("qui per adesso");
+        posts.add("metto stringhe a caso");
+        posts.add("ma ci dovrebbero andare i post");
+        return posts;
     }
 }
