@@ -12,6 +12,27 @@ public class GroupDao {
         this.connection = connection;
     }
 
+    //funziona
+    public static boolean AcceptUtenteAGruppo(int idutente,int idgruppo) {
+    	try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO iscrizione (idutente,idgruppo) VALUES (?,?)")){
+    		stmt.setInt(1, idutente);
+    		stmt.setInt(2, idgruppo);
+    		stmt.executeUpdate();
+    		//successivamente elimino la richiesta
+    		try(PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM richiesta WHERE idrichiedente=? AND idgruppo=?")){
+        		stmt2.setInt(1, idutente);
+        		stmt2.setInt(2, idgruppo);
+        		stmt2.executeUpdate();
+    		}
+    		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+    			
+    			
+    }
+    
     public static String GetGroupNameFromId(int id) {
     	
     	try (PreparedStatement statement = connection.prepareStatement("SELECT nome_gruppo FROM gruppo WHERE idgruppo=?")) {

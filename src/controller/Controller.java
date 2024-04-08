@@ -54,7 +54,7 @@ public class Controller {
     	currentFrame = new RegistrationInterface(userDao, this);
     }
     
-    private void showHomePage() {
+    public void showHomePage() {
         currentFrame.dispose();
         currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this);
     }
