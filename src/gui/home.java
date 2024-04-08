@@ -342,8 +342,47 @@ public class home extends JFrame {
                 controller.showNotificationsInterface(notifications);
             }
         });
+        
+        CreateGroupButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JPanel dialogPanel = new JPanel(new GridLayout(2, 2));
+		        JTextField groupNameField = new JTextField();
+		        JTextArea descriptionArea = new JTextArea();
+		        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+
+		        dialogPanel.add(new JLabel("Nome del Gruppo:"));
+		        dialogPanel.add(groupNameField);
+		        dialogPanel.add(new JLabel("Descrizione:"));
+		        dialogPanel.add(descriptionScrollPane);
+
+		        int result = JOptionPane.showConfirmDialog(home.this, dialogPanel,
+		                "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+		        if (result == JOptionPane.OK_OPTION) {
+		            String groupName = groupNameField.getText();
+		            String description = descriptionArea.getText();
+		            
+		            try {
+						groupDao.CreateGroup(groupName, description, currentUser);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		            
+		            
+		        }
+
+				
+			}
+        	
+        });
     }
 
+    
+    
    
     private List<String> generatepost() {
     	//questo poi va tolto è giusto per un idea
