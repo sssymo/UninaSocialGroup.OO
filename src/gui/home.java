@@ -76,7 +76,7 @@ public class home extends JFrame {
      Image img1 = originalIcon1.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
      ImageIcon resizedIcon1 = new ImageIcon(img1);
         JButton searchButton = new JButton(resizedIcon1);
-        searchButton.setToolTipText("Cerca");
+        searchButton.setToolTipText("Cerca Gruppi");
         //questo è per fargli cambiare colo re quando ci passi sopra col mosue
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -97,6 +97,7 @@ public class home extends JFrame {
         ImageIcon resizedIcon2 = new ImageIcon(img2);
         JButton groupsButton = new JButton(resizedIcon2);
         groupsButton.setToolTipText("Visualizza Gruppi");
+        
         leftPanel.add(groupsButton);
 
         groupsButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -157,7 +158,37 @@ public class home extends JFrame {
         PostPanel.setLayout(new BoxLayout(PostPanel, BoxLayout.Y_AXIS));
         PostPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         PostPanel.setBackground(new Color(213,220,233));
+        
+        JPanel createPostPanel = new JPanel();
+        createPostPanel.setBackground(new Color(213,220,233));
+        createPostPanel.setLayout(new BoxLayout(createPostPanel, BoxLayout.X_AXIS));
+        createPostPanel.setAlignmentX(Component.LEFT_ALIGNMENT); // Allinea a sinistra i componenti
 
+        //questo è per concedere la possibilità all'utente 
+        //di creare un gruppo direttamente dalla home
+        JButton CreateGroupButton =new JButton("Crea Gruppo");
+        createPostPanel.add(CreateGroupButton);
+        createPostPanel.add(Box.createHorizontalStrut(10));
+        
+        //(createPostButton)una volta digitato il testo e premuto invio
+        //l'idea è quella di aprire  un altro pannello
+        //con un menu a tendina dove si possa scegliere 
+        //il gruppo, oppure magari inserrire il menu
+        //a tendina esattamente di fianco 
+        //(da implementare ci sarebbe anche la possibilità di usare emoji, ma non penso 
+        //sia possibile)
+        
+        JButton createPostButton = new JButton("Crea Nuovo Post");
+        createPostPanel.add(createPostButton);
+        createPostPanel.add(Box.createHorizontalStrut(10));
+
+        JTextField textField = new JTextField();
+        textField.setMaximumSize(new Dimension(200, 30));
+        createPostPanel.add(textField);
+
+        PostPanel.add(createPostPanel);
+        PostPanel.add(Box.createVerticalStrut(20));
+        
         //posts
         List<String> Posts = generatepost();
         
@@ -168,7 +199,9 @@ public class home extends JFrame {
                     BorderFactory.createEmptyBorder(30, 10, 30, 10) // Margine interno
                 ));
             
+            
             PostPanel.add(postLabel);
+            PostPanel.add(Box.createVerticalStrut(40));
         }
 
         JScrollPane postsScrollPane = new JScrollPane(PostPanel);
