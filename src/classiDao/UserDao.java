@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import classi.*;
 
 public class UserDao {
-    private Connection connection;
+    private static Connection connection;
 
     public UserDao(Connection connection) {
         this.connection = connection;
@@ -27,6 +27,20 @@ public class UserDao {
         }
     }
 
+    public static String getUserNameById(int currentUser) throws SQLException {
+        String query = "SELECT nickname FROM utente WHERE idutente=?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, currentUser);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(1);
+                } else {
+                    return ("Utente non trovato");
+                }
+            }
+        }
+    }
+    
     public boolean CheckUserAlreadyExistDuringRegistration(String username) {
     	String query = "SELECT * FROM utente WHERE nickname = ?";
     	 try (PreparedStatement statement = connection.prepareStatement(query)) {

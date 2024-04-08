@@ -7,6 +7,7 @@ import gui.*;
 import javax.swing.*;
 
 import classi.notifica;
+import classi.richiesta;
 import classiDao.richiestaDAO;
 
 import java.sql.Connection;
@@ -57,9 +58,9 @@ public class Controller {
         currentFrame.dispose();
         currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this);
     }
-    public void showNotificationsInterface(List<notifica> notifications) {
+    public void showNotificationsInterface(List<notifica> notifications,List<richiesta> richieste) {
         currentFrame.dispose();
-        currentFrame = new NotificationInterface(currentUser, notifications, this);
+        currentFrame = new NotificationInterface(currentUser, notifications,richieste, this);
     }
    
 }

@@ -21,35 +21,43 @@ public class richiestaDAO {
         return new richiestaDAO(conn);
     }
 
-	private Connection conn;
+	private static Connection conn;
 
     public richiestaDAO(Connection conn) {
         this.conn = conn;
     }
+
+    
+    
 
     public boolean insertRichiesta(int currentUser, int i) throws SQLException {
         try (PreparedStatement preparedStatement = conn.prepareStatement(INSERT_RICHIESTA_SQL)) {
             //funziona
             preparedStatement.setInt(1, currentUser);
             preparedStatement.setInt(2, i);
-            
-            
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            
-            
             preparedStatement.setTimestamp(4, currentTime);
             preparedStatement.setTimestamp(3, currentTime);
-            
-         
-         
-            
-          
             preparedStatement.executeUpdate();
-            
-        
             return true;
         }
     }
+    
+    private final static String QVediRichiesteDiIscrizioneAiTuoiGruppi="SELECT r.idrichiedente,r.idgruppo,r.data_richiesta FROM richiesta as r,gruppo as g,crea as c WHERE c.idgruppo=g.idgruppo AND c.idutente=? AND r.idgruppo=c.idgruppo  ";
+public static List<richiesta> VediRichiesteDiIscrizioneAiTuoiGruppi(int currentUser) throws SQLException {
+	ArrayList<richiesta> notifichedirichiestaiscrizioneaituoigruppi = new ArrayList<>();
+	try (PreparedStatement stmt = conn.prepareStatement(QVediRichiesteDiIscrizioneAiTuoiGruppi)) {
+		stmt.setInt(1, currentUser);
+		ResultSet s=stmt.executeQuery();
+		while(s.next()) {
+			richiesta r= new richiesta(s.getInt(1),s.getInt(2));
+			notifichedirichiestaiscrizioneaituoigruppi.add(r);
+		}
+	}
+	return notifichedirichiestaiscrizioneaituoigruppi;
+	
+	
+}
 
     public List<richiesta> getRichiesteForUser(int idUtente) throws SQLException {
         List<richiesta> richieste = new ArrayList<>();

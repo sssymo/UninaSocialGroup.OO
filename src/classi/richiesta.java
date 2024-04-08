@@ -1,4 +1,5 @@
 package classi;
+import java.sql.Date;
 import java.time.LocalDateTime;
 public class richiesta {
     private int idUtente;
@@ -12,8 +13,17 @@ public class richiesta {
     }
 
     // getters and setters
+    
+//questo è per le richieste al proprietario
 
-    public int getIdUtente() {
+
+	public richiesta(int int1, int int2) {
+		// TODO Auto-generated constructor stub
+        this.idUtente = int1;
+        this.idGruppo = int2;
+	}
+
+	public int getIdUtente() {
         return idUtente;
     }
 

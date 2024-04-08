@@ -16,6 +16,8 @@ public class NotificaDAO {
         this.conn = conn;
     }
 
+    
+    
     public List<notifica> getNotificheForUser(int idUtente) throws SQLException {
         List<notifica> notifiche = new ArrayList<>();
         String query = "SELECT * FROM Notifiche WHERE idUtente = ?";
@@ -34,6 +36,7 @@ public class NotificaDAO {
         }
         return notifiche;
     }
+    
 
 	public List<notifica> getAllUserNotifications(int currentUser) {
 		

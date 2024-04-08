@@ -5,13 +5,27 @@ import java.util.List;
 
 import classi.gruppo;
 public class GroupDao {
-    private Connection connection;
+    private static Connection connection;
     
     private static final String INSERT_GRUPPO = "INSERT INTO gruppo (nome_gruppo, data_creazione , descrizione_gruppo) VALUES ( ?, ?, ?)";
     public GroupDao(Connection connection) {
         this.connection = connection;
     }
 
+    public static String GetGroupNameFromId(int id) {
+    	
+    	try (PreparedStatement statement = connection.prepareStatement("SELECT nome_gruppo FROM gruppo WHERE idgruppo=?")) {
+    		statement.setInt(1, id);
+    		ResultSet r=statement.executeQuery();
+    		while(r.next())
+    		 return r.getString(1);
+    	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return "error";
+    }
+    
     public List<String> getGroupsByUser(int currentUser) throws SQLException {
         ArrayList<String> groups = new ArrayList<>();
         String query = "SELECT g.nome_gruppo " +
@@ -69,7 +83,7 @@ public class GroupDao {
             preparedStatement.executeUpdate();
             try (PreparedStatement p2 = connection.prepareStatement(GET_ID_DEL_GRUPPO)) {
                 try (ResultSet idgruppo = p2.executeQuery()) {
-                    if (idgruppo.next()) {  // Spostarsi alla prima riga
+                    if (idgruppo.next()) {  
                         int id = idgruppo.getInt(1);
 
                         try (PreparedStatement p3 = connection.prepareStatement(INSERT_IN_CREA)) {

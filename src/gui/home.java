@@ -2,6 +2,7 @@ package gui;
 
 import classi.gruppo;
 import classi.notifica;
+import classi.richiesta;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.UserDao;
@@ -338,46 +339,63 @@ public class home extends JFrame {
         notificationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<notifica> notifications = notificationDao.getAllUserNotifications(currentUser);
-                controller.showNotificationsInterface(notifications);
+            	try {
+					List<notifica> notifications = notificationDao.getAllUserNotifications(currentUser);
+					List<richiesta> RichiesteDiEssereAggiuntoAiTuoiGruppi = richiestaDAO.VediRichiesteDiIscrizioneAiTuoiGruppi(currentUser);
+					controller.showNotificationsInterface(notifications,RichiesteDiEssereAggiuntoAiTuoiGruppi);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
         
-        CreateGroupButton.addActionListener(new ActionListener(){
+        CreateGroupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//manca da gestire la questione tag
+                JPanel dialogPanel = new JPanel(new GridBagLayout());
+                
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.anchor = GridBagConstraints.WEST;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JPanel dialogPanel = new JPanel(new GridLayout(2, 2));
-		        JTextField groupNameField = new JTextField();
-		        JTextArea descriptionArea = new JTextArea();
-		        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+                JTextField groupNameField = new JTextField();
+                groupNameField.setPreferredSize(new Dimension(150, 30));
+                dialogPanel.add(new JLabel("Nome del Gruppo:"), gbc);
+                gbc.gridy++;
+                dialogPanel.add(groupNameField, gbc);
 
-		        dialogPanel.add(new JLabel("Nome del Gruppo:"));
-		        dialogPanel.add(groupNameField);
-		        dialogPanel.add(new JLabel("Descrizione:"));
-		        dialogPanel.add(descriptionScrollPane);
+                gbc.gridy++;
+                dialogPanel.add(new JLabel("Descrizione:"), gbc);
+                gbc.gridy++;
+                gbc.fill = GridBagConstraints.BOTH;
+                gbc.weightx = 1.0;
+                gbc.weighty = 1.0;
+                JTextArea descriptionArea = new JTextArea();
+                descriptionArea.setPreferredSize(new Dimension(150, 50));
+                descriptionArea.setLineWrap(true);
+                descriptionArea.setWrapStyleWord(true);
+                JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+             
+                dialogPanel.add(descriptionScrollPane, gbc);
+               
 
-		        int result = JOptionPane.showConfirmDialog(home.this, dialogPanel,
-		                "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                int result = JOptionPane.showConfirmDialog(home.this, dialogPanel,
+                        "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-		        if (result == JOptionPane.OK_OPTION) {
-		            String groupName = groupNameField.getText();
-		            String description = descriptionArea.getText();
-		            
-		            try {
-						groupDao.CreateGroup(groupName, description, currentUser);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-		            
-		            
-		        }
+                if (result == JOptionPane.OK_OPTION) {
+                    String groupName = groupNameField.getText();
+                    String description = descriptionArea.getText();
 
-				
-			}
-        	
+                    try {
+                        groupDao.CreateGroup(groupName, description, currentUser);
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
         });
     }
 
