@@ -4,9 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import classi.Post;
 import classi.gruppo;
 import classiDao.PostDao;
+import classiDao.UserDao;
 import controller.Controller;
 
 public class GroupInterface extends JFrame {
@@ -57,9 +61,9 @@ public class GroupInterface extends JFrame {
         centerPanel.setBackground(new Color(137,156,196));
         centerPanel.setLayout(new GridLayout(0, 1));
 
-       
-        for (int i = 0; i < 20; i++) { 
-            JLabel postLabel = new JLabel("Post " + (i + 1));
+        List<Post> Posts=postDao.RecuperaPost(currentUser,group.getIdGruppo());
+        for (Post p: Posts) { 
+            JLabel postLabel = new JLabel("Post di "+UserDao.getUserNameById(p.getIdutente())+" : "+p.getDesc() );
             centerPanel.add(postLabel);
         }
 

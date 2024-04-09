@@ -35,7 +35,7 @@ public class PostDao {
 		}
 		return false;}
 
-    	//questa query dovrebbe recuperare tutti i post 
+    	//questa query recupera tutti i post 
     	//per un utente (quelli nella home, quindi senza filtri sul gruppo)
 final String RECUPERA_POST = "SELECT * FROM post as p where p.idgruppo IN (SELECT i.idgruppo FROM iscrizione as i WHERE i.idutente=?)";    
 public List<Post> RecuperaPost(int idutente){
@@ -53,17 +53,36 @@ public List<Post> RecuperaPost(int idutente){
 			//per foto non so come fare 
 			Post p =new Post(idpost,iduutente,idgruppo,desc,data_pubblicazione,ora_pubblicazione);
 			posts.add(p);
-			
 		}
-	
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	return posts;
-	
-
-	
  }
-	
-}
+
+//questa query recupera tutti i post 
+//per un utente (con filtri sul gruppo) con overlogading
+final static String RECUPERA_POST2 = "SELECT * FROM post as p where p.idgruppo=?";    
+public static List<Post> RecuperaPost(int idutente,int idgruppo){
+	ArrayList<Post> posts=new ArrayList<>();
+	try(PreparedStatement stmt = conn.prepareStatement(RECUPERA_POST2)){
+		stmt.setInt(1, idgruppo);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			int idpost=rs.getInt("idpost");
+			int iduutente=rs.getInt("idutente");//utente che ha fatt o post
+			int idgruuppo=rs.getInt("idgruppo");
+			String desc=rs.getString("descrizione");
+			Date data_pubblicazione=rs.getDate("data_pubblicazione");
+			Time ora_pubblicazione =rs.getTime("orario_pubblicazione");
+			//per foto non so come fare 
+			Post p =new Post(idpost,iduutente,idgruuppo,desc,data_pubblicazione,ora_pubblicazione);
+			posts.add(p);
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return posts;
+}}

@@ -30,7 +30,7 @@ public class NotificationInterface extends JFrame {
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		contentPane.add(titleLabel, BorderLayout.NORTH);
 
-		// pannello per le notifiche
+		
 		JPanel notificationPanel = new JPanel();
 		notificationPanel.setLayout(new BoxLayout(notificationPanel, BoxLayout.Y_AXIS));
 		notificationPanel.setBackground(new Color(213, 220, 233));
@@ -75,15 +75,7 @@ public class NotificationInterface extends JFrame {
 		
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		
-		JButton backButton = new JButton("Torna Indietro");
-		
-		
-		
-		
-		
-		
-
-		
+		JButton backButton = new JButton("Torna Indietro");		
 		backButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {

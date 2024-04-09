@@ -81,6 +81,7 @@ public class home extends JFrame {
      Image img1 = originalIcon1.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
      ImageIcon resizedIcon1 = new ImageIcon(img1);
         JButton searchButton = new JButton(resizedIcon1);
+        
         searchButton.setToolTipText("Cerca Gruppi");
         //questo è per fargli cambiare colo re quando ci passi sopra col mosue
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -158,7 +159,7 @@ public class home extends JFrame {
         leftPanel.add(backButton);
         contentPane.add(leftPanel, BorderLayout.WEST);
 
-        // Pannello per Posts
+      
         JPanel PostPanel = new JPanel();
         PostPanel.setLayout(new BoxLayout(PostPanel, BoxLayout.Y_AXIS));
         PostPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -175,22 +176,9 @@ public class home extends JFrame {
         createPostPanel.add(CreateGroupButton);
         createPostPanel.add(Box.createHorizontalStrut(10));
         
-        //(createPostButton)una volta digitato il testo e premuto invio
-        //l'idea è quella di aprire  un altro pannello
-        //con un menu a tendina dove si possa scegliere 
-        //il gruppo, oppure magari inserrire il menu
-        //a tendina esattamente di fianco 
-        //(da implementare ci sarebbe anche la possibilità di usare emoji, ma non penso 
-        //sia possibile)
-        
         JButton createPostButton = new JButton("Crea Nuovo Post");
         createPostPanel.add(createPostButton);
         createPostPanel.add(Box.createHorizontalStrut(10));
-
-        JTextField textField = new JTextField();
-        textField.setMaximumSize(new Dimension(200, 30));
-        createPostPanel.add(textField);
-
         PostPanel.add(createPostPanel);
         PostPanel.add(Box.createVerticalStrut(20));
         
@@ -201,7 +189,8 @@ public class home extends JFrame {
             JLabel postLabel = new JLabel("Post inviato Da "+UserDao.getUserNameById(Post.getIdutente())+" nel gruppo "+GroupDao.GetGroupNameFromId(Post.getIdgruppo()));
             JLabel DescLabel = new JLabel("il contenuto del post è : "+Post.getDesc());
             JPanel PostEDesc=new JPanel();
-            
+            //in questo modo metto postlabel e desclabel in un unico container
+            //così poi posso metterci il bordo
             PostEDesc.add(postLabel);
             PostEDesc.add(DescLabel);
             PostEDesc.setBorder(BorderFactory.createCompoundBorder(
@@ -225,7 +214,7 @@ public class home extends JFrame {
         setContentPane(contentPane);
         setVisible(true);
 
-      
+        //visualizza i gruppi a cui sei iscritto/hai inviato richiesta
         groupsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -291,6 +280,7 @@ public class home extends JFrame {
             }
         });
 
+        //torna indietro al login
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -299,6 +289,7 @@ public class home extends JFrame {
             }
         });
 
+        //cerca dei gruppi
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -360,6 +351,8 @@ public class home extends JFrame {
             }
         });
 
+        //vedi le notifiche, per adesso le uniche notifiche che si vedono sono 
+        //quelle di richieste di accesso a gruppi
         notificationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -374,6 +367,7 @@ public class home extends JFrame {
             }
         });
         
+        //crea gruppo apre un popup dove inserire dati del gruppo da creare
         CreateGroupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -420,6 +414,19 @@ public class home extends JFrame {
                     }
                 }
             }
+        });
+    
+        //da gestire , creazione di un post tramite popup
+        //dove si può scegliere il gruppo tramite menu a tendina 
+        createPostButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+        	
         });
     }
 
