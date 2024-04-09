@@ -1,10 +1,12 @@
 package gui;
 
+import classi.Post;
 import classi.gruppo;
 import classi.notifica;
 import classi.richiesta;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
+import classiDao.PostDao;
 import classiDao.UserDao;
 import controller.Controller;
 import classiDao.richiestaDAO;
@@ -23,12 +25,14 @@ public class home extends JFrame {
     private richiestaDAO richiestaDao;
     private NotificaDAO notificationDao;
     private Controller controller;
+    private PostDao postDao;
 
-    public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller) {
+    public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao) {
         this.currentUser = currentUser;
         this.controller = controller;
         this.notificationDao = notificationDao;
         this.richiestaDao = richiestaDao;
+        this.postDao=postDao;
 
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -191,17 +195,24 @@ public class home extends JFrame {
         PostPanel.add(Box.createVerticalStrut(20));
         
         //posts
-        List<String> Posts = generatepost();
+        List<Post> Posts = postDao.RecuperaPost(currentUser);
         
-        for (String Post : Posts) {
-            JLabel postLabel = new JLabel(Post);
-            postLabel.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(140,164,196), 4), // Bordo nero sottile
-                    BorderFactory.createEmptyBorder(30, 10, 30, 10) // Margine interno
+        for (Post Post : Posts) {
+            JLabel postLabel = new JLabel("Post inviato Da "+UserDao.getUserNameById(Post.getIdutente())+" nel gruppo "+GroupDao.GetGroupNameFromId(Post.getIdgruppo()));
+            JLabel DescLabel = new JLabel("il contenuto del post è : "+Post.getDesc());
+            JPanel PostEDesc=new JPanel();
+            
+            PostEDesc.add(postLabel);
+            PostEDesc.add(DescLabel);
+            PostEDesc.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(140,164,196), 4), 
+                    BorderFactory.createEmptyBorder(30, 10, 30, 10) 
                 ));
-            
-            
-            PostPanel.add(postLabel);
+            PostPanel.add(PostEDesc);
+            PostPanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(140,164,196), 4),
+                    BorderFactory.createEmptyBorder(30, 10, 30, 10) 
+                ));
             PostPanel.add(Box.createVerticalStrut(40));
         }
 
@@ -219,10 +230,11 @@ public class home extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    List<String> gruppi_iscritto = groupDao.getGroupsByUser(currentUser);
+                    List<gruppo> gruppi_iscritto = groupDao.getGroupsByUser(currentUser);
                     List<String> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
 
                     if (!gruppi_richiesti.isEmpty() || !gruppi_iscritto.isEmpty()) {
+                    	
                         JPanel groupPanel = new JPanel(new GridLayout(1, 1));
                         JPanel scrollPanel = new JPanel();
                         scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
@@ -239,9 +251,9 @@ public class home extends JFrame {
                             scrollPanel.add(groupRow);
                         }
 
-                        for (String group : gruppi_iscritto) {
+                        for (gruppo group : gruppi_iscritto) {
 
-                            JLabel groupNameLabel = new JLabel(group);
+                            JLabel groupNameLabel = new JLabel(group.getNomeGruppo());
                             JButton groupNameDetails = new JButton("Accedi");
 
                             JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -249,6 +261,18 @@ public class home extends JFrame {
                             groupRow.add(groupNameLabel);
                             groupRow.add(groupNameDetails);
                             scrollPanel.add(groupRow);
+                            
+                            groupNameDetails.addActionListener(new ActionListener() {
+
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									// TODO Auto-generated method stub
+									controller.showGroupInterface(currentUser,group);
+									
+								}
+                            	
+                            });
+                            
                         }
 
                         JScrollPane scrollPane = new JScrollPane(scrollPanel);
@@ -402,12 +426,4 @@ public class home extends JFrame {
     
     
    
-    private List<String> generatepost() {
-    	//questo poi va tolto è giusto per un idea
-        List<String> posts= new java.util.ArrayList<>();
-        posts.add("qui per adesso");
-        posts.add("metto stringhe a caso");
-        posts.add("ma ci dovrebbero andare i post");
-        return posts;
-    }
 }

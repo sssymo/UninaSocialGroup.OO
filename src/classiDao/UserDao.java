@@ -27,7 +27,7 @@ public class UserDao {
         }
     }
 
-    public static String getUserNameById(int currentUser) throws SQLException {
+    public static String getUserNameById(int currentUser) {
         String query = "SELECT nickname FROM utente WHERE idutente=?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, currentUser);
@@ -37,8 +37,14 @@ public class UserDao {
                 } else {
                     return ("Utente non trovato");
                 }
-            }
+            }catch (SQLException e) {
+                e.printStackTrace();
+                return null;
         }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+    }
     }
     
     public boolean CheckUserAlreadyExistDuringRegistration(String username) {

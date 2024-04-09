@@ -47,22 +47,27 @@ public class GroupDao {
     	return "error";
     }
     
-    public List<String> getGroupsByUser(int currentUser) throws SQLException {
-        ArrayList<String> groups = new ArrayList<>();
-        String query = "SELECT g.nome_gruppo " +
-                       "FROM gruppo g " +
-                       "JOIN iscrizione i ON g.idgruppo = i.idgruppo " +
-                       "JOIN utente U ON i.idutente = U.idutente " +
-                       "WHERE U.nickname = ?";
+    public List<gruppo> getGroupsByUser(int currentUser) throws SQLException {
+        ArrayList<gruppo> groups = new ArrayList<>();
+        String query = "SELECT g.nome_gruppo, g.idgruppo, g.data_creazione, g.descrizione_gruppo "
+                + "FROM gruppo AS g, iscrizione AS i, utente AS u "
+                + "WHERE g.idgruppo = i.idgruppo "
+                + "AND i.idutente = u.idutente "
+                + "AND u.idutente = ?";
+
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, currentUser);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                String groupName = resultSet.getString("nomeGruppo");
                 
-                groups.add(groupName);
+    			int id=resultSet.getInt(2);
+    			String nome= resultSet.getString(1);
+    			String desc=resultSet.getString(4);
+    			Date data=resultSet.getDate(3);
+    			gruppo g = new gruppo(nome,id,desc,data);
+                groups.add(g);
             }
         }catch (SQLException e) {
             e.printStackTrace();

@@ -2,10 +2,12 @@ package controller;
 
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
+import classiDao.PostDao;
 import classiDao.UserDao;
 import gui.*;
 import javax.swing.*;
 
+import classi.gruppo;
 import classi.notifica;
 import classi.richiesta;
 import classiDao.richiestaDAO;
@@ -24,6 +26,7 @@ public class Controller {
     private int currentUser;
     private String Username;
     private Connection connection;
+	private PostDao PostDao;
 
     public Controller(Connection connection) {
         this.connection = connection;
@@ -31,6 +34,7 @@ public class Controller {
         groupDao = new GroupDao(connection);
         notificationDao = new NotificaDAO(connection);
         richiestaDao = new richiestaDAO(connection);
+        PostDao= new PostDao(connection);
         showLoginInterface();
     }
 
@@ -56,12 +60,19 @@ public class Controller {
     
     public void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this);
+        currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this,PostDao);
     }
     public void showNotificationsInterface(List<notifica> notifications,List<richiesta> richieste) {
         currentFrame.dispose();
         currentFrame = new NotificationInterface(currentUser, notifications,richieste, this);
     }
+
+	public void showGroupInterface(int currentUser,gruppo group) {
+		// TODO Auto-generated method stub
+		currentFrame.dispose();
+		currentFrame = new GroupInterface(currentUser, group,this,PostDao);
+		
+	}
    
 }
 
