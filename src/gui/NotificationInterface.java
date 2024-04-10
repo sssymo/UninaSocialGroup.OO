@@ -85,7 +85,7 @@ public class NotificationInterface extends JFrame {
 		        }});
 		}
 		for (notifica n : notifiche) {
-			JLabel notificationLabel = new JLabel(UserDao.getUserNameById(n.getIdUtente()) + " ha aggiunto un contenuto al gruppo " );
+			JLabel notificationLabel = new JLabel(UserDao.getUserNameById(n.getIdUtente()) + " ha "+n.getDesc_notifica()+" in ");
 		    JButton VAIALGRUPPO = new JButton(GroupDao.GetGroupNameFromId(n.getIdGruppo()));
 
 		    JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

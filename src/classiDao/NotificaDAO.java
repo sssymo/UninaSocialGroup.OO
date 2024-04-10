@@ -21,8 +21,8 @@ public class NotificaDAO {
     
     public List<notifica> getNotificheForUser(int idUtente) throws SQLException {
         List<notifica> notifiche = new ArrayList<>();
-        //nella query prendo notifiche dei soli i gruppi di cui l'utente iscritto non è creatore
-        String query = "SELECT * FROM notifica WHERE idgruppo IN (SELECT idgruppo FROM iscrizione WHERE idutente=?)";
+        //nella query prendo notifiche dei soli i gruppi di cui l'utente è creatore 
+        String query = "SELECT * FROM notifica WHERE idgruppo IN (SELECT idgruppo FROM crea WHERE idutente=?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
         	stmt.setInt(1,idUtente);
         	
@@ -68,9 +68,7 @@ public class NotificaDAO {
 			stmt2.setInt(3,idgruppo);
 			stmt2.setTimestamp(4, currentTime);
 			stmt2.setTimestamp(5,currentTime);
-			stmt2.setString(6,"");//per adesso la metto vuota in quanto non so cosa mettere,
-			//poichè il testo della notifica non ci entra siccome il tipo di dato 
-			//accetta al massimo 20 caratteri
+			stmt2.setString(6,"aggiunto un post");
 			stmt2.executeUpdate();
 		
 		}catch(SQLException e ) {
@@ -82,6 +80,27 @@ public class NotificaDAO {
 			e.printStackTrace();
 		}
     	return false;
+    }
+    
+    //sarebbe il punto 1 della traccia di obj per i gruppi a tre membri
+    public boolean SendNotificaForAccesso(int currentUser, int idgruppo) {
+		String qry="INSERT INTO notifica (idutente,idgruppo,data_notifica,orario_notifica,descrizione_notifica) VALUES (?,?,?,?,?)";
+    	try(PreparedStatement s = conn.prepareStatement(qry)){
+    		s.setInt(1, currentUser);
+    		s.setInt(2, idgruppo);
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+    		s.setTimestamp(3, currentTime);
+    		s.setTimestamp(4, currentTime);
+    		s.setString(5,"effettuato l'accesso");
+    		s.executeUpdate();
+    		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	return false;
+    	
     }
     
     

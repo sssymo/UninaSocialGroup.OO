@@ -70,6 +70,7 @@ public class Controller {
 	public void showGroupInterface(int currentUser,gruppo group) {
 		// TODO Auto-generated method stub
 		currentFrame.dispose();
+		notificationDao.SendNotificaForAccesso(currentUser, group.getIdGruppo());
 		currentFrame = new GroupInterface(currentUser, group,this,PostDao,notificationDao);
 		
 	}

@@ -25,6 +25,7 @@ public class GroupInterface extends JFrame {
     		) {
         this.group = group;
         this.postDao=postDao;
+        
 
         setTitle("UninaSocialGroup - " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

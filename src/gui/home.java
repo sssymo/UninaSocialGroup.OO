@@ -181,13 +181,13 @@ public class home extends JFrame {
         createPostPanel.add(Box.createHorizontalStrut(10));
         PostPanel.add(createPostPanel);
         PostPanel.add(Box.createVerticalStrut(20));
-        
+       
         //posts
         List<Post> Posts = postDao.RecuperaPost(currentUser);
         
         for (Post Post : Posts) {
             JLabel postLabel = new JLabel("Post inviato Da "+UserDao.getUserNameById(Post.getIdutente())+" nel gruppo "+GroupDao.GetGroupNameFromId(Post.getIdgruppo()));
-            JLabel DescLabel = new JLabel("il contenuto del post è : "+Post.getDesc());
+            JLabel DescLabel = new JLabel("\nil contenuto del post è : "+Post.getDesc());
             JPanel PostEDesc=new JPanel();
             //in questo modo metto postlabel e desclabel in un unico container
             //così poi posso metterci il bordo

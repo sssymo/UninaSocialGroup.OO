@@ -10,7 +10,7 @@ public class notifica {
     private Timestamp data_notifica;
     private Timestamp orario_notifica;
     private String desc_notifica;
-    private String desc;
+
 
 
     public notifica(int idNotifica, int idpost, int idUtente, int idGruppo, Timestamp data_notifica, Timestamp orario_notifica, String desc_notifica) {
