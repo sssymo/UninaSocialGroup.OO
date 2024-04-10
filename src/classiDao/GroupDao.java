@@ -47,6 +47,22 @@ public class GroupDao {
     	return "error";
     }
     
+    public static gruppo GetGroupDataFromId(int id) {
+    	
+    	try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM gruppo WHERE idgruppo=?")) {
+    		statement.setInt(1, id);
+    		ResultSet r=statement.executeQuery();
+    		while(r.next()) {
+    			 gruppo g=new gruppo(r.getString(2),r.getInt(1),r.getString(4),r.getDate(3));
+    		return g;
+    		} 
+    	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
+    }
+    
     public List<gruppo> getGroupsByUser(int currentUser) throws SQLException {
         ArrayList<gruppo> groups = new ArrayList<>();
         String query = "SELECT g.nome_gruppo, g.idgruppo, g.data_creazione, g.descrizione_gruppo "

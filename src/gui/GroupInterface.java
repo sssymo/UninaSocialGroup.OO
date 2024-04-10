@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import classi.Post;
 import classi.gruppo;
+import classiDao.NotificaDAO;
 import classiDao.PostDao;
 import classiDao.UserDao;
 import controller.Controller;
@@ -17,8 +19,10 @@ public class GroupInterface extends JFrame {
 
     private gruppo group;
     private PostDao postDao;
+    private NotificaDAO notificaDao;
 
-    public GroupInterface(int currentUser, gruppo group, Controller controller,PostDao postDao) {
+    public GroupInterface(int currentUser, gruppo group, Controller controller,PostDao postDao,NotificaDAO notificaDao
+    		) {
         this.group = group;
         this.postDao=postDao;
 
@@ -81,7 +85,7 @@ public class GroupInterface extends JFrame {
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         scrollPane.setBackground(new Color(60, 92, 156));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        
+
         add(scrollPane, BorderLayout.CENTER);
 
       
@@ -89,7 +93,7 @@ public class GroupInterface extends JFrame {
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBackground(new Color(60, 92, 156));
 
-        JButton backButton = new JButton("Indietro");
+        JButton backButton = new JButton("Torna alla Home");
         bottomPanel.add(backButton);
         
         backButton.addActionListener(new ActionListener() {
@@ -111,15 +115,17 @@ public class GroupInterface extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String desc= postTextField.getText();
-				PostDao.InserisciPost(currentUser,group.getIdGruppo(),desc);
+				Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+				PostDao.InserisciPost(currentUser,group.getIdGruppo(),desc,currentTime);
+				notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(),desc,currentTime);
                 //to do : send notifica ad utenti iscritti
-                updatePostPanel(); // così aggiorrno il pannello dei post dopo aver inserito un nuovo post
+				  updatePostPanel(); // così aggiorrno il pannello dei post dopo aver inserito un nuovo post
 				
 			}
 	        
 	        private void updatePostPanel() {
 	            centerPanel.removeAll(); // Rimuovo tutti i componenti dal pannello centrale
-	            List<Post> posts = postDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupero i nuovi post dal database
+	            List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupero i nuovi post dal database
 	            for (Post p : posts) {
 	                JLabel postLabel = new JLabel("Post di " + UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
 	                

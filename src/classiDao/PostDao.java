@@ -20,15 +20,16 @@ public class PostDao {
     }
     
     private static final String INSERT_POST = "INSERT INTO post ( idutente ,idgruppo ,descrizione,data_pubblicazione,orario_pubblicazione) VALUES ( ?, ?, ?,?,?)";
-    public static boolean InserisciPost(int currentUser,int idgruppo, String descpost) {
+    public static boolean InserisciPost(int currentUser,int idgruppo, String descpost,Timestamp currentTime) {
     	try(PreparedStatement stmt = conn.prepareStatement(INSERT_POST)){
     		stmt.setInt(1, currentUser);
     		stmt.setInt(2, idgruppo);
     		stmt.setString(3, descpost);
-    		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+    		
     		stmt.setTimestamp(4, currentTime);
     		stmt.setTimestamp(5, currentTime);
-    		stmt.executeUpdate();    		
+    		stmt.executeUpdate();   
+    		
     	} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

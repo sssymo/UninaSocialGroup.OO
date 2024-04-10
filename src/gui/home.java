@@ -207,6 +207,7 @@ public class home extends JFrame {
 
         JScrollPane postsScrollPane = new JScrollPane(PostPanel);
         postsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        
 
         contentPane.add(postsScrollPane, BorderLayout.CENTER);
 
@@ -357,7 +358,7 @@ public class home extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	try {
-					List<notifica> notifications = notificationDao.getAllUserNotifications(currentUser);
+					List<notifica> notifications = notificationDao.getNotificheForUser(currentUser);
 					List<richiesta> RichiesteDiEssereAggiuntoAiTuoiGruppi = richiestaDAO.VediRichiesteDiIscrizioneAiTuoiGruppi(currentUser);
 					controller.showNotificationsInterface(notifications,RichiesteDiEssereAggiuntoAiTuoiGruppi);
 				} catch (SQLException e1) {

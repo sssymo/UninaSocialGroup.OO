@@ -65,7 +65,7 @@ public class gruppo {
         this.tagList = tagList;
     }
 
-    // toString method to print the group details
+
     @Override
     public String toString() {
         return "Gruppo{" +
