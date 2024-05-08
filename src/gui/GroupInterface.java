@@ -10,6 +10,7 @@ import java.util.List;
 
 import classi.Post;
 import classi.gruppo;
+import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.PostDao;
 import classiDao.UserDao;
@@ -96,7 +97,33 @@ public class GroupInterface extends JFrame {
 
         JButton backButton = new JButton("Torna alla Home");
         bottomPanel.add(backButton);
-        
+
+JButton leaveGroupButton = new JButton("Abbandona il gruppo");
+bottomPanel.add(leaveGroupButton);
+
+backButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        dispose();
+        controller.showHomePage();
+    }
+});
+
+leaveGroupButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int confirm = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler abbandonare il gruppo?", "Conferma", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            boolean leftGroup = GroupDao.LasciaGruppo(currentUser, group.getIdGruppo());
+            if (leftGroup) {
+                dispose();
+                controller.showHomePage();
+          } else {
+
+ }
+        }
+    }
+});
         backButton.addActionListener(new ActionListener() {
 
 			@Override

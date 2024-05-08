@@ -180,4 +180,18 @@ public class GroupDao {
 
         return groups;
     }
+
+	public static boolean LasciaGruppo(int currentUser, int idGruppo) {
+		try (PreparedStatement statement = connection.prepareStatement("DELETE FROM ISCRIZIONE WHERE idutente=? and idgruppo=?")){
+			statement.setInt(1, currentUser);
+			statement.setInt(2, idGruppo);
+			statement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
 }
