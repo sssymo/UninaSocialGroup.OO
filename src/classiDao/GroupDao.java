@@ -156,9 +156,9 @@ public class GroupDao {
     
     }
 
-    public List<String> getGroupsRequestedByUser(int userId) {
-        ArrayList<String> groups = new ArrayList<>();
-        String query = "SELECT gruppo.nome_gruppo " +
+    public List<gruppo> getGroupsRequestedByUser(int userId) {
+        ArrayList<gruppo> groups = new ArrayList<>();
+        String query = "SELECT gruppo.nome_gruppo,gruppo.idgruppo,gruppo.data_creazione,gruppo.descrizione_gruppo " +
                        "FROM richiesta " +
                        "INNER JOIN gruppo ON gruppo.idgruppo = richiesta.idgruppo " +
                        "WHERE richiesta.idrichiedente = ?";
@@ -167,8 +167,12 @@ public class GroupDao {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                String groupName = resultSet.getString("nome_gruppo");
-                groups.add(groupName);
+    			int id=resultSet.getInt(2);
+    			String nome= resultSet.getString(1);
+    			String desc=resultSet.getString(4);
+    			Date data=resultSet.getDate(3);
+    			gruppo g = new gruppo(nome,id,desc,data);
+    			groups.add(g);
             }
         } catch (SQLException e) {
             e.printStackTrace();

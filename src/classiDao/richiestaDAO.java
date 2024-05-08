@@ -27,6 +27,20 @@ public class richiestaDAO {
         this.conn = conn;
     }
 
+    public boolean deleteRequest(int currentUser,int groupId) {
+    	try (PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM richiesta where idrichiedente=? and idgruppo=?")) {
+            preparedStatement.setInt(1, currentUser);
+            preparedStatement.setInt(2, groupId);
+            preparedStatement.executeUpdate();
+            return true;
+    	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+
+    	
+    }
     
     
 

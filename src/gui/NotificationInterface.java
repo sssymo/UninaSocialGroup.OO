@@ -27,8 +27,7 @@ public class NotificationInterface extends JFrame {
 
 	public NotificationInterface(int currentUser, List<notifica> notifiche, List<richiesta> notifichedirichiestaaitg, Controller controller) {
         String nickname = UserDao.getUserNameById(currentUser);
-        this.controller=controller;
-        this.currentUser = currentUser;
+        this.controller=controller;this.currentUser = currentUser;
       
 
 		setTitle("UninaSocialNetwork - Notifiche " + nickname);

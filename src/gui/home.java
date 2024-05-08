@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class home extends JFrame {
-
+	private JScrollPane scrollPane;
     private int currentUser;
     private GroupDao groupDao;
     private richiestaDAO richiestaDao;
@@ -96,13 +96,39 @@ public class home extends JFrame {
         });
         
         leftPanel.add(searchButton);
+        
+        
+        //questo è per creare gruppi
+        ImageIcon originalIcon7 = new ImageIcon("./src/img/add.png");
+        Image img7 = originalIcon7.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon7 = new ImageIcon(img7);
+           JButton CreateGroupButton = new JButton(resizedIcon7);
+           
+           CreateGroupButton.setToolTipText("Crea Gruppo");
+           //questo è per fargli cambiare colo re quando ci passi sopra col mosue
+           CreateGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
+               public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	   CreateGroupButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+               }
+           });
+           CreateGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
+               public void mouseExited(java.awt.event.MouseEvent evt) {
+            	   CreateGroupButton.setBackground(UIManager.getColor("control")); // Rcosì reimpoosto il colore del pulsante al colore di defaudefault
+           }
+           });
+           
+           leftPanel.add(CreateGroupButton);
+
+        
+        
+        
 
         //icona per visualizza gruppi
         ImageIcon originalIcon2 = new ImageIcon("./src/img/GroupsIcon.png");
         Image img2 = originalIcon2.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon2 = new ImageIcon(img2);
         JButton groupsButton = new JButton(resizedIcon2);
-        groupsButton.setToolTipText("Visualizza Gruppi");
+        groupsButton.setToolTipText("Visualizza Richieste Inviate");
         
         leftPanel.add(groupsButton);
 
@@ -159,127 +185,172 @@ public class home extends JFrame {
         leftPanel.add(backButton);
         contentPane.add(leftPanel, BorderLayout.WEST);
 
-      
-        JPanel PostPanel = new JPanel();
-        PostPanel.setLayout(new BoxLayout(PostPanel, BoxLayout.Y_AXIS));
-        PostPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        PostPanel.setBackground(new Color(213,220,233));
+        //qui gestisco la parte di visualizzazione dei gruppi nella home
+        //e quella dicreazione di un nuovo gruppo
         
-        JPanel createPostPanel = new JPanel();
-        createPostPanel.setBackground(new Color(213,220,233));
-        createPostPanel.setLayout(new BoxLayout(createPostPanel, BoxLayout.X_AXIS));
-        createPostPanel.setAlignmentX(Component.LEFT_ALIGNMENT); // Allinea a sinistra i componenti
+        try {
+            List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
 
-        //questo è per concedere la possibilità all'utente 
-        //di creare un gruppo direttamente dalla home
-        JButton CreateGroupButton =new JButton("Crea Gruppo");
-        createPostPanel.add(CreateGroupButton);
-        createPostPanel.add(Box.createHorizontalStrut(10));
-        
-        JButton createPostButton = new JButton("Crea Nuovo Post");
-        createPostPanel.add(createPostButton);
-        createPostPanel.add(Box.createHorizontalStrut(10));
-        PostPanel.add(createPostPanel);
-        PostPanel.add(Box.createVerticalStrut(20));
-       
-        //posts
-        List<Post> Posts = postDao.RecuperaPost(currentUser);
-        
-        for (Post Post : Posts) {
-            JLabel postLabel = new JLabel("Post inviato Da "+UserDao.getUserNameById(Post.getIdutente())+" nel gruppo "+GroupDao.GetGroupNameFromId(Post.getIdgruppo()));
-            JLabel DescLabel = new JLabel("\nil contenuto del post è : "+Post.getDesc());
-            JPanel PostEDesc=new JPanel();
-            //in questo modo metto postlabel e desclabel in un unico container
-            //così poi posso metterci il bordo
-            PostEDesc.add(postLabel);
-            PostEDesc.add(DescLabel);
-            PostEDesc.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(140,164,196), 4), 
-                    BorderFactory.createEmptyBorder(30, 10, 30, 10) 
-                ));
-            PostPanel.add(PostEDesc);
-            PostPanel.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(140,164,196), 4),
-                    BorderFactory.createEmptyBorder(30, 10, 30, 10) 
-                ));
-            PostPanel.add(Box.createVerticalStrut(40));
+            JPanel groupPanelsPanel = new JPanel();
+            groupPanelsPanel.setLayout(new BoxLayout(groupPanelsPanel, BoxLayout.Y_AXIS)); // Layout a scatola verticale
+
+            for (gruppo group : gruppi_isc) {
+               
+                JPanel groupPanel = new JPanel();
+                groupPanel.setLayout(new BorderLayout());
+                groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+                groupPanel.setMaximumSize(new Dimension(2000,120)); 
+                JLabel nameLabel = new JLabel(group.getNomeGruppo());
+                nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                groupPanel.add(nameLabel, BorderLayout.NORTH);
+                
+                JTextArea descriptionArea = new JTextArea(group.getDescrizioneGruppo());
+                descriptionArea.setEditable(false);
+                descriptionArea.setLineWrap(true);
+                descriptionArea.setWrapStyleWord(true);
+                JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+                groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
+                
+                ImageIcon originalIcon8 = new ImageIcon("./src/img/enter.png");
+                Image img8 = originalIcon8.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                ImageIcon resizedIcon8 = new ImageIcon(img8);
+                JButton accessButton = new JButton(resizedIcon8);
+                accessButton.setToolTipText("Accedi al gruppo");
+                accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    	accessButton.setBackground(new Color(200, 200, 200)); 
+                    }
+                });
+                accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                    	accessButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defauefault
+                }
+                });
+                accessButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.showGroupInterface(currentUser, group);
+                    }
+                });
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                buttonPanel.add(accessButton);
+                groupPanel.add(buttonPanel, BorderLayout.SOUTH);
+                
+                groupPanelsPanel.add(groupPanel);
+            }
+            
+            
+            JScrollPane scrollPane = new JScrollPane(groupPanelsPanel);
+            contentPane.add(scrollPane, BorderLayout.CENTER);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        JScrollPane postsScrollPane = new JScrollPane(PostPanel);
-        postsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        
-
-        contentPane.add(postsScrollPane, BorderLayout.CENTER);
-
-        
         setContentPane(contentPane);
         setVisible(true);
 
-        //visualizza i gruppi a cui sei iscritto/hai inviato richiesta
+
+
+        //visualizza i gruppi a a cui hai inviato richiesta
         groupsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    List<gruppo> gruppi_iscritto = groupDao.getGroupsByUser(currentUser);
-                    List<String> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+                List<gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+                
+                if (!gruppi_richiesti.isEmpty()) {
+                    JPanel groupPanelsPanel = new JPanel(new GridLayout(0, 1, 10, 10)); // Layout a griglia con 2 colonne e spaziatura di 10 pixel
+                    groupPanelsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+                    groupPanelsPanel.setPreferredSize(new Dimension(200, 200));
+                    for (gruppo gruppo : gruppi_richiesti) {
+                        // Crea un pannello per il singolo gruppo richiesto
+                        JPanel groupPanel = new JPanel(new BorderLayout());
+                        groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+                        
+                        // Aggiungi il nome del gruppo
+                        JLabel groupNameLabel = new JLabel(gruppo.getNomeGruppo());
+                        groupNameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                        groupPanel.add(groupNameLabel, BorderLayout.NORTH);
+                        
+                        // Aggiungi il dettaglio della richiesta
+                        JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
+                        groupPanel.add(groupNameDetails, BorderLayout.CENTER);
+                        
+                        // Aggiungi il pannello del< gruppo al pannello contenitore
+                        groupPanelsPanel.add(groupPanel);
+                        JButton deleteButton = new JButton("Cancella richiesta");
+                  
+                        deleteButton.setSize(100,200);
+                        deleteButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                // Implementa qui la logica per cancellare la richiesta nel backend
+								// Utilizza il DAO appropriato per cancellare la richiesta dall'utente corrente per il gruppo specifico
+								boolean deleted = richiestaDao.deleteRequest(currentUser, gruppo.getIdGruppo()); // Sostituisci groupId con l'ID del gruppo
+								if (deleted) {
+									reloadGroups();
+								} else {
 
-                    if (!gruppi_richiesti.isEmpty() || !gruppi_iscritto.isEmpty()) {
-                    	
-                        JPanel groupPanel = new JPanel(new GridLayout(1, 1));
-                        JPanel scrollPanel = new JPanel();
-                        scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
-
-                        for (String group : gruppi_richiesti) {
-
-                            JLabel groupNameLabel = new JLabel(group);
-                            JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
-
-                            JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-                            groupRow.add(groupNameLabel);
-                            groupRow.add(groupNameDetails);
-                            scrollPanel.add(groupRow);
-                        }
-
-                        for (gruppo group : gruppi_iscritto) {
-
-                            JLabel groupNameLabel = new JLabel(group.getNomeGruppo());
-                            JButton groupNameDetails = new JButton("Accedi");
-
-                            JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-                            groupRow.add(groupNameLabel);
-                            groupRow.add(groupNameDetails);
-                            scrollPanel.add(groupRow);
-                            
-                            groupNameDetails.addActionListener(new ActionListener() {
-
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									// TODO Auto-generated method stub
-									controller.showGroupInterface(currentUser,group);
-									
 								}
-                            	
-                            });
+                            }
+                            private void reloadGroups() {
+                                groupPanelsPanel.removeAll();
+                         
+                                List<gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+                                if (gruppi_richiesti.isEmpty()) {
+                                    JLabel noRequestsLabel = new JLabel("Nessuna richiesta inviata");
+                                    noRequestsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+                                    noRequestsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                                    groupPanelsPanel.add(noRequestsLabel, BorderLayout.CENTER);
+                                }
+                                for (gruppo gruppo : gruppi_richiesti) {
+                                    JPanel groupPanel = createGroupPanel(gruppo);
+                                    groupPanelsPanel.add(groupPanel);
+                                }
+                                groupPanelsPanel.revalidate();
+                                groupPanelsPanel.repaint();
+                            }
+
+                            private JPanel createGroupPanel(gruppo gruppo) {
+                                JPanel groupPanel = new JPanel(new BorderLayout());
+                                groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+
+                                JLabel groupNameLabel = new JLabel(gruppo.getNomeGruppo());
+                                groupNameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                                groupPanel.add(groupNameLabel, BorderLayout.NORTH);
+
+                                JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
+                                groupPanel.add(groupNameDetails, BorderLayout.CENTER);
+
+                                JButton deleteButton = new JButton("Cancella richiesta");
+                                deleteButton.setSize(new Dimension(100, 150));
+                                deleteButton.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent actionEvent) {
+                                        boolean deleted = richiestaDao.deleteRequest(currentUser, gruppo.getIdGruppo()); 
+                                        if (deleted) {
+                                            reloadGroups();
+                                        } else {
+                                        }
+                                    }
+                                });
+                                groupPanel.add(deleteButton, BorderLayout.EAST);
                             
+                                return groupPanel;
+                            }
+                            });
+                        groupPanel.add(deleteButton, BorderLayout.EAST);
                         }
-
-                        JScrollPane scrollPane = new JScrollPane(scrollPanel);
-                        scrollPane.setPreferredSize(new Dimension(300, 150));
-                        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                        JOptionPane.showMessageDialog(home.this, scrollPane);
-                    } else {
-
-                        JOptionPane.showMessageDialog(home.this,
-                                "Nessun gruppo trovato");
-                    }
-
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
+                    
+                  JScrollPane scrollPane = new JScrollPane(groupPanelsPanel);
+                    scrollPane.setPreferredSize(new Dimension(400, 250));
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                    JOptionPane.showMessageDialog(home.this, scrollPane);
+                     } else {
+                    JOptionPane.showMessageDialog(home.this, "Nessuna richiesta inviata");
                 }
             }
         });
+
 
         //torna indietro al login
         backButton.addActionListener(new ActionListener() {
@@ -367,6 +438,8 @@ public class home extends JFrame {
 				}
             }
         });
+
+     
         
         //crea gruppo apre un popup dove inserire dati del gruppo da creare
         CreateGroupButton.addActionListener(new ActionListener() {
@@ -410,25 +483,16 @@ public class home extends JFrame {
 
                     try {
                         groupDao.CreateGroup(groupName, description, currentUser);
+                       
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
                 }
             }
         });
+        
     
-        //da gestire , creazione di un post tramite popup
-        //dove si può scegliere il gruppo tramite menu a tendina 
-        createPostButton.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-				
-			}
-        	
-        });
     }
 
     
