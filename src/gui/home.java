@@ -37,6 +37,9 @@ public class home extends JFrame {
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
+        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+     Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        setIconImage(imgIconaFrame);
         setLocationRelativeTo(null);
 
         JPanel contentPane = new JPanel(new BorderLayout());
@@ -197,15 +200,16 @@ public class home extends JFrame {
 
             JPanel groupPanelsPanel = new JPanel();
             groupPanelsPanel.setLayout(new BoxLayout(groupPanelsPanel, BoxLayout.Y_AXIS)); // Layout a scatola verticale
-
+            
             for (gruppo group : gruppi_isc) {
                
                 JPanel groupPanel = new JPanel();
                 groupPanel.setLayout(new BorderLayout());
-                groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+                groupPanel.setBorder(BorderFactory.createLineBorder(new Color(	0,	51	,153), 2));
                 groupPanel.setMaximumSize(new Dimension(2000,120)); 
+                groupPanel.setBackground(new Color(240	,248,	255));
                 JLabel nameLabel = new JLabel(group.getNomeGruppo());
-                nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                nameLabel.setFont(new Font("Georgia", Font.ROMAN_BASELINE, 18));
                 groupPanel.add(nameLabel, BorderLayout.NORTH);
                 
                 JTextArea descriptionArea = new JTextArea(group.getDescrizioneGruppo());
@@ -237,13 +241,13 @@ public class home extends JFrame {
                     }
                 });
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                buttonPanel.setBackground(new Color(240	,248,	255));
                 buttonPanel.add(accessButton);
                 groupPanel.add(buttonPanel, BorderLayout.SOUTH);
                 
                 groupPanelsPanel.add(groupPanel);
             }
-            
-            
+
             JScrollPane scrollPane = new JScrollPane(groupPanelsPanel);
             contentPane.add(scrollPane, BorderLayout.CENTER);
         } catch (SQLException e) {

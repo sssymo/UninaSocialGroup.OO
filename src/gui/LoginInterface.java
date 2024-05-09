@@ -23,8 +23,10 @@ public class LoginInterface extends JFrame {
 
         setTitle("Unina Social Network - Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
-
+        setSize(700, 500);
+        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+     Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        setIconImage(imgIconaFrame);
         JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentPane.setLayout(new BorderLayout());
         contentPane.setBackground(new Color(137,156,196));
@@ -206,4 +208,9 @@ public class LoginInterface extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+	private static void setIconImages(ImageIcon resizedIcon1) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -35,7 +37,9 @@ Controller controller;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
-
+        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+     Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        setIconImage(imgIconaFrame);
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(137, 156, 196));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));

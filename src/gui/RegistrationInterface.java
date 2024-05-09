@@ -21,6 +21,9 @@ public class RegistrationInterface extends JFrame {
         setTitle("Unina Social Network - Registrazione");
       
         setSize(600, 400);
+        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+     Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        setIconImage(imgIconaFrame);
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("Georgia",Font.ITALIC,14));
         JLabel passwordLabel = new JLabel("Password:");

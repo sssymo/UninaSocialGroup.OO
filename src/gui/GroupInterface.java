@@ -33,7 +33,9 @@ public class GroupInterface extends JFrame {
 
         setTitle("UninaSocialGroup - " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(800, 600);        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+     Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        setIconImage(imgIconaFrame);
 
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
