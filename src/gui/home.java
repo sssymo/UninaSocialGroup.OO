@@ -508,7 +508,7 @@ public class home extends JFrame {
         reportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
+            	controller.showReportInterface(currentUser);
             }
         });
 

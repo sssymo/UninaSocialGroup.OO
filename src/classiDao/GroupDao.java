@@ -77,7 +77,7 @@ public class GroupDao {
     	return null;
     }
     
-    public List<gruppo> getGroupsByUser(int currentUser) throws SQLException {
+    public static ArrayList<gruppo> getGroupsByUser(int currentUser) throws SQLException {
         ArrayList<gruppo> groups = new ArrayList<>();
         String query = "SELECT g.nome_gruppo, g.idgruppo, g.data_creazione, g.descrizione_gruppo "
                 + "FROM gruppo AS g, iscrizione AS i, utente AS u "
@@ -206,6 +206,24 @@ public class GroupDao {
 			e.printStackTrace();
 			return false;
 		}
+		
+	}
+
+	public static List getGroupsByCreatore(int currentUser) {
+		// TODO Auto-generated method stub
+		ArrayList<String> ng=new ArrayList();
+		try (PreparedStatement statement = connection.prepareStatement("select gruppo.nome_gruppo,gruppo.data_creazione from gruppo,crea where crea.idutente=? and gruppo.idgruppo=crea.idgruppo")){
+			statement.setInt(1,currentUser);
+			ResultSet rs= statement.executeQuery();
+			while(rs.next()) {
+			ng.add(rs.getString(1));
+			}
+			return ng;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}	
 		
 	}
 }
