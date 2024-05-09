@@ -167,6 +167,7 @@ public class LoginInterface extends JFrame {
                 String password = new String(passwordField.getPassword());
 
                 try {
+                	
                     boolean authenticated = userDao.authenticateUser(username, password);
                     if (authenticated) {
                         JOptionPane.showMessageDialog(LoginInterface.this,
@@ -175,6 +176,7 @@ public class LoginInterface extends JFrame {
                         setVisible(false);
                         controller.loginSuccessful(username,password);
                     } else {
+
                         JOptionPane.showMessageDialog(LoginInterface.this,
                                 "Invalid username or password. Please try again.",
                                 "Error", JOptionPane.ERROR_MESSAGE);

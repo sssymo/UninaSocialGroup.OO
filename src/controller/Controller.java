@@ -74,6 +74,12 @@ public class Controller {
 		currentFrame = new GroupInterface(currentUser, group,this,PostDao,notificationDao);
 		
 	}
+
+public void showReportInterface(int currentUser) {
+	currentFrame.dispose();
+	//???
+
+}
    
 }
 

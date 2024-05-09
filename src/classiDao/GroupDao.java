@@ -28,9 +28,23 @@ public class GroupDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
-    			
-    			
+		return false;			
+    }
+    public static String GetCreatoreFromIdGruppo(int idgruppo) {
+    	String query="SELECT utente.nickname from crea,utente where utente.idutente=crea.idutente and crea.idgruppo=?";
+    	try (PreparedStatement stmt = connection.prepareStatement(query)){
+    		stmt.setInt(1, idgruppo);
+    		ResultSet s = stmt.executeQuery();
+    		while(s.next()) {
+    			return s.getString(1);
+    		}
+    	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+    	}
+    	return "nessun utente trovato";
+		
     }
     
     public static String GetGroupNameFromId(int id) {

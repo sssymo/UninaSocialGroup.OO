@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import classi.Post;
@@ -21,164 +22,204 @@ public class GroupInterface extends JFrame {
     private gruppo group;
     private PostDao postDao;
     private NotificaDAO notificaDao;
+    private JTextField postTextField ;
+    private JPanel centerPanel;
+    public JScrollPane scrollPane;
 
-    public GroupInterface(int currentUser, gruppo group, Controller controller,PostDao postDao,NotificaDAO notificaDao
-    		) {
+    public GroupInterface(int currentUser, gruppo group, Controller controller, PostDao postDao, NotificaDAO notificaDao) {
         this.group = group;
-        this.postDao=postDao;
-        
+        this.postDao = postDao;
+        this.notificaDao = notificaDao;
 
         setTitle("UninaSocialGroup - " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
 
-        
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
 
-        //è il nome del gruppo
+        // Banner del gruppo
         JLabel bannerLabel = new JLabel(group.getNomeGruppo());
-        bannerLabel.setFont(new Font("Georgia",Font.ITALIC,30));
-        
-        bannerLabel.setPreferredSize(new Dimension(Short.MAX_VALUE, 100));
-        bannerLabel.setOpaque(true); 
-        bannerLabel.setBackground(new Color(60,92,156)); 
-        bannerLabel.add(Box.createHorizontalStrut(40));
+        bannerLabel.setFont(new Font("Georgia", Font.ITALIC, 24));
+        bannerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        bannerLabel.setForeground(new Color(213,220,233));
+        bannerLabel.setOpaque(true);
+        bannerLabel.setBackground(new Color(60, 92, 156));
+
         add(bannerLabel, BorderLayout.NORTH);
-        
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBackground(new Color(60, 92, 156));
 
-        JButton createPostButton = new JButton("Crea nuovo post");
-        leftPanel.add(createPostButton);
-
-        // JTextField accanto al pulsante, da modificare in quanto non responsive
-        JTextField postTextField = new JTextField();
-        postTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, postTextField.getPreferredSize().height)); // Per farlo espandersi in orizzontale
-        leftPanel.add(postTextField);
-
-        add(leftPanel, BorderLayout.WEST);
-
-        add(leftPanel, BorderLayout.WEST);
-
-        
-        JPanel centerPanel = new JPanel();
+        // Pnnello per i post al centro
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(new Color(137, 156, 196));
-        centerPanel.setLayout(new GridLayout(0, 1));
-
-        List<Post> Posts = postDao.RecuperaPost(currentUser, group.getIdGruppo());
-        for (Post p : Posts) {
-            JLabel postLabel = new JLabel("Post di " + UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
-            
-            postLabel.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(140,164,196), 4),
-                    BorderFactory.createEmptyBorder(30, 10, 30, 10) 
-                ));
-            centerPanel.add(postLabel);
-            centerPanel.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(140,164,196), 4),
-                    BorderFactory.createEmptyBorder(30, 10, 30, 10) 
-                ));
-            centerPanel.add(Box.createVerticalStrut(30));
-            centerPanel.add(Box.createHorizontalStrut(20));
-        }
-
         JScrollPane scrollPane = new JScrollPane(centerPanel);
-        scrollPane.setBackground(new Color(60, 92, 156));
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
         add(scrollPane, BorderLayout.CENTER);
 
-      
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        // Pulsante "Indietro" in alto a destra
+        JPanel topRightPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 0, 5)); // GridLayout con 2 righe, 1 colonna
+        buttonPanel.setBackground(new Color(60, 92, 156));
+        JButton backButton = new JButton("Indietro");
+        buttonPanel.add(backButton);
+        topRightPanel.setBackground(new Color(60, 92, 156));
+        JButton leaveGroupButton = new JButton("Abbandona il gruppo");
+        buttonPanel.add(leaveGroupButton);
+        
+        topRightPanel.add(buttonPanel, BorderLayout.NORTH);
+        add(topRightPanel, BorderLayout.EAST);
+  
+
+
+        // annello per l'inserimento di un post in basso
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        JTextField postTextField = new JTextField();
         bottomPanel.setBackground(new Color(60, 92, 156));
-
-        JButton backButton = new JButton("Torna alla Home");
-        bottomPanel.add(backButton);
-
-JButton leaveGroupButton = new JButton("Abbandona il gruppo");
-bottomPanel.add(leaveGroupButton);
-
-backButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        dispose();
-        controller.showHomePage();
-    }
-});
-
-leaveGroupButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int confirm = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler abbandonare il gruppo?", "Conferma", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            boolean leftGroup = GroupDao.LasciaGruppo(currentUser, group.getIdGruppo());
-            if (leftGroup) {
-                dispose();
-                controller.showHomePage();
-          } else {
-
- }
-        }
-    }
-});
-        backButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				dispose();
-				controller.showHomePage();
-				
-			}
-        	
-        });
-
-        
-        createPostButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String desc= postTextField.getText();
-				Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-				PostDao.InserisciPost(currentUser,group.getIdGruppo(),desc,currentTime);
-				notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(),desc,currentTime);
-                //to do : send notifica ad utenti iscritti
-				  updatePostPanel(); // così aggiorrno il pannello dei post dopo aver inserito un nuovo post
-				
-			}
-	        
-	        private void updatePostPanel() {
-	            centerPanel.removeAll(); // Rimuovo tutti i componenti dal pannello centrale
-	            List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupero i nuovi post dal database
-	            for (Post p : posts) {
-	                JLabel postLabel = new JLabel("Post di " + UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
-	                
-	                postLabel.setBorder(BorderFactory.createCompoundBorder(
-	                        BorderFactory.createLineBorder(new Color(140,164,196), 4),
-	                        BorderFactory.createEmptyBorder(30, 10, 30, 10) 
-	                    ));
-	                centerPanel.add(postLabel);
-	                centerPanel.setBorder(BorderFactory.createCompoundBorder(
-	                        BorderFactory.createLineBorder(new Color(140,164,196), 4),
-	                        BorderFactory.createEmptyBorder(30, 10, 30, 10) 
-	                    ));
-	                centerPanel.add(Box.createVerticalStrut(30));
-	                centerPanel.add(Box.createHorizontalStrut(20));
-	            }
-	            revalidate(); // Rendo effettive le modifiche al pannello
-	            repaint(); // Riinserisco il pannello
-	        }
-        });
-
-        
+        JButton createPostButton = new JButton("Crea nuovo post");
+        bottomPanel.add(postTextField, BorderLayout.CENTER);
+        bottomPanel.add(createPostButton, BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
 
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                controller.showHomePage();
+            }
+        });
+
+        leaveGroupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler abbandonare il gruppo?", "Conferma", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    boolean leftGroup = GroupDao.LasciaGruppo(currentUser, group.getIdGruppo());
+                    if (leftGroup) {
+                        dispose();
+                        controller.showHomePage();
+                    } else {
+                        
+                    }
+                }
+            }
+        });
+
+        postTextField.addKeyListener(new KeyListener() {
+            
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Se viene premuto "Invio"
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                	String desc = postTextField.getText();
+                	//se il post non è vuoto
+                	if(!desc.isEmpty()) {
+                        postTextField.setText("");
+                        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                        PostDao.InserisciPost(currentUser, group.getIdGruppo(), desc, currentTime);
+                        notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(), desc, currentTime);
+                        updatePostPanel(); // Aggiorna il pannello dei post dopo l'inserimento di uo no uno nuovo
+                    
+                	}
+
+}                    SwingUtilities.invokeLater(() -> {
+    JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+    verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+});
+
+            }
+         
+            private void updatePostPanel() {
+                centerPanel.removeAll(); // Rimuove tutti i componenti dal pannello centrale
+                List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupera i nuovi post dal database
+                for (Post p : posts) {
+                    JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
+                    centerPanel.add(postLabel);
+                    centerPanel.add(Box.createVerticalStrut(10));
+                }
+                revalidate(); // Rende effettive le modifiche al pannello
+                repaint(); // Riaggiorna il pannello
+                
+            }
+
+            
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+		
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
+        
+        createPostButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String desc = postTextField.getText();
+            	if(!desc.isEmpty()) {
+                    postTextField.setText("");
+                    Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                    PostDao.InserisciPost(currentUser, group.getIdGruppo(), desc, currentTime);
+                    notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(), desc, currentTime);
+                    updatePostPanel(); 
+                
+                    SwingUtilities.invokeLater(() -> {
+                        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+                        verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+                    });
+            	}
+}
+
+            // aggiorno il pannello dei post
+            private void updatePostPanel() {
+                centerPanel.removeAll(); // Rimuove tutti i componenti dal pannello centrale
+                JLabel groupInfoLabel = new JLabel("Gruppo creato da " + GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()) + " il " + group.getDataCreazione());
+                groupInfoLabel.setForeground(Color.white);
+                centerPanel.add(groupInfoLabel);
+                centerPanel.add(Box.createVerticalStrut(10));
+                List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupera i nuovi post dal database
+                for (Post p : posts) {
+                	
+                    JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
+                    centerPanel.add(postLabel);
+                    centerPanel.add(Box.createVerticalStrut(10));
+                }
+                revalidate(); 
+                repaint();
+            }
+        });
+
+        loadInitialPosts(currentUser);
+        //in tal modo quando apro la pagina del gruppo scendo automaticamente quanto 
+        //più giù possibile , così da trovarmi i post recenti.
+        SwingUtilities.invokeLater(() -> {
+            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+            verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+        });
         setVisible(true);
     }
-    
 
+    private void loadInitialPosts(int currentUser) {
+        JLabel groupInfoLabel = new JLabel("Gruppo creato da " + GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()) + " il " + group.getDataCreazione());
+        groupInfoLabel.setForeground(Color.white);
+        centerPanel.add(groupInfoLabel);
+        centerPanel.add(Box.createVerticalStrut(10));
+
+        List<Post> posts = postDao.RecuperaPost(currentUser, group.getIdGruppo());
+        for (Post p : posts) {
+            JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
+            centerPanel.add(postLabel);
+            centerPanel.add(Box.createVerticalStrut(10));
+            
+        }
+			
+		
+       
+
+    }
+    
 }

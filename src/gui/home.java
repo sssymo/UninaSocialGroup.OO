@@ -159,8 +159,12 @@ public class home extends JFrame {
             	notificationsButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defauefault
         }
         });
-        
-        
+        ImageIcon originalIconr = new ImageIcon("./src/img/report.png");
+        Image imgr = originalIconr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon resizedIconr = new ImageIcon(imgr);
+        JButton reportButton = new JButton(resizedIconr);
+
+        leftPanel.add(reportButton);
         
         //icona per tornare indietro
         ImageIcon originalIcon3 = new ImageIcon("./src/img/GoBackIcon.png");
@@ -255,6 +259,9 @@ public class home extends JFrame {
         groupsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
+            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
+
                 List<gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
                 
                 if (!gruppi_richiesti.isEmpty()) {
@@ -344,7 +351,9 @@ public class home extends JFrame {
                   JScrollPane scrollPane = new JScrollPane(groupPanelsPanel);
                     scrollPane.setPreferredSize(new Dimension(400, 250));
                     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                    JOptionPane.showMessageDialog(home.this, scrollPane);
+                 
+                    JOptionPane.showConfirmDialog(home.this, scrollPane, "Gruppi Richiesti", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    
                      } else {
                     JOptionPane.showMessageDialog(home.this, "Nessuna richiesta inviata");
                 }
@@ -365,6 +374,9 @@ public class home extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
+            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
+            
                 String searchTerm = searchField.getText();
                 System.out.println("Azione eseguita!");
 
@@ -408,7 +420,7 @@ public class home extends JFrame {
                         JScrollPane scrollPane = new JScrollPane(scrollPanel);
                         scrollPane.setPreferredSize(new Dimension(150, 200));
                         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                        JOptionPane.showMessageDialog(home.this, scrollPane);
+                        JOptionPane.showConfirmDialog(home.this, scrollPane, "risultati", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     } else {
 
                         JOptionPane.showMessageDialog(home.this,
@@ -426,6 +438,7 @@ public class home extends JFrame {
         //vedi le notifiche, per adesso le uniche notifiche che si vedono sono 
         //quelle di richieste di accesso a gruppi
         notificationsButton.addActionListener(new ActionListener() {
+        	
             @Override
             public void actionPerformed(ActionEvent e) {
             	try {
@@ -472,7 +485,8 @@ public class home extends JFrame {
                 JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
              
                 dialogPanel.add(descriptionScrollPane, gbc);
-               
+                UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
+            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
 
                 int result = JOptionPane.showConfirmDialog(home.this, dialogPanel,
                         "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -491,7 +505,12 @@ public class home extends JFrame {
             }
         });
         
-    
+        reportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            }
+        });
 
     }
 
