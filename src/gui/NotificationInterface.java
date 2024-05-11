@@ -38,6 +38,8 @@ public class NotificationInterface extends JFrame {
      Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         setIconImage(imgIconaFrame);
 		JPanel contentPane = new JPanel(new BorderLayout());
+		contentPane.setBackground(new Color(137, 156, 196));
+		contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
    
 		JLabel titleLabel = new JLabel("Notifiche per " + nickname);
@@ -52,6 +54,8 @@ public class NotificationInterface extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(notificationPanel);
 		scrollPane.setBackground(new Color(213, 220, 233));
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		
 		for (richiesta r : notifichedirichiestaaitg) {
 		    JLabel notificationLabel = new JLabel(UserDao.getUserNameById(r.getIdUtente()) + " ti ha chiesto di essere aggiunto a " + GroupDao.GetGroupNameFromId(r.getIdGruppo()));
 		    JButton accettaButton = new JButton("Accetta");

@@ -47,12 +47,16 @@ public class GroupInterface extends JFrame {
         bannerLabel.setForeground(new Color(213,220,233));
         bannerLabel.setOpaque(true);
         bannerLabel.setBackground(new Color(60, 92, 156));
+        bannerLabel.setBorder(BorderFactory.createLineBorder(new Color(	0,	51	,153), 2));
+        
+        
 
         add(bannerLabel, BorderLayout.NORTH);
 
         // Pnnello per i post al centro
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBorder(BorderFactory.createLineBorder(new Color(	0,	51	,153), 2));
         centerPanel.setBackground(new Color(137, 156, 196));
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         add(scrollPane, BorderLayout.CENTER);

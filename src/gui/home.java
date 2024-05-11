@@ -167,6 +167,19 @@ public class home extends JFrame {
         ImageIcon resizedIconr = new ImageIcon(imgr);
         JButton reportButton = new JButton(resizedIconr);
 
+        reportButton.setToolTipText("Vedi I Tuoi Report");
+        
+        reportButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	reportButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            }
+        });
+        reportButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	reportButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defaudefault
+        }
+        });
+        
         leftPanel.add(reportButton);
         
         //icona per tornare indietro
@@ -197,9 +210,18 @@ public class home extends JFrame {
         
         try {
             List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
+            
 
             JPanel groupPanelsPanel = new JPanel();
             groupPanelsPanel.setLayout(new BoxLayout(groupPanelsPanel, BoxLayout.Y_AXIS)); // Layout a scatola verticale
+            
+            if(gruppi_isc.isEmpty()) {
+                JLabel NoGroupLabel = new JLabel("non sei iscritto a nessun gruppo, creane uno oppure invia una richiesta!");
+                NoGroupLabel.setFont(new Font("Georgia", Font.ROMAN_BASELINE, 14));
+                groupPanelsPanel.add(Box.createVerticalStrut(10));
+                groupPanelsPanel.add(NoGroupLabel, BorderLayout.NORTH);
+              
+            }
             
             for (gruppo group : gruppi_isc) {
                
