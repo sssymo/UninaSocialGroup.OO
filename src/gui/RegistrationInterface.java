@@ -15,29 +15,31 @@ public class RegistrationInterface extends JFrame {
     private JTextArea bioArea;
     private JButton registerButton;
 
-
     public RegistrationInterface(final UserDao userDao, Controller controller) {
         this.userDao = userDao;
         setTitle("Unina Social Network - Registrazione");
-      
-        setSize(600, 400);
+        setSize(800,600); // Aumenta le dimensioni della finestra
         ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
-     Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         setIconImage(imgIconaFrame);
+
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(new Font("Georgia",Font.ITALIC,14));
+        usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Georgia",Font.ITALIC,14));
+        passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
         JButton returnToLoginButton = new JButton("Ritorna al Login");
-        returnToLoginButton.setFont(new Font("Georgia",Font.ITALIC,14));
+        returnToLoginButton.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
         JLabel bioLabel = new JLabel("Bio:");
-        bioLabel.setFont(new Font("Georgia",Font.ITALIC,14));
-        usernameField = new JTextField(20);
-        passwordField = new JPasswordField(20);
-        bioArea = new JTextArea(5, 20);
+        bioLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+        usernameField = new JTextField(20); // Aumenta la larghezza del campo di testo
+        usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+        passwordField = new JPasswordField(20); // Aumenta la larghezza del campo di testo
+        passwordField.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+        bioArea = new JTextArea(5, 20); // Aumenta la dimensione dell'area di testo
+        bioArea.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
         JScrollPane bioScrollPane = new JScrollPane(bioArea);
         registerButton = new JButton("Registrati");
-        registerButton.setFont(new Font("Georgia",Font.ITALIC,14));
+        registerButton.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
 
         JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentPane.setLayout(new BorderLayout());
@@ -45,30 +47,27 @@ public class RegistrationInterface extends JFrame {
 
         JPanel RegistrationPanel = new JPanel();
         RegistrationPanel.setLayout(new GridBagLayout());
-        RegistrationPanel.setBackground(new Color(137,156,196)); 
+        RegistrationPanel.setBackground(new Color(137, 156, 196));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10); // Aumenta lo spazio tra i componenti
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel titleLabel = new JLabel("Registrazione");
-        titlePanel.setBackground(new Color(213,220,233));
-        titleLabel.setFont(new Font("Georgia",Font.ITALIC,20));
+        titlePanel.setBackground(new Color(213, 220, 233));
+        titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30)); // Aumenta la dimensione del font
         titlePanel.add(titleLabel);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 3;
         RegistrationPanel.add(titlePanel, gbc);
-       
-        
-        returnToLoginButton.addActionListener((ActionListener) new ActionListener() {
+
+        returnToLoginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
                 dispose();
-                // Torno al login
-                controller.showLoginInterface(); 
+                controller.showLoginInterface();
             }
         });
 
@@ -101,63 +100,47 @@ public class RegistrationInterface extends JFrame {
         gbc.gridwidth = 2;
         RegistrationPanel.add(returnToLoginButton, gbc);
         contentPane.add(RegistrationPanel);
-        registerButton.addActionListener(e -> {
-           
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
-            String bio = bioArea.getText();
-            if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(RegistrationInterface.this,
-                        "Username and password fields are required.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if(password.length()<8){
-                JOptionPane.showMessageDialog(RegistrationInterface.this,
-                        "Password should be at least 8 characters",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }//qui andranno probabilmente aggiunti altri controlli sul formato dell'inputut
-            else {
-            	//controllo se username esiste già
-            	if(userDao.CheckUserAlreadyExistDuringRegistration(username)) {
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+                String bio = bioArea.getText();
+                if (username.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(RegistrationInterface.this,
-                            "User AlreaAAAd Exist",
+                            "Username and password fields are required.",
                             "Error", JOptionPane.ERROR_MESSAGE);
-            		return;
-            	}
-            	else {
-            		//inserimento dei dati
-            		Utente u =new Utente(username,2,password,bio);
-            		try {
-						userDao.salvaUtente(u);
-					} catch (SQLException e1) {
-						
-						e1.printStackTrace();
-					}
-                	//back to login interface
-                    
+                    return;
+                }
+                if (password.length() < 8) {
                     JOptionPane.showMessageDialog(RegistrationInterface.this,
-                            "User registered successfully!",
-                            "Success", JOptionPane.INFORMATION_MESSAGE);
-            	}
-            	
-            	
-            	
-
-            
-            
-
+                            "Password should be at least 8 characters",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else {
+                    if (userDao.CheckUserAlreadyExistDuringRegistration(username)) {
+                        JOptionPane.showMessageDialog(RegistrationInterface.this,
+                                "User Already Exists",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } else {
+                        Utente u = new Utente(username, 2, password, bio);
+                        try {
+                            userDao.salvaUtente(u);
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        JOptionPane.showMessageDialog(RegistrationInterface.this,
+                                "User registered successfully!",
+                                "Success", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
             }
-
         });
 
-    
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         setContentPane(contentPane);
-      
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 }

@@ -66,6 +66,7 @@ Controller controller;
             comboBoxPanel.add(new JLabel("Select Group: "));
             comboBoxPanel.add(groupComboBox);
   
+            //a seconda del valore selected nella combobox dovrebbero visualizzarsi dei dati random
 
         centerPanel.add(comboBoxPanel, BorderLayout.NORTH);
 

@@ -77,13 +77,11 @@ public class NotificationInterface extends JFrame {
 		    accettaButton.addActionListener(new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
-		            // Elimino richiesta ed accetto utente inserendolo negli iscritti al gruppo
 		            GroupDao.AcceptUtenteAGruppo(r.getIdUtente(), r.getIdGruppo());
 		            
-		            // Rimuovo il pannello riga dalla notifica
 		            notificationPanel.remove(rowPanel);
 		            JOptionPane.showMessageDialog(NotificationInterface.this, "Richiesta Accettata!", "Conferma", JOptionPane.INFORMATION_MESSAGE);
-		            // Aggiorno il layout 
+		
 		            notificationPanel.revalidate();
 		            notificationPanel.repaint();
 		        
@@ -110,14 +108,11 @@ public class NotificationInterface extends JFrame {
 		    VAIALGRUPPO.addActionListener(new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
-		            // Elimino richiesta ed accetto utente inserendolo negli iscritti al gruppo
-		            dispose();
+		          dispose();
 		            controller.showGroupInterface(currentUser,GroupDao.GetGroupDataFromId(n.getIdGruppo()));
 		            
-		            // Rimuovo il pannello riga dalla notifica
-		            notificationPanel.remove(rowPanel);
+		           notificationPanel.remove(rowPanel);
 
-		            // Aggiorno il layout 
 		            notificationPanel.revalidate();
 		            notificationPanel.repaint();
 		        
