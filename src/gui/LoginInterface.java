@@ -25,9 +25,9 @@ public class LoginInterface extends JFrame {
 
             setTitle("Unina Social Network - Login");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(800, 600); // Aumenta le dimensioni della finestra principale
+            setSize(800, 600); 
             ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
-            Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Aumenta le dimensioni dell'icona
+            Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
             setIconImage(imgIconaFrame);
             JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
             contentPane.setLayout(new BorderLayout());
@@ -37,7 +37,7 @@ public class LoginInterface extends JFrame {
             loginPanel.setLayout(new GridBagLayout());
             loginPanel.setBackground(new Color(137, 156, 196));
             GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(10, 10, 10, 10); // Aumenta lo spazio tra i componenti
+            gbc.insets = new Insets(10, 10, 10, 10);
             gbc.fill = GridBagConstraints.HORIZONTAL;
 
             JPanel form = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -47,7 +47,7 @@ public class LoginInterface extends JFrame {
             JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             titlePanel.setBackground(new Color(213, 220, 233));
             JLabel titleLabel = new JLabel("Login");
-            titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30)); // Aumenta la dimensione del font
+            titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30)); 
             titlePanel.add(titleLabel);
 
             gbc.gridx = 0;
@@ -56,18 +56,18 @@ public class LoginInterface extends JFrame {
             loginPanel.add(titlePanel, gbc);
 
             JLabel usernameLabel = new JLabel("Username:");
-            usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
-            usernameField = new JTextField(20); // Aumenta la larghezza del campo di testo
-            usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+            usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
+            usernameField = new JTextField(20); 
+            usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
             JLabel passwordLabel = new JLabel("Password:");
-            passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
-            passwordField = new JPasswordField(20); // Aumenta la larghezza del campo di testo
-            passwordField.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+            passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
+            passwordField = new JPasswordField(20); 
+            passwordField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
             JButton loginButton = new JButton("Accedi");
-            loginButton.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+            loginButton.setFont(new Font("Georgia", Font.ITALIC, 20));
 
             JButton registerButton = new JButton("Registrati");
-            registerButton.setFont(new Font("Georgia", Font.ITALIC, 20)); // Aumenta la dimensione del font
+            registerButton.setFont(new Font("Georgia", Font.ITALIC, 20));
 
             gbc.gridx = 0;
             gbc.gridy = 1;
