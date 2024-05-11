@@ -7,6 +7,7 @@ import classi.richiesta;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.PostDao;
+import classiDao.TagDao;
 import classiDao.UserDao;
 import controller.Controller;
 import classiDao.richiestaDAO;
@@ -15,6 +16,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,12 +29,13 @@ public class home extends JFrame {
     private NotificaDAO notificationDao;
     private Controller controller;
     private PostDao postDao;
-
-    public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao) {
+private TagDao tagdao;
+    public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao,TagDao tagdao) {
         this.currentUser = currentUser;
         this.controller = controller;
         this.notificationDao = notificationDao;
         this.richiestaDao = richiestaDao;
+        this.tagdao=tagdao;
         this.postDao=postDao;
 
         setTitle("Unina Social Network - Home");
@@ -486,7 +490,8 @@ public class home extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	//manca da gestire la questione tag
                 JPanel dialogPanel = new JPanel(new GridBagLayout());
-                
+                Dimension dialogSize = new Dimension(300, 250);
+                dialogPanel.setPreferredSize(dialogSize);
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridx = 0;
                 gbc.gridy = 0;
@@ -511,6 +516,46 @@ public class home extends JFrame {
                 JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
              
                 dialogPanel.add(descriptionScrollPane, gbc);
+                gbc.gridy++;
+                dialogPanel.add(new JLabel("Tags:"), gbc);
+                gbc.gridy++;
+                
+                
+                JTextField tagsField = new JTextField("separali con una virgola e falli terminare con un punto") {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+
+                        // Se il campo è vuoto e non ha il focus, disegna il testo del placeholder
+                        if (getText().isEmpty() && !isFocusOwner()) {
+                            Graphics2D g2 = (Graphics2D) g.create();
+                            g2.setColor(Color.GRAY); // Colore del placeholder
+                            g2.setFont(getFont().deriveFont(Font.ITALIC)); // Stile del placeholder
+                            int x = getInsets().left; // Posizione orizzontale del placeholder
+                            int y = (getHeight() - g2.getFontMetrics().getHeight()) / 2; // Posizione verticale del placeholder
+                            g2.drawString(getText(), x, y);
+                            g2.dispose();
+                        }
+                    }
+                };
+                tagsField.setPreferredSize(new Dimension(150, 30));
+                tagsField.addFocusListener(new FocusListener() {
+                    public void focusGained(FocusEvent e) {
+                        if (tagsField.getText().equals("separali con una virgola e falli terminare con un punto")) {
+                            tagsField.setText("");
+                            tagsField.setForeground(Color.BLACK);
+                        }
+                    }
+
+                    public void focusLost(FocusEvent e) {
+                        if (tagsField.getText().isEmpty()) {
+                            tagsField.setText("separali con una virgola e falli terminare con un punto");
+                            tagsField.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+                tagsField.setForeground(Color.GRAY);
+                dialogPanel.add(tagsField, gbc);
                 UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
             UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
 
@@ -520,13 +565,51 @@ public class home extends JFrame {
                 if (result == JOptionPane.OK_OPTION) {
                     String groupName = groupNameField.getText();
                     String description = descriptionArea.getText();
+                    String TagList=tagsField.getText();
+                    boolean inserisci=true;
+                    if (TagList.contains("*") || TagList.contains("[") || TagList.contains("]") ||
+                    	    TagList.contains("^") || TagList.contains("!") || TagList.contains("@") ||
+                    	    TagList.contains("#") || TagList.contains("$") || TagList.contains("%") ||
+                    	    TagList.contains("&") || TagList.contains("(") || TagList.contains(")") ||
+                    	    TagList.contains("-") || TagList.contains("+") || TagList.contains("=") ||
+                    	    TagList.contains("?") || TagList.contains("<") || TagList.contains(">") ||
+                    	    TagList.contains("/") || TagList.contains("\\") || TagList.contains(":") ||
+                    	    TagList.contains(";") || TagList.contains("{") || TagList.contains("}") ||
+                    	    TagList.contains("|") || TagList.contains("~") || TagList.contains("`") ||
+                    	    TagList.contains("0") || TagList.contains("1") || TagList.contains("2") ||
+                    	    TagList.contains("3") || TagList.contains("4") || TagList.contains("5") ||
+                    	    TagList.contains("6") || TagList.contains("7") || TagList.contains("8") ||
+                    	    TagList.contains("9")) {
+                    	    inserisci = false;
+                    	}
+                    if(groupName.trim().isEmpty()) {inserisci=false;}
+                    	if(inserisci==true) {
+                    	
+                        try {
+                            int id=groupDao.CreateGroup(groupName, description, currentUser);
 
-                    try {
-                        groupDao.CreateGroup(groupName, description, currentUser);
-                       
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
+                            String[] tags = TagList.split(",");
+                            for (String tag : tags) {
+         
+                                tag = tag.trim();
+                                if (tag.endsWith(".")) {
+                                    tag = tag.substring(0, tag.length() - 1);
+                                }
+ 
+                                if (!tag.isEmpty()) {
+                   
+                                    tagdao.InsertTipologiaIfNotExistEAssociaAGruppo(tag, id);
+                                }
+                            }
+                           
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(home.this, "Nessun gruppo creato, il nome non può essere vuoto e i  tag non possono contenere caratteri speciali.", "Errore", JOptionPane.ERROR_MESSAGE);
+
+   }
+
                 }
             }
         });

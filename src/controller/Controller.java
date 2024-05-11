@@ -3,6 +3,7 @@ package controller;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.PostDao;
+import classiDao.TagDao;
 import classiDao.UserDao;
 import gui.*;
 import javax.swing.*;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Controller {
 
     private UserDao userDao;
+    private TagDao Tagdao;
     private GroupDao groupDao;
     private NotificaDAO notificationDao;
     private richiestaDAO richiestaDao;
@@ -32,6 +34,7 @@ public class Controller {
         this.connection = connection;
         userDao = new UserDao(connection);
         groupDao = new GroupDao(connection);
+        Tagdao=new TagDao(connection);
         notificationDao = new NotificaDAO(connection);
         richiestaDao = new richiestaDAO(connection);
         PostDao= new PostDao(connection);
@@ -60,7 +63,7 @@ public class Controller {
     
     public void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this,PostDao);
+        currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this,PostDao,Tagdao);
     }
     public void showNotificationsInterface(List<notifica> notifications,List<richiesta> richieste) {
         currentFrame.dispose();
@@ -82,5 +85,9 @@ public void showReportInterface(int currentUser) {
 
 }
    
+public void ShowGroupInfo(int currentUser,gruppo group) {
+	currentFrame.dispose();
+	currentFrame=new ShowGroupInfo(currentUser,group,this,PostDao);
+}
 }
 

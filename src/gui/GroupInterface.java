@@ -70,10 +70,20 @@ public class GroupInterface extends JFrame {
         topRightPanel.setBackground(new Color(60, 92, 156));
         JButton leaveGroupButton = new JButton("Abbandona il gruppo");
         buttonPanel.add(leaveGroupButton);
-        
+        JButton infoButton = new JButton("Informazioni");
+        buttonPanel.add(infoButton);
+
+        infoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Apri la finestra popup con le informazioni del gruppo
+                controller.ShowGroupInfo(currentUser,group);
+            }
+        });
+
         topRightPanel.add(buttonPanel, BorderLayout.NORTH);
         add(topRightPanel, BorderLayout.EAST);
-  
+
 
 
         // annello per l'inserimento di un post in basso
@@ -108,6 +118,7 @@ public class GroupInterface extends JFrame {
                 }
             }
         });
+        
 
         postTextField.addKeyListener(new KeyListener() {
             
@@ -134,15 +145,19 @@ public class GroupInterface extends JFrame {
             }
          
             private void updatePostPanel() {
-                centerPanel.removeAll(); // Rimuove tutti i componenti dal pannello centrale
-                List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupera i nuovi post dal database
+                centerPanel.removeAll(); 
+                JLabel groupInfoLabel = new JLabel("Gruppo creato da " + GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()) + " il " + group.getDataCreazione());
+                groupInfoLabel.setForeground(Color.white);
+                centerPanel.add(groupInfoLabel);
+                centerPanel.add(Box.createVerticalStrut(10));
+                List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); 
                 for (Post p : posts) {
                     JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
                     centerPanel.add(postLabel);
                     centerPanel.add(Box.createVerticalStrut(10));
                 }
-                revalidate(); // Rende effettive le modifiche al pannello
-                repaint(); // Riaggiorna il pannello
+                revalidate();
+                repaint(); 
                 
             }
 
@@ -209,6 +224,7 @@ public class GroupInterface extends JFrame {
         setVisible(true);
     }
 
+
     private void loadInitialPosts(int currentUser) {
         JLabel groupInfoLabel = new JLabel("Gruppo creato da " + GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()) + " il " + group.getDataCreazione());
         groupInfoLabel.setForeground(Color.white);
@@ -227,5 +243,5 @@ public class GroupInterface extends JFrame {
        
 
     }
-    
+
 }

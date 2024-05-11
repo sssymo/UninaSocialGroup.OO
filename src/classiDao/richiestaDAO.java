@@ -57,14 +57,14 @@ public class richiestaDAO {
         }
     }
     
-    private final static String QVediRichiesteDiIscrizioneAiTuoiGruppi="SELECT r.idrichiedente,r.idgruppo,r.data_richiesta FROM richiesta as r,gruppo as g,crea as c WHERE c.idgruppo=g.idgruppo AND c.idutente=? AND r.idgruppo=c.idgruppo  ";
+    private final static String QVediRichiesteDiIscrizioneAiTuoiGruppi="SELECT r.idrichiedente,r.idgruppo,r.data_richiesta FROM richiesta as r,gruppo as g,crea as c WHERE c.idgruppo=g.idgruppo AND c.idutente=? AND r.idgruppo=c.idgruppo ORDER BY r.data_richiesta DESC ";
 public static List<richiesta> VediRichiesteDiIscrizioneAiTuoiGruppi(int currentUser) throws SQLException {
 	ArrayList<richiesta> notifichedirichiestaiscrizioneaituoigruppi = new ArrayList<>();
 	try (PreparedStatement stmt = conn.prepareStatement(QVediRichiesteDiIscrizioneAiTuoiGruppi)) {
 		stmt.setInt(1, currentUser);
 		ResultSet s=stmt.executeQuery();
 		while(s.next()) {
-			richiesta r= new richiesta(s.getInt(1),s.getInt(2));
+			richiesta r= new richiesta(s.getInt(1),s.getInt(2),s.getTimestamp(3).toLocalDateTime());
 			notifichedirichiestaiscrizioneaituoigruppi.add(r);
 		}
 	}

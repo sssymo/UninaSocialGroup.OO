@@ -22,7 +22,7 @@ public class NotificaDAO {
     public List<notifica> getNotificheForUser(int idUtente) throws SQLException {
         List<notifica> notifiche = new ArrayList<>();
         //nella query prendo notifiche dei soli i gruppi di cui l'utente è creatore 
-        String query = "SELECT * FROM notifica WHERE idgruppo IN (SELECT idgruppo FROM crea WHERE idutente=?)";
+        String query = "SELECT * FROM notifica WHERE idgruppo IN (SELECT idgruppo FROM crea WHERE idutente=?) ORDER BY data_notifica DESC ,orario_notifica DESC";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
         	stmt.setInt(1,idUtente);
         	

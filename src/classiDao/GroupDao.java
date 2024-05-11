@@ -128,7 +128,7 @@ public class GroupDao {
   private static final String INSERT_IN_CREA = "INSERT INTO crea (idutente,idgruppo ) VALUES ( ?, ?)";
   
     //metodo per creazione gruppo
-    public boolean CreateGroup(String nome_gruppo,String desc,int currentUser) throws SQLException{
+    public int CreateGroup(String nome_gruppo,String desc,int currentUser) throws SQLException{
     	
     	try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_GRUPPO)) {
             //funziona
@@ -154,16 +154,17 @@ public class GroupDao {
                                 p4.executeUpdate();
                             }
                         }
+                        return id;
                     } else {
                         // Se ResultSet non ha restituito alcuna riga
                         System.out.println("Nessun ID gruppo restituito.");
-                        return false;
+                        return 0;
                     }
 
                 }
                 
             }
-            return true;
+          
         }
     	
     	

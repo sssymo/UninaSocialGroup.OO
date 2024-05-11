@@ -2,9 +2,11 @@ package classi;
 
 public class Tag {
     private String nomeTag;
+    private int id;
 
-    public Tag(String nomeTag) {
+    public Tag(String nomeTag, int id) {
         this.nomeTag = nomeTag;
+        this.id=id;
     }
 
     // getters and setters for all attributes
