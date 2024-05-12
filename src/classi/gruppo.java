@@ -12,12 +12,12 @@ public class gruppo {
     private Date dataCreazione;
     private List<Tag> tagList;
 
-    public gruppo(String nomeGruppo, int i, String descrizioneGruppo, Date data) {
+    public gruppo(String nomeGruppo, int i, String descrizioneGruppo, Date data,List<Tag> tagList) {
         this.nomeGruppo = nomeGruppo;
         this.idGruppo = i;
         this.descrizioneGruppo = descrizioneGruppo;
         this.dataCreazione = data;
-        this.tagList = new ArrayList<>();
+        this.tagList = tagList;
     }
 
     public void addTag(Tag tag) {

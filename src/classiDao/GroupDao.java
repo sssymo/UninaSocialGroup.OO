@@ -3,6 +3,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import classi.Tag;
 import classi.gruppo;
 public class GroupDao {
     private static Connection connection;
@@ -67,7 +68,24 @@ public class GroupDao {
     		statement.setInt(1, id);
     		ResultSet r=statement.executeQuery();
     		while(r.next()) {
-    			 gruppo g=new gruppo(r.getString(2),r.getInt(1),r.getString(4),r.getDate(3));
+    			
+    			ArrayList<Tag> Tags = new ArrayList<>();
+    			try(PreparedStatement s2 = connection.prepareStatement("SELECT tipologia FROM possiede WHERE idgruppo=?")) {
+    	    		s2.setInt(1, id);
+    	    		ResultSet rs=s2.executeQuery();
+    	    		while (rs.next()) {
+    	    			Tag t= new Tag(rs.getString(1)); 
+    	    			Tags.add(t);
+    	    		}
+    				
+    			}
+    			 gruppo g=new gruppo(r.getString(2),r.getInt(1),r.getString(4),r.getDate(3),Tags);
+    			 
+    			 
+    			 
+    			 
+    			 
+    			 
     		return g;
     		} 
     	} catch (SQLException e) {
@@ -91,12 +109,23 @@ public class GroupDao {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                
-    			int id=resultSet.getInt(2);
+            	int id=resultSet.getInt(2);
+    			ArrayList<Tag> Tags = new ArrayList<>();
+    			try(PreparedStatement s2 = connection.prepareStatement("SELECT tipologia FROM possiede WHERE idgruppo=?")) {
+    	    		s2.setInt(1, id);
+    	    		ResultSet rs=s2.executeQuery();
+    	    		while (rs.next()) {
+    	    			Tag t= new Tag(rs.getString(1)); 
+    	    			Tags.add(t);
+    	    		}
+    				
+    			}
+
+    			
     			String nome= resultSet.getString(1);
     			String desc=resultSet.getString(4);
     			Date data=resultSet.getDate(3);
-    			gruppo g = new gruppo(nome,id,desc,data);
+    			gruppo g = new gruppo(nome,id,desc,data,Tags);
                 groups.add(g);
             }
         }catch (SQLException e) {
@@ -112,11 +141,23 @@ public class GroupDao {
     		ResultSet res = stmt.executeQuery();
     		while(res.next()) {
     			int id=res.getInt(1);
+    			
+    			ArrayList<Tag> Tags = new ArrayList<>();
+    			try(PreparedStatement s2 = connection.prepareStatement("SELECT tipologia FROM possiede WHERE idgruppo=?")) {
+    	    		s2.setInt(1, id);
+    	    		ResultSet rs=s2.executeQuery();
+    	    		while (rs.next()) {
+    	    			Tag t= new Tag(rs.getString(1)); 
+    	    			Tags.add(t);
+    	    		}
+    				
+    			}
+    			
     			String nome= res.getString(2);
     			String desc=res.getString(4);
     			Date data=res.getDate(3);
     			
-    			gruppo g = new gruppo(nome,id,desc,data);
+    			gruppo g = new gruppo(nome,id,desc,data,Tags);
     			groups.add(g);
     		}
     	}
@@ -183,10 +224,21 @@ public class GroupDao {
 
             while (resultSet.next()) {
     			int id=resultSet.getInt(2);
+    			ArrayList<Tag> Tags = new ArrayList<>();
+    			try(PreparedStatement s2 = connection.prepareStatement("SELECT tipologia FROM possiede WHERE idgruppo=?")) {
+    	    		s2.setInt(1, id);
+    	    		ResultSet rs=s2.executeQuery();
+    	    		while (rs.next()) {
+    	    			Tag t= new Tag(rs.getString(1)); 
+    	    			Tags.add(t);
+    	    		}
+    				
+    			}
+
     			String nome= resultSet.getString(1);
     			String desc=resultSet.getString(4);
     			Date data=resultSet.getDate(3);
-    			gruppo g = new gruppo(nome,id,desc,data);
+    			gruppo g = new gruppo(nome,id,desc,data,Tags);
     			groups.add(g);
             }
         } catch (SQLException e) {
