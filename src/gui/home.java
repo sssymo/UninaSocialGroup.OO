@@ -46,7 +46,27 @@ JTextField searchField2 = new JTextField(30);
      Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         setIconImage(imgIconaFrame);
         setLocationRelativeTo(null);
+searchField2.setText("cerca gruppi per nome, tag e descrizione. ");
+searchField2.setForeground(Color.GRAY);
+searchField2.addFocusListener(new FocusListener() {
+    @Override
+    public void focusGained(FocusEvent e) {
 
+        if (searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ")) {
+            searchField2.setText("");
+            searchField2.setForeground(Color.BLACK);
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+       
+        if (searchField2.getText().isEmpty()) {
+            searchField2.setText("cerca gruppi per nome, tag e descrizione. ");
+            searchField2.setForeground(Color.GRAY); 
+        }
+    }
+});
         JPanel contentPane = new JPanel(new BorderLayout());
 
         JPanel bannerPanel = new JPanel() {
@@ -159,13 +179,12 @@ JTextField searchField2 = new JTextField(30);
         notificationsButton.setToolTipText("Visualizza Notifiche");
         notificationsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-            	notificationsButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            	notificationsButton.setBackground(new Color(200, 200, 200));
             }
         });
         notificationsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-            	notificationsButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defauefault
-        }
+            	notificationsButton.setBackground(UIManager.getColor("control"));     }
         });
         ImageIcon originalIconr = new ImageIcon("./src/img/report.png");
         Image imgr = originalIconr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
@@ -176,13 +195,12 @@ JTextField searchField2 = new JTextField(30);
         
         reportButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-            	reportButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            	reportButton.setBackground(new Color(200, 200, 200)); 
             }
         });
         reportButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-            	reportButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defaudefault
-        }
+            	reportButton.setBackground(UIManager.getColor("control")); }
         });
         
         leftPanel.add(reportButton);
@@ -244,7 +262,9 @@ JTextField searchField2 = new JTextField(30);
                         searchField2.setMaximumSize(new Dimension(2000, 30)); 
                         groupPanelsPanel.add(searchField2, BorderLayout.NORTH);
                         for (gruppo group : gruppi_isc) {
-                            if (group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText()) || searchField2.getText().isEmpty()) {
+                            if (group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
+                            		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
+                            		|| searchField2.getText()=="cerca gruppi per nome,tag e descrizione. " || searchField2.getText()=="") {
                                 JPanel groupPanel = createGroupPanel(group);
                                 groupPanelsPanel.add(groupPanel);
                             }
@@ -306,7 +326,9 @@ JTextField searchField2 = new JTextField(30);
 
  
             for (gruppo group : gruppi_isc) {
-               if(group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText()) || searchField2.getText()=="") {
+               if(group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
+               		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
+               		|| searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ")|| searchField2.getText()=="") {
             	   
              
                 JPanel groupPanel = new JPanel();
@@ -378,20 +400,16 @@ JTextField searchField2 = new JTextField(30);
                     groupPanelsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
                     groupPanelsPanel.setPreferredSize(new Dimension(200, 200));
                     for (gruppo gruppo : gruppi_richiesti) {
-                        // Crea un pannello per il singolo gruppo richiesto
                         JPanel groupPanel = new JPanel(new BorderLayout());
                         groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
                         
-                        // Aggiungi il nome del gruppo
                         JLabel groupNameLabel = new JLabel(gruppo.getNomeGruppo());
                         groupNameLabel.setFont(new Font("Arial", Font.BOLD, 14));
                         groupPanel.add(groupNameLabel, BorderLayout.NORTH);
                         
-                        // Aggiungi il dettaglio della richiesta
                         JLabel groupNameDetails = new JLabel("[Richiesta Inviata]");
                         groupPanel.add(groupNameDetails, BorderLayout.CENTER);
                         
-                        // Aggiungi il pannello del< gruppo al pannello contenitore
                         groupPanelsPanel.add(groupPanel);
                         JButton deleteButton = new JButton("Cancella richiesta");
                   
@@ -399,10 +417,7 @@ JTextField searchField2 = new JTextField(30);
                         deleteButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
-                                // Implementa qui la logica per cancellare la richiesta nel backend
-								// Utilizza il DAO appropriato per cancellare la richiesta dall'utente corrente per il gruppo specifico
-								boolean deleted = richiestaDao.deleteRequest(currentUser, gruppo.getIdGruppo()); // Sostituisci groupId con l'ID del gruppo
-								if (deleted) {
+                     		boolean deleted = richiestaDao.deleteRequest(currentUser, gruppo.getIdGruppo()); 			if (deleted) {
 									reloadGroups();
 								} else {
 
@@ -484,7 +499,7 @@ JTextField searchField2 = new JTextField(30);
             @Override
             public void actionPerformed(ActionEvent e) {
                 UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
-            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
+            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); 
             
                 String searchTerm = searchField.getText();
                 System.out.println("Azione eseguita!");
@@ -605,13 +620,12 @@ JTextField searchField2 = new JTextField(30);
                     protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
 
-                        // Se il campo è vuoto e non ha il focus, disegna il testo del placeholder
                         if (getText().isEmpty() && !isFocusOwner()) {
                             Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setColor(Color.GRAY); // Colore del placeholder
-                            g2.setFont(getFont().deriveFont(Font.ITALIC)); // Stile del placeholder
-                            int x = getInsets().left; // Posizione orizzontale del placeholder
-                            int y = (getHeight() - g2.getFontMetrics().getHeight()) / 2; // Posizione verticale del placeholder
+                            g2.setColor(Color.GRAY);
+                            g2.setFont(getFont().deriveFont(Font.ITALIC));
+                            int x = getInsets().left; 
+                            int y = (getHeight() - g2.getFontMetrics().getHeight()) / 2; 
                             g2.drawString(getText(), x, y);
                             g2.dispose();
                         }
