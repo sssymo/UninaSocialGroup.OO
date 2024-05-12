@@ -38,6 +38,8 @@ public class PostDao {
 		return 0;
     }
     
+
+    
     static String getnpostinviatidautente="select count(idpost) from post where idgruppo=? and idutente=?";
     public static int GetNumPost(int idg,int idu) {
     	

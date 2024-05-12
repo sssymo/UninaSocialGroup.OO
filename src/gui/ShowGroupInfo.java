@@ -66,6 +66,9 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         labelPanel.add(creatorLabel);
       
         labelPanel.add(creationDateLabel);
+        JLabel postsLabel = new JLabel("Numero Post: " + postDao.GetNumPost(group.getIdGruppo())+"("+PostDao.GetNumPost(group.getIdGruppo(),currentUser)+")");
+        postsLabel.setForeground(Color.WHITE);
+        labelPanel.add(postsLabel);
         labelPanel.add(membersLabel);
 
         JTextArea membersTextArea = new JTextArea("membri: "+GroupDao.GetIscritti(group.getIdGruppo()));
