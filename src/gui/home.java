@@ -29,6 +29,7 @@ public class home extends JFrame {
     private NotificaDAO notificationDao;
     private Controller controller;
     private PostDao postDao;
+    JPanel groupPanelsPanel = new JPanel();
 private TagDao tagdao;
 JTextField searchField2 = new JTextField(30);
     public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao,TagDao tagdao) {
@@ -235,7 +236,7 @@ searchField2.addFocusListener(new FocusListener() {
             List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
             
 
-            JPanel groupPanelsPanel = new JPanel();
+            
             groupPanelsPanel.setLayout(new BoxLayout(groupPanelsPanel, BoxLayout.Y_AXIS));
             
             if(gruppi_isc.isEmpty()) {
@@ -254,74 +255,6 @@ searchField2.addFocusListener(new FocusListener() {
                     reloadGroups();
                 }
 
-                private void reloadGroups() {
-                    groupPanelsPanel.removeAll();
-                    
-                    try {
-                        List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
-                        searchField2.setMaximumSize(new Dimension(2000, 30)); 
-                        groupPanelsPanel.add(searchField2, BorderLayout.NORTH);
-                        for (gruppo group : gruppi_isc) {
-                            if (group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
-                            		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
-                            		|| searchField2.getText()=="cerca gruppi per nome,tag e descrizione. " || searchField2.getText()=="") {
-                                JPanel groupPanel = createGroupPanel(group);
-                                groupPanelsPanel.add(groupPanel);
-                            }
-                        }
-                        
-                        groupPanelsPanel.revalidate();
-                        groupPanelsPanel.repaint();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                private JPanel createGroupPanel(gruppo group) {
-                    JPanel groupPanel = new JPanel(new BorderLayout());
-                    groupPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 51, 153), 2));
-                    groupPanel.setMaximumSize(new Dimension(2000, 120));
-                    groupPanel.setBackground(new Color(240, 248, 255));
-
-                    JLabel nameLabel = new JLabel(group.getNomeGruppo());
-                    nameLabel.setFont(new Font("Georgia", Font.ROMAN_BASELINE, 18));
-                    groupPanel.add(nameLabel, BorderLayout.NORTH);
-
-                    JTextArea descriptionArea = new JTextArea(group.getDescrizioneGruppo());
-                    descriptionArea.setEditable(false);
-                    descriptionArea.setLineWrap(true);
-                    descriptionArea.setWrapStyleWord(true);
-                    JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
-                    groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
-
-                    ImageIcon originalIcon8 = new ImageIcon("./src/img/enter.png");
-                    Image img8 = originalIcon8.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-                    ImageIcon resizedIcon8 = new ImageIcon(img8);
-                    JButton accessButton = new JButton(resizedIcon8);
-                    accessButton.setToolTipText("Accedi al gruppo");
-                    accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mouseEntered(java.awt.event.MouseEvent evt) {
-                            accessButton.setBackground(new Color(200, 200, 200));
-                        }
-                    });
-                    accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mouseExited(java.awt.event.MouseEvent evt) {
-                            accessButton.setBackground(UIManager.getColor("control"));
-                        }
-                    });
-                    accessButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            controller.showGroupInterface(currentUser, group);
-                        }
-                    });
-                    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                    buttonPanel.setBackground(new Color(240, 248, 255));
-                    buttonPanel.add(accessButton);
-                    groupPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-                    return groupPanel;
-                }
             });
 
  
@@ -701,6 +634,7 @@ searchField2.addFocusListener(new FocusListener() {
                         try {
                             int id=groupDao.CreateGroup(groupName, description, currentUser);
 
+
                             String[] tags = TagList.split(",");
                             for (String tag : tags) {
          
@@ -714,6 +648,8 @@ searchField2.addFocusListener(new FocusListener() {
                                     tagdao.InsertTipologiaIfNotExistEAssociaAGruppo(tag, id);
                                 }
                             }
+                           //rigenero la home
+                            reloadGroups();
                            
                         } catch (SQLException e1) {
                             e1.printStackTrace();
@@ -725,6 +661,10 @@ searchField2.addFocusListener(new FocusListener() {
 
                 }
             }
+
+
+
+
         });
         
         reportButton.addActionListener(new ActionListener() {
@@ -736,7 +676,76 @@ searchField2.addFocusListener(new FocusListener() {
 
     }
 
-    
+
+    private void reloadGroups() {
+        groupPanelsPanel.removeAll();
+        
+        try {
+            List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
+            searchField2.setMaximumSize(new Dimension(2000, 30)); 
+            groupPanelsPanel.add(searchField2, BorderLayout.NORTH);
+            for (gruppo group : gruppi_isc) {
+                if (group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
+                		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
+                		|| searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ") || searchField2.getText()=="") {
+                    JPanel groupPanel = createGroupPanel(group);
+                    groupPanelsPanel.add(groupPanel);
+                }
+            }
+            
+            groupPanelsPanel.revalidate();
+            groupPanelsPanel.repaint();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private JPanel createGroupPanel(gruppo group) {
+        JPanel groupPanel = new JPanel(new BorderLayout());
+        groupPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 51, 153), 2));
+        groupPanel.setMaximumSize(new Dimension(2000, 120));
+        groupPanel.setBackground(new Color(240, 248, 255));
+
+        JLabel nameLabel = new JLabel(group.getNomeGruppo());
+        nameLabel.setFont(new Font("Georgia", Font.ROMAN_BASELINE, 18));
+        groupPanel.add(nameLabel, BorderLayout.NORTH);
+
+        JTextArea descriptionArea = new JTextArea(group.getDescrizioneGruppo());
+        descriptionArea.setEditable(false);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+        groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
+
+        ImageIcon originalIcon8 = new ImageIcon("./src/img/enter.png");
+        Image img8 = originalIcon8.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon8 = new ImageIcon(img8);
+        JButton accessButton = new JButton(resizedIcon8);
+        accessButton.setToolTipText("Accedi al gruppo");
+        accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                accessButton.setBackground(new Color(200, 200, 200));
+            }
+        });
+        accessButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                accessButton.setBackground(UIManager.getColor("control"));
+            }
+        });
+        accessButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.showGroupInterface(currentUser, group);
+            }
+        });
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(new Color(240, 248, 255));
+        buttonPanel.add(accessButton);
+        groupPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        return groupPanel;
+    }
+
     
    
 }

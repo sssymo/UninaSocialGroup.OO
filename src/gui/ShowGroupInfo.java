@@ -26,10 +26,13 @@ public class ShowGroupInfo extends JFrame {
         this.controller = controller;
         this.postDao = postDao;
 
-        setTitle("Informazioni Gruppo " + group.getNomeGruppo());
+        setTitle("Informazioni Gruppo - " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 600);
         setLocationRelativeTo(null);
+        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+        Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+           setIconImage(imgIconaFrame);
 Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
