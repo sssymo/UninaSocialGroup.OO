@@ -1,6 +1,8 @@
 package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
 import java.awt.*;
 import javax.swing.*;
@@ -33,13 +35,85 @@ public class RegistrationInterface extends JFrame {
         bioLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
         usernameField = new JTextField(20); 
         usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        usernameField.setText("Username");
+        usernameField.setForeground(Color.GRAY);
         passwordField = new JPasswordField(20); 
         passwordField.setFont(new Font("Georgia", Font.ITALIC, 20));
+        passwordField.setText("Password");
+        passwordField.setForeground(Color.GRAY);
         bioArea = new JTextArea(5, 20); 
         bioArea.setFont(new Font("Georgia", Font.ITALIC, 20));
+        bioArea.setText("Inserisci la tua bio :)");
+        bioArea.setForeground(Color.GRAY);
+        bioArea.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Rimuovi il testo del placeholder quando il campo ottiene il focus
+                if (new String(bioArea.getText()).equals("Inserisci la tua bio :)")) {
+                	bioArea.setText("");
+                	bioArea.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+                if (new String(bioArea.getText()).isEmpty()) {
+                	
+                	bioArea.setText("Inserisci la tua bio :)");
+                    
+                	bioArea.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                }
+            }
+        }); 
+        
         JScrollPane bioScrollPane = new JScrollPane(bioArea);
         registerButton = new JButton("Registrati");
         registerButton.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        passwordField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Rimuovi il testo del placeholder quando il campo ottiene il focus
+                if (new String(passwordField.getPassword()).equals("Password")) {
+                    passwordField.setText("");
+                    passwordField.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+                if (new String(passwordField.getPassword()).isEmpty()) {
+                	passwordField.setVisible(true);
+                	passwordField.setText("Password");
+                    
+                    passwordField.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                }
+            }
+        }); 
+ 
+        usernameField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Rimuovi il testo del placeholder quando il campo ottiene il focus
+                if (usernameField.getText().equals("Username")) {
+                    usernameField.setText("");
+                    usernameField.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+                if (usernameField.getText().isEmpty()) {
+                    usernameField.setText("Username");
+                    usernameField.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                }
+            }
+
+
+        });
+        
 
         JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
         contentPane.setLayout(new BorderLayout());
@@ -137,6 +211,7 @@ public class RegistrationInterface extends JFrame {
                 }
             }
         });
+        
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(contentPane);

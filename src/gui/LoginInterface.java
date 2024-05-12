@@ -8,6 +8,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -58,11 +60,59 @@ public class LoginInterface extends JFrame {
             JLabel usernameLabel = new JLabel("Username:");
             usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
             usernameField = new JTextField(20); 
+            usernameField.setText("Username");
+            usernameField.setForeground(Color.GRAY);
+            usernameField.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    // Rimuovi il testo del placeholder quando il campo ottiene il focus
+                    if (usernameField.getText().equals("Username")) {
+                        usernameField.setText("");
+                        usernameField.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+                    if (usernameField.getText().isEmpty()) {
+                        usernameField.setText("Username");
+                        usernameField.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                    }
+                }
+
+
+            });
+            
             usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
             JLabel passwordLabel = new JLabel("Password:");
             passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
             passwordField = new JPasswordField(20); 
+            passwordField.setText("Password");
+            passwordField.setForeground(Color.GRAY); 
             passwordField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+            passwordField.addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    // Rimuovi il testo del placeholder quando il campo ottiene il focus
+                    if (new String(passwordField.getPassword()).equals("Password")) {
+                        passwordField.setText("");
+                        passwordField.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+                    if (new String(passwordField.getPassword()).isEmpty()) {
+                    	passwordField.setVisible(true);
+                    	passwordField.setText("Password");
+                        
+                        passwordField.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                    }
+                }
+            }); 
+  
             JButton loginButton = new JButton("Accedi");
             loginButton.setFont(new Font("Georgia", Font.ITALIC, 20));
 

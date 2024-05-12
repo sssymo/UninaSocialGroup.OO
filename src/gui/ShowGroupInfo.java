@@ -42,6 +42,7 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         JLabel titleLabel = new JLabel("Informazioni Gruppo", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
+
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
         JPanel infoPanel = new JPanel();
@@ -85,7 +86,7 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         JButton editTagsButton = new JButton("Modifica Tag");
         if (isCreator) {
              editTagsButton.setText("Modifica Tag");
-            editTagsButton.setBackground(new Color(140,164,196));
+            editTagsButton.setBackground(new Color(60,92,156));
             editTagsButton.setForeground(Color.WHITE);
             editTagsButton.addActionListener(new ActionListener() {
                 @Override
@@ -139,10 +140,10 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         mainPanel.add(infoPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(new Color(140,164,196));
+        buttonPanel.setBackground(new Color(60,92,156));
 
         JButton backButton = new JButton("Torna alla Home");
-        backButton.setBackground(new Color(140,164,196));
+        backButton.setBackground(new Color(137,156,196));
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -153,7 +154,7 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         });
 
         JButton returnButton = new JButton("Torna al Gruppo");
-        returnButton.setBackground(new Color(140,164,196));
+        returnButton.setBackground(new Color(137,156,196));
         returnButton.setForeground(Color.WHITE);
         returnButton.addActionListener(new ActionListener() {
             @Override
