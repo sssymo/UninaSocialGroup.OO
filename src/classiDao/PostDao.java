@@ -19,6 +19,43 @@ public class PostDao {
         this.conn = conn;
     }
     
+    
+    
+    static String getnpost="select count(idpost) from post where idgruppo=?";
+    public static int GetNumPost(int idg) {
+    	
+    	try(PreparedStatement stmt = conn.prepareStatement(getnpost)){
+    	stmt.setInt(1, idg);
+    	ResultSet rs=stmt.executeQuery();
+    	while(rs.next()) {
+    		return rs.getInt(1);
+    	}
+    	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return 0;
+    }
+    
+    static String getnpostinviatidautente="select count(idpost) from post where idgruppo=? and idutente=?";
+    public static int GetNumPost(int idg,int idu) {
+    	
+    	try(PreparedStatement stmt = conn.prepareStatement(getnpostinviatidautente)){
+    	stmt.setInt(1, idg);
+    	stmt.setInt(2, idu);
+    	ResultSet rs=stmt.executeQuery();
+    	while(rs.next()) {
+    		return rs.getInt(1);
+    	}
+    	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return 0;
+    }
+    
     private static final String INSERT_POST = "INSERT INTO post ( idutente ,idgruppo ,descrizione,data_pubblicazione,orario_pubblicazione) VALUES ( ?, ?, ?,?,?)";
     public static boolean InserisciPost(int currentUser,int idgruppo, String descpost,Timestamp currentTime) {
     	try(PreparedStatement stmt = conn.prepareStatement(INSERT_POST)){

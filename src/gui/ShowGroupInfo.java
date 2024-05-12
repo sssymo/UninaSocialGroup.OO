@@ -1,12 +1,15 @@
 package gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import classi.gruppo;
 import classiDao.GroupDao;
 import classiDao.PostDao;
-import classiDao.UserDao;
+import classiDao.TagDao;
 import controller.Controller;
 
 public class ShowGroupInfo extends JFrame {
@@ -16,71 +19,128 @@ public class ShowGroupInfo extends JFrame {
     private Controller controller;
     private PostDao postDao;
 
+    private String Tags="";
     public ShowGroupInfo(int currentUser, gruppo group, Controller controller, PostDao postDao) {
         this.currentUser = currentUser;
         this.group = group;
         this.controller = controller;
         this.postDao = postDao;
 
-        setTitle("Informazioni Gruppo "+group.getNomeGruppo());
+        setTitle("Informazioni Gruppo " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 300);
+        setSize(700, 600);
         setLocationRelativeTo(null);
-
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(137, 156, 196));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(new Color(140,164,196));
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         JLabel titleLabel = new JLabel("Informazioni Gruppo", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel infoPanel = new JPanel(new GridLayout(4, 2, 10, 10));
-        infoPanel.setBackground(Color.WHITE);
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout(3, 1)); 
+        infoPanel.setBackground(new Color(140,164,196));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel creatorLabel = new JLabel("Creatore:");
-        JLabel creatorValueLabel = new JLabel(GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()));
-        JLabel creationDateLabel = new JLabel("Data Creazione:");
-       JLabel membersLabel = new JLabel("Numero Iscritti:");
- 
-        JLabel postsLabel = new JLabel("Numero Post:");
-        JLabel tagsLabel = new JLabel("Tag:");
+        JPanel labelPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        labelPanel.setBackground(new Color(140,164,196));
 
-        infoPanel.add(tagsLabel);
+        JLabel creatorLabel = new JLabel("Creatore: "+GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()));
+        creatorLabel.setForeground(Color.WHITE);
+      
+        JLabel creationDateLabel = new JLabel("Data Creazione: " + group.getDataCreazione());
+        creationDateLabel.setForeground(Color.WHITE);
+        JLabel membersLabel = new JLabel("Numero Iscritti: "+GroupDao.getNumIscritti(group.getIdGruppo()));
+        membersLabel.setForeground(Color.WHITE);
+        JLabel membersListLabel = new JLabel("Lista Iscritti:");
+        membersListLabel.setForeground(Color.WHITE);
 
+        labelPanel.add(creatorLabel);
+      
+        labelPanel.add(creationDateLabel);
+        labelPanel.add(membersLabel);
 
-        // Verifica se l'utente corrente è il creatore del gruppo
-        //isCreator = GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()).equals(UserDao.getUserNameById(currentUser));
-boolean isCreator=true;
-        // Se l'utente è il creatore del gruppo, aggiungi il pulsante per modificare i tag
+        JTextArea membersTextArea = new JTextArea("membri: "+GroupDao.GetIscritti(group.getIdGruppo()));
+        membersTextArea.setEditable(false);
+        JScrollPane membersScrollPane = new JScrollPane(membersTextArea);
+        labelPanel.add(membersScrollPane);
+
+        infoPanel.add(labelPanel); 
+
+        JTextArea tagsTextArea = new JTextArea("Tags :"+Tags);
+        tagsTextArea.setEditable(false);
+        tagsTextArea.setBackground(Color.white);
+        JScrollPane tagsScrollPane = new JScrollPane(tagsTextArea);
+
+        infoPanel.add(tagsScrollPane);
+  
+        boolean isCreator = GroupDao.CheckIfCreatore(currentUser,group.getIdGruppo());
+        JButton editTagsButton = new JButton("Modifica Tag");
         if (isCreator) {
-            JButton editTagsButton = new JButton("Modifica Tag");
+             editTagsButton.setText("Modifica Tag");
+            editTagsButton.setBackground(new Color(140,164,196));
+            editTagsButton.setForeground(Color.WHITE);
             editTagsButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Apri una finestra di dialogo o una nuova interfaccia per modificare i tag
-                    // Implementa la logica per aggiungere o rimuovere i tag
+                  
+        
+                    String newTags = JOptionPane.showInputDialog(ShowGroupInfo.this, "Inserisci i tag:", Tags);
+                    if(newTags!=Tags) {
+                 
+                    	
+                    	 boolean inserisci=true;
+                       
+                         if (newTags.contains("*") || newTags.contains("[") || newTags.contains("]") ||
+                     		 newTags.contains("^") || newTags.contains("!") || newTags.contains("@") ||
+                     		 newTags.contains("#") || newTags.contains("$") || newTags.contains("%") ||
+                     		 newTags.contains("&") || newTags.contains("(") || newTags.contains(")") ||
+                      	   newTags.contains("-") || newTags.contains("+") || newTags.contains("=") ||
+                      	    newTags.contains("?") || newTags.contains("<") || newTags.contains(">") ||
+                      	    newTags.contains("/") || newTags.contains("\\") || newTags.contains(":") ||
+                      	    newTags.contains(";") || newTags.contains("{") || newTags.contains("}") ||
+                      	    newTags.contains("|") || newTags.contains("~") || newTags.contains("`") ||
+                      	    newTags.contains("0") || newTags.contains("1") || newTags.contains("2") ||
+                      	    newTags.contains("3") || newTags.contains("4") || newTags.contains("5") ||
+                      	    newTags.contains("6") || newTags.contains("7") || newTags.contains("8") ||
+                      	    newTags.contains("9")) {
+                      	    inserisci = false;
+                      	}
+                         
+                         	if(inserisci==true) {
+                         		TagDao.DeleteTags(group.getIdGruppo());
+                             String[] taglist = newTags.split(",");
+							 for (String tag : taglist) {
+							     tag = tag.trim();
+							     if (tag.endsWith(".")) {
+							         tag = tag.substring(0, tag.length() - 1);
+							     }
+							     if (!tag.isEmpty()) {
+							    	 
+							         TagDao.InsertTipologiaIfNotExistEAssociaAGruppo(tag, group.getIdGruppo());
+							     }
+							 }
+
+                    	
+                    	//infine
+							 tagsTextArea.setText(newTags);
+                    	Tags=newTags;
+                    }
                 }
-            });
-            infoPanel.add(editTagsButton);
-        } else {
-            // Se l'utente non è il creatore del gruppo, lascia uno spazio vuoto nella griglia
-            infoPanel.add(new JLabel());
-        }
-        infoPanel.add(creatorLabel);
-        infoPanel.add(creatorValueLabel);
-        infoPanel.add(creationDateLabel);
-      infoPanel.add(membersLabel);
-      infoPanel.add(postsLabel);
-   
+
+        } });infoPanel.add(editTagsButton); }
         mainPanel.add(infoPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(new Color(137, 156, 196));
+        buttonPanel.setBackground(new Color(140,164,196));
 
         JButton backButton = new JButton("Torna alla Home");
+        backButton.setBackground(new Color(140,164,196));
+        backButton.setForeground(Color.WHITE);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,6 +150,8 @@ boolean isCreator=true;
         });
 
         JButton returnButton = new JButton("Torna al Gruppo");
+        returnButton.setBackground(new Color(140,164,196));
+        returnButton.setForeground(Color.WHITE);
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

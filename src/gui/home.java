@@ -567,6 +567,7 @@ private TagDao tagdao;
                     String description = descriptionArea.getText();
                     String TagList=tagsField.getText();
                     boolean inserisci=true;
+                    //groupname e taglist non possono contenere caratteri speciali e in più groupname non può essere vuoto
                     if (TagList.contains("*") || TagList.contains("[") || TagList.contains("]") ||
                     	    TagList.contains("^") || TagList.contains("!") || TagList.contains("@") ||
                     	    TagList.contains("#") || TagList.contains("$") || TagList.contains("%") ||
@@ -583,6 +584,25 @@ private TagDao tagdao;
                     	    inserisci = false;
                     	}
                     if(groupName.trim().isEmpty()) {inserisci=false;}
+
+                    if (groupName.contains("*") || groupName.contains("[") || groupName.contains("]") ||
+                    	    groupName.contains("^") || groupName.contains("!") || groupName.contains("@") ||
+                    	    groupName.contains("#") || groupName.contains("$") || groupName.contains("%") ||
+                    	    groupName.contains("&") || groupName.contains("(") || groupName.contains(")") ||
+                    	    groupName.contains("-") || groupName.contains("+") || groupName.contains("=") ||
+                    	    groupName.contains("?") || groupName.contains("<") || groupName.contains(">") ||
+                    	    groupName.contains("/") || groupName.contains("\\") || groupName.contains(":") ||
+                    	    groupName.contains(";") || groupName.contains("{") || groupName.contains("}") ||
+                    	    groupName.contains("|") || groupName.contains("~") || groupName.contains("`") ||
+                    	    groupName.contains("0") || groupName.contains("1") || groupName.contains("2") ||
+                    	    groupName.contains("3") || groupName.contains("4") || groupName.contains("5") ||
+                    	    groupName.contains("6") || groupName.contains("7") || groupName.contains("8") ||
+                    	    groupName.contains("9")) {
+                    	    inserisci = false;
+                    	}
+                    
+                    
+                    
                     	if(inserisci==true) {
                     	
                         try {

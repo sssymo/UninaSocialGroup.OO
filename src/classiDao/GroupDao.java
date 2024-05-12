@@ -83,7 +83,7 @@ public class GroupDao {
                 + "FROM gruppo AS g, iscrizione AS i, utente AS u "
                 + "WHERE g.idgruppo = i.idgruppo "
                 + "AND i.idutente = u.idutente "
-                + "AND u.idutente = ?";
+                + "AND u.idutente = ? ORDER BY g.data_creazione DESC";
 
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -226,5 +226,68 @@ public class GroupDao {
 			return null;
 		}	
 		
+	}
+	static String GetNumIsc = "SELECT COUNT(utente.idutente) FROM utente, gruppo, iscrizione " +
+            "WHERE iscrizione.idutente = utente.idutente " +
+            "AND iscrizione.idgruppo = gruppo.idgruppo " +
+            "AND iscrizione.idgruppo = ?";
+	public static int getNumIscritti(int idGruppo) {
+		// TODO Auto-generated method stub
+		try (PreparedStatement s = connection.prepareStatement(GetNumIsc)){
+			s.setInt(1,idGruppo);
+			ResultSet rs= s.executeQuery();	
+		while(rs.next()) {
+			return rs.getInt(1);
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
+	}
+	static String GetIsc="SELECT utente.nickname from utente,iscrizione where iscrizione.idutente=utente.idutente and iscrizione.idgruppo=?";
+	public static String GetIscritti(int idGruppo) {
+		// TODO Auto-generated method stub
+		try (PreparedStatement s = connection.prepareStatement(GetIsc)){
+			s.setInt(1,idGruppo);
+			ResultSet rs= s.executeQuery();	
+		String str="";
+			while(rs.next()) {
+			str=str+rs.getString(1)+",";
+			
+		}
+			 str = str.substring(0, str.length() - 1);
+			 str=str+".";
+		return str;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
+	
+	
+	public static boolean CheckIfCreatore(int currentUser, int idGruppo) {
+		
+		try (PreparedStatement s = connection.prepareStatement("SELECT * FROM crea WHERE idutente=? AND idgruppo=?")){
+			s.setInt(2, idGruppo);
+			s.setInt(1, currentUser);
+			ResultSet rs=s.executeQuery();
+		    while(rs.next()) {
+		    	return true;
+		    }
+		    	return false;
+		   
+		    
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
