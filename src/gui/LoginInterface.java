@@ -25,43 +25,52 @@ public class LoginInterface extends JFrame {
 
 
 
-            setTitle("Unina Social Network - Login");
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(800, 600); 
-            ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
-            Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); 
-            setIconImage(imgIconaFrame);
-            JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            contentPane.setLayout(new BorderLayout());
-            contentPane.setBackground(new Color(137, 156, 196));
+    	setTitle("Unina Social Network - Login");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
+        Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        setIconImage(imgIconaFrame);
+        JPanel contentPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        contentPane.setLayout(new BorderLayout());
+        contentPane.setBackground(new Color(137, 156, 196));
 
-            JPanel loginPanel = new JPanel();
-            loginPanel.setLayout(new GridBagLayout());
-            loginPanel.setBackground(new Color(137, 156, 196));
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(10, 10, 10, 10);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(new GridBagLayout());
+        loginPanel.setBackground(new Color(137, 156, 196));
 
-            JPanel form = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            form.setLayout(new BorderLayout());
-            form.setBackground(new Color(137, 156, 196));
+        JPanel form = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        form.setLayout(new BorderLayout());
+        form.setBackground(new Color(137, 156, 196));
 
-            JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            titlePanel.setBackground(new Color(213, 220, 233));
-            JLabel titleLabel = new JLabel("Login");
-            titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30)); 
-            titlePanel.add(titleLabel);
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        titlePanel.setBackground(new Color(213, 220, 233));
+        JLabel titleLabel = new JLabel("Login");
+        titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30));
+        titlePanel.add(titleLabel);
 
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.gridwidth = 2;
-            loginPanel.add(titlePanel, gbc);
+        GridBagConstraints gbcTitle = new GridBagConstraints();
+        gbcTitle.insets = new Insets(10, 10, 10, 10);
+        gbcTitle.fill = GridBagConstraints.HORIZONTAL;
+        gbcTitle.gridx = 0;
+        gbcTitle.gridy = 0;
+        gbcTitle.gridwidth = 2;
+        loginPanel.add(titlePanel, gbcTitle);
 
-            JLabel usernameLabel = new JLabel("Username:");
-            usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
-            usernameField = new JTextField(20); 
-            usernameField.setText("Username");
-            usernameField.setForeground(Color.GRAY);
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
+        GridBagConstraints gbcUsernameLabel = new GridBagConstraints();
+        gbcUsernameLabel.insets = new Insets(10, 10, 10, 10);
+        gbcUsernameLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbcUsernameLabel.gridx = 0;
+        gbcUsernameLabel.gridy = 1;
+        gbcUsernameLabel.gridwidth = 2;
+        loginPanel.add(usernameLabel, gbcUsernameLabel);
+
+        usernameField = new JTextField(20);
+        usernameField.setText("Username");
+        usernameField.setForeground(Color.GRAY);
+        usernameField.setFont(new Font("Georgia", Font.ITALIC, 20));
             usernameField.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
@@ -84,13 +93,28 @@ public class LoginInterface extends JFrame {
 
             });
             
-            usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+            GridBagConstraints gbcUsernameField = new GridBagConstraints();
+            gbcUsernameField.insets = new Insets(10, 10, 10, 10);
+            gbcUsernameField.fill = GridBagConstraints.HORIZONTAL;
+            gbcUsernameField.gridx = 0;
+            gbcUsernameField.gridy = 2;
+            gbcUsernameField.gridwidth = 2;
+            loginPanel.add(usernameField, gbcUsernameField);
+
             JLabel passwordLabel = new JLabel("Password:");
             passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
-            passwordField = new JPasswordField(20); 
+            GridBagConstraints gbcPasswordLabel = new GridBagConstraints();
+            gbcPasswordLabel.insets = new Insets(10, 10, 10, 10);
+            gbcPasswordLabel.fill = GridBagConstraints.HORIZONTAL;
+            gbcPasswordLabel.gridx = 0;
+            gbcPasswordLabel.gridy = 3;
+            gbcPasswordLabel.gridwidth = 2;
+            loginPanel.add(passwordLabel, gbcPasswordLabel);
+
+            passwordField = new JPasswordField(20);
             passwordField.setText("Password");
-            passwordField.setForeground(Color.GRAY); 
-            passwordField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+            passwordField.setForeground(Color.GRAY);
+            passwordField.setFont(new Font("Georgia", Font.ITALIC, 20));
             passwordField.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
@@ -113,27 +137,32 @@ public class LoginInterface extends JFrame {
                 }
             }); 
   
+            GridBagConstraints gbcPasswordField = new GridBagConstraints();
+            gbcPasswordField.insets = new Insets(10, 10, 10, 10);
+            gbcPasswordField.fill = GridBagConstraints.HORIZONTAL;
+            gbcPasswordField.gridx = 0;
+            gbcPasswordField.gridy = 4;
+            gbcPasswordField.gridwidth = 2;
+            loginPanel.add(passwordField, gbcPasswordField);
+
             JButton loginButton = new JButton("Accedi");
             loginButton.setFont(new Font("Georgia", Font.ITALIC, 20));
+            GridBagConstraints gbcLoginButton = new GridBagConstraints();
+            gbcLoginButton.insets = new Insets(10, 10, 10, 10);
+            gbcLoginButton.fill = GridBagConstraints.HORIZONTAL;
+            gbcLoginButton.gridx = 0;
+            gbcLoginButton.gridy = 5;
+            gbcLoginButton.gridwidth = 1;
+            loginPanel.add(loginButton, gbcLoginButton);
 
             JButton registerButton = new JButton("Registrati");
             registerButton.setFont(new Font("Georgia", Font.ITALIC, 20));
-
-            gbc.gridx = 0;
-            gbc.gridy = 1;
-            gbc.gridwidth = 2;
-            loginPanel.add(usernameLabel, gbc);
-            gbc.gridy++;
-            loginPanel.add(usernameField, gbc);
-            gbc.gridy++;
-            loginPanel.add(passwordLabel, gbc);
-            gbc.gridy++;
-            loginPanel.add(passwordField, gbc);
-            gbc.gridwidth = 1;
-            gbc.gridy++;
-            loginPanel.add(loginButton, gbc);
-            gbc.gridx = 1;
-            loginPanel.add(registerButton, gbc);
+            GridBagConstraints gbcRegisterButton = new GridBagConstraints();
+            gbcRegisterButton.insets = new Insets(10, 10, 10, 10);
+            gbcRegisterButton.fill = GridBagConstraints.HORIZONTAL;
+            gbcRegisterButton.gridx = 1;
+            gbcRegisterButton.gridy = 5;
+            loginPanel.add(registerButton, gbcRegisterButton);
 
             form.add(loginPanel);
             contentPane.add(form, BorderLayout.CENTER);

@@ -63,7 +63,7 @@ public class Controller {
     
     public void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new home(currentUser,Username,groupDao, notificationDao, richiestaDao, this,PostDao,Tagdao);
+        currentFrame = new Home(currentUser,Username,groupDao, notificationDao, richiestaDao, this,PostDao,Tagdao);
     }
     public void showNotificationsInterface(List<notifica> notifications,List<richiesta> richieste) {
         currentFrame.dispose();

@@ -21,7 +21,7 @@ import java.awt.event.FocusListener;
 import java.sql.SQLException;
 import java.util.List;
 
-public class home extends JFrame {
+public class Home extends JFrame {
 	private JScrollPane scrollPane;
     private int currentUser;
     private GroupDao groupDao;
@@ -32,7 +32,7 @@ public class home extends JFrame {
     JPanel groupPanelsPanel = new JPanel();
 private TagDao tagdao;
 JTextField searchField2 = new JTextField(30);
-    public home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao,TagDao tagdao) {
+    public Home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao,TagDao tagdao) {
         this.currentUser = currentUser;
         this.controller = controller;
         this.notificationDao = notificationDao;
@@ -409,10 +409,10 @@ searchField2.addFocusListener(new FocusListener() {
                     scrollPane.setPreferredSize(new Dimension(400, 250));
                     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                  
-                    JOptionPane.showConfirmDialog(home.this, scrollPane, "Gruppi Richiesti", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showConfirmDialog(Home.this, scrollPane, "Gruppi Richiesti", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     
                      } else {
-                    JOptionPane.showMessageDialog(home.this, "Nessuna richiesta inviata");
+                    JOptionPane.showMessageDialog(Home.this, "Nessuna richiesta inviata");
                 }
             }
         });
@@ -458,10 +458,10 @@ searchField2.addFocusListener(new FocusListener() {
                                         e1.printStackTrace();
                                     }
                                     if (a) {
-                                        JOptionPane.showMessageDialog(home.this,
+                                        JOptionPane.showMessageDialog(Home.this,
                                                 "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
                                     } else {
-                                        JOptionPane.showMessageDialog(home.this,
+                                        JOptionPane.showMessageDialog(Home.this,
                                                 "E' stata già inviata una richiesta, attendere l'accettazione da parte del creatore",
                                                 "Errore", JOptionPane.ERROR_MESSAGE);
                                     }
@@ -477,15 +477,15 @@ searchField2.addFocusListener(new FocusListener() {
                         JScrollPane scrollPane = new JScrollPane(scrollPanel);
                         scrollPane.setPreferredSize(new Dimension(150, 200));
                         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                        JOptionPane.showConfirmDialog(home.this, scrollPane, "risultati", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showConfirmDialog(Home.this, scrollPane, "risultati", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     } else {
 
-                        JOptionPane.showMessageDialog(home.this,
+                        JOptionPane.showMessageDialog(Home.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(home.this,
+                    JOptionPane.showMessageDialog(Home.this,
                             "Si è verificato un errore durante la ricerca del gruppo.",
                             "Errore", JOptionPane.ERROR_MESSAGE);
                 }
@@ -585,7 +585,7 @@ searchField2.addFocusListener(new FocusListener() {
                 UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
             UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
 
-                int result = JOptionPane.showConfirmDialog(home.this, dialogPanel,
+                int result = JOptionPane.showConfirmDialog(Home.this, dialogPanel,
                         "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
                 if (result == JOptionPane.OK_OPTION) {
@@ -655,7 +655,7 @@ searchField2.addFocusListener(new FocusListener() {
                             e1.printStackTrace();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(home.this, "Nessun gruppo creato, il nome non può essere vuoto e i  tag non possono contenere caratteri speciali.", "Errore", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(Home.this, "Nessun gruppo creato, il nome non può essere vuoto e i  tag non possono contenere caratteri speciali.", "Errore", JOptionPane.ERROR_MESSAGE);
 
    }
 

@@ -19,29 +19,30 @@ public class RegistrationInterface extends JFrame {
 
     public RegistrationInterface(final UserDao userDao, Controller controller) {
         this.userDao = userDao;
+        this.userDao = userDao;
         setTitle("Unina Social Network - Registrazione");
-        setSize(800,600); 
+        setSize(800, 600);
         ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");
         Image imgIconaFrame = IconaFrame.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         setIconImage(imgIconaFrame);
 
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        usernameLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
         JButton returnToLoginButton = new JButton("Ritorna al Login");
-        returnToLoginButton.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        returnToLoginButton.setFont(new Font("Georgia", Font.ITALIC, 20));
         JLabel bioLabel = new JLabel("Bio:");
         bioLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
-        usernameField = new JTextField(20); 
-        usernameField.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        usernameField = new JTextField(20);
+        usernameField.setFont(new Font("Georgia", Font.ITALIC, 20));
         usernameField.setText("Username");
         usernameField.setForeground(Color.GRAY);
-        passwordField = new JPasswordField(20); 
+        passwordField = new JPasswordField(20);
         passwordField.setFont(new Font("Georgia", Font.ITALIC, 20));
         passwordField.setText("Password");
         passwordField.setForeground(Color.GRAY);
-        bioArea = new JTextArea(5, 20); 
+        bioArea = new JTextArea(5, 20);
         bioArea.setFont(new Font("Georgia", Font.ITALIC, 20));
         bioArea.setText("Inserisci la tua bio :)");
         bioArea.setForeground(Color.GRAY);
@@ -69,7 +70,7 @@ public class RegistrationInterface extends JFrame {
         
         JScrollPane bioScrollPane = new JScrollPane(bioArea);
         registerButton = new JButton("Registrati");
-        registerButton.setFont(new Font("Georgia", Font.ITALIC, 20)); 
+        registerButton.setFont(new Font("Georgia", Font.ITALIC, 20));
         passwordField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -119,23 +120,23 @@ public class RegistrationInterface extends JFrame {
         contentPane.setLayout(new BorderLayout());
         contentPane.setBackground(new Color(155, 10, 222));
 
-        JPanel RegistrationPanel = new JPanel();
-        RegistrationPanel.setLayout(new GridBagLayout());
-        RegistrationPanel.setBackground(new Color(137, 156, 196));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel registrationPanel = new JPanel();
+        registrationPanel.setLayout(new GridBagLayout());
+        registrationPanel.setBackground(new Color(137, 156, 196));
+
+        GridBagConstraints gbcTitle = new GridBagConstraints();
+        gbcTitle.insets = new Insets(10, 10, 10, 10);
+        gbcTitle.fill = GridBagConstraints.HORIZONTAL;
+        gbcTitle.gridx = 0;
+        gbcTitle.gridy = 0;
+        gbcTitle.gridwidth = 3;
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel titleLabel = new JLabel("Registrazione");
         titlePanel.setBackground(new Color(213, 220, 233));
-        titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30)); 
+        titleLabel.setFont(new Font("Georgia", Font.ITALIC, 30));
         titlePanel.add(titleLabel);
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        RegistrationPanel.add(titlePanel, gbc);
+        registrationPanel.add(titlePanel, gbcTitle);
 
         returnToLoginButton.addActionListener(new ActionListener() {
             @Override
@@ -144,36 +145,72 @@ public class RegistrationInterface extends JFrame {
                 controller.showLoginInterface();
             }
         });
+        GridBagConstraints gbcUsernameLabel = new GridBagConstraints();
+        gbcUsernameLabel.insets = new Insets(10, 10, 10, 10);
+        gbcUsernameLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbcUsernameLabel.gridx = 0;
+        gbcUsernameLabel.gridy = 1;
+        gbcUsernameLabel.gridwidth = 1;
+        registrationPanel.add(usernameLabel, gbcUsernameLabel);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        RegistrationPanel.add(usernameLabel, gbc);
-        gbc.gridx = 1;
-        RegistrationPanel.add(usernameField, gbc);
+        GridBagConstraints gbcUsernameField = new GridBagConstraints();
+        gbcUsernameField.insets = new Insets(10, 10, 10, 10);
+        gbcUsernameField.fill = GridBagConstraints.HORIZONTAL;
+        gbcUsernameField.gridx = 1;
+        gbcUsernameField.gridy = 1;
+        gbcUsernameField.gridwidth = 1;
+        registrationPanel.add(usernameField, gbcUsernameField);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        RegistrationPanel.add(passwordLabel, gbc);
-        gbc.gridx = 1;
-        RegistrationPanel.add(passwordField, gbc);
+        GridBagConstraints gbcPasswordLabel = new GridBagConstraints();
+        gbcPasswordLabel.insets = new Insets(10, 10, 10, 10);
+        gbcPasswordLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbcPasswordLabel.gridx = 0;
+        gbcPasswordLabel.gridy = 2;
+        gbcPasswordLabel.gridwidth = 1;
+        registrationPanel.add(passwordLabel, gbcPasswordLabel);
 
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        RegistrationPanel.add(bioLabel, gbc);
-        gbc.gridx = 1;
-        RegistrationPanel.add(bioScrollPane, gbc);
+        GridBagConstraints gbcPasswordField = new GridBagConstraints();
+        gbcPasswordField.insets = new Insets(10, 10, 10, 10);
+        gbcPasswordField.fill = GridBagConstraints.HORIZONTAL;
+        gbcPasswordField.gridx = 1;
+        gbcPasswordField.gridy = 2;
+        gbcPasswordField.gridwidth = 1;
+        registrationPanel.add(passwordField, gbcPasswordField);
 
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        RegistrationPanel.add(registerButton, gbc);
+        GridBagConstraints gbcBioLabel = new GridBagConstraints();
+        gbcBioLabel.insets = new Insets(10, 10, 10, 10);
+        gbcBioLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbcBioLabel.gridx = 0;
+        gbcBioLabel.gridy = 3;
+        gbcBioLabel.gridwidth = 1;
+        registrationPanel.add(bioLabel, gbcBioLabel);
 
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;
-        RegistrationPanel.add(returnToLoginButton, gbc);
-        contentPane.add(RegistrationPanel);
+        GridBagConstraints gbcBioScrollPane = new GridBagConstraints();
+        gbcBioScrollPane.insets = new Insets(10, 10, 10, 10);
+        gbcBioScrollPane.fill = GridBagConstraints.HORIZONTAL;
+        gbcBioScrollPane.gridx = 1;
+        gbcBioScrollPane.gridy = 3;
+        gbcBioScrollPane.gridwidth = 1;
+        registrationPanel.add(bioScrollPane, gbcBioScrollPane);
+
+        GridBagConstraints gbcRegisterButton = new GridBagConstraints();
+        gbcRegisterButton.insets = new Insets(10, 10, 10, 10);
+        gbcRegisterButton.fill = GridBagConstraints.HORIZONTAL;
+        gbcRegisterButton.gridx = 0;
+        gbcRegisterButton.gridy = 4;
+        gbcRegisterButton.gridwidth = 2;
+        registrationPanel.add(registerButton, gbcRegisterButton);
+
+        GridBagConstraints gbcReturnToLoginButton = new GridBagConstraints();
+        gbcReturnToLoginButton.insets = new Insets(10, 10, 10, 10);
+        gbcReturnToLoginButton.fill = GridBagConstraints.HORIZONTAL;
+        gbcReturnToLoginButton.gridx = 0;
+        gbcReturnToLoginButton.gridy = 5;
+        gbcReturnToLoginButton.gridwidth = 2;
+        registrationPanel.add(returnToLoginButton, gbcReturnToLoginButton);
+
+        contentPane.add(registrationPanel);
+
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

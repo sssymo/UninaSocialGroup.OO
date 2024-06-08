@@ -16,6 +16,18 @@ public class Post {
 		this.orario_pubblicazione=ora_pubblicazione;
 		
 	}
+	public Post(int idpost2, int iduutente, int idgruppo2, String desc2, Date data_pubblicazione2,
+			Time ora_pubblicazione,int numero_like2,int numero_commenti2) {
+		// TODO Auto-generated constructor stub
+		this.data_pubblicazione=data_pubblicazione2;
+		this.desc=desc2;
+		this.idutente=iduutente;
+		this.idgruppo=idgruppo2;
+		this.idpost=idpost2;
+		this.orario_pubblicazione=ora_pubblicazione;
+		this.numero_like=numero_like;
+		this.numero_commenti=numero_commenti;
+	}
 	private int idpost;
 	private int idutente;
 	private int idgruppo;
@@ -23,7 +35,8 @@ public class Post {
 	private Date data_pubblicazione;
 private Time orario_pubblicazione;
 private Byte foto;
-
+private int numero_like;
+private int numero_commenti;
 
 public int getIdpost() {
     return idpost;

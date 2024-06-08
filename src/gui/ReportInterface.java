@@ -25,6 +25,8 @@ import javax.swing.SwingConstants;
 import classiDao.GroupDao;
 import classiDao.UserDao;
 import controller.Controller;
+import classiDao.PostDao;
+
 public class ReportInterface  extends JFrame {
 int currentUser;
 Controller controller;
@@ -67,7 +69,29 @@ Controller controller;
             comboBoxPanel.add(groupComboBox);
   
             //a seconda del valore selected nella combobox dovrebbero visualizzarsi dei dati random
-
+            groupComboBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String selectedGroup = (String) groupComboBox.getSelectedItem();
+                    if (selectedGroup != null) {
+                  /*
+                    	int groupId = GroupDao.getGroupIdByName(selectedGroup);
+                        int maxLikes = PostDao.getMaxLikesByGroup(groupId);
+                        int minLikes = PostDao.getMinLikesByGroup(groupId);
+                        int maxComments = PostDao.getMaxCommentsByGroup(groupId);
+                        int minComments = PostDao.getMinCommentsByGroup(groupId);
+                        
+                        String reportText = "Group: " + selectedGroup + "\n";
+                        reportText += "Max Likes: " + maxLikes + "\n";
+                        reportText += "Min Likes: " + minLikes + "\n";
+                        reportText += "Max Comments: " + maxComments + "\n";
+                        reportText += "Min Comments: " + minComments + "\n";
+                        
+                        reportTextArea.setText(reportText);
+                        */
+                    }
+                }
+            });
         centerPanel.add(comboBoxPanel, BorderLayout.NORTH);
 
         JPanel reportPanel = new JPanel(new BorderLayout());
@@ -94,4 +118,3 @@ Controller controller;
         setVisible(true);
     }
 	}
-

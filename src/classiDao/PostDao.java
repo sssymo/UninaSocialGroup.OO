@@ -125,4 +125,95 @@ public static List<Post> RecuperaPost(int idutente,int idgruppo){
 		e.printStackTrace();
 	}
 	return posts;
-}}
+	
+}
+
+// Query to retrieve the post with the highest number of likes
+final static String GET_POST_WITH_MAX_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY numero_like DESC LIMIT 1";
+
+public Post getPostWithMaxLikes() {
+	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MAX_LIKES)) {
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			int idpost = rs.getInt("idpost");
+			int idutente = rs.getInt("idutente");
+			int idgruppo = rs.getInt("idgruppo");
+			String descrizione = rs.getString("descrizione");
+			Date data_pubblicazione = rs.getDate("data_pubblicazione");
+			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+			int numero_like = rs.getInt("numero_like");
+			int numero_commenti = rs.getInt("numero_commenti"); 
+			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione, numero_like, numero_commenti);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+// Query to retrieve the post with the highest number of comments
+final static String GET_POST_WITH_MAX_COMMENTS = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY numero_commenti DESC LIMIT 1";
+
+public Post getPostWithMaxComments(int idg) {
+	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MAX_COMMENTS)) {
+		stmt.setInt(1, idg);
+		ResultSet rs = stmt.executeQuery();
+		
+		if (rs.next()) {
+			int idpost = rs.getInt("idpost");
+			int idutente = rs.getInt("idutente");
+			int idgruppo = rs.getInt("idgruppo");
+			String descrizione = rs.getString("descrizione");
+			Date data_pubblicazione = rs.getDate("data_pubblicazione");
+			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+
+// Query to retrieve the post with the lowest number of likes
+final static String GET_POST_WITH_MIN_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY numero_like ASC LIMIT 1";
+public Post getPostWithMinLikes() {
+	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MIN_LIKES)) {
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			int idpost = rs.getInt("idpost");
+			int idutente = rs.getInt("idutente");
+			int idgruppo = rs.getInt("idgruppo");
+			String descrizione = rs.getString("descrizione");
+			Date data_pubblicazione = rs.getDate("data_pubblicazione");
+			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+			int numero_like = rs.getInt("numero_like");
+			int numero_commenti = rs.getInt("numero_commenti"); 
+			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione, numero_like, numero_commenti);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+// Query to retrieve the post with the lowest number of comments
+final static String GET_POST_WITH_MIN_COMMENTS = "SELECT * FROM post WHERE idgruppo = ? ORDER BY numero_commenti ASC LIMIT 1";
+public Post getPostWithMinComments(int idgruppo) {
+	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MIN_COMMENTS)) {
+		stmt.setInt(1, idgruppo);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			int idpost = rs.getInt("idpost");
+			int idutente = rs.getInt("idutente");
+			String descrizione = rs.getString("descrizione");
+			Date data_pubblicazione = rs.getDate("data_pubblicazione");
+			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+		return null;
+  }
+}
