@@ -93,5 +93,19 @@ public Byte getFoto() {
 public void setFoto(Byte foto) {
     this.foto = foto;
 }
+public int getNumero_like() {
+    return numero_like;
+}
 
+public void setNumero_like(int numero_like) {
+    this.numero_like = numero_like;
+}
+
+public int getNumero_commenti() {
+    return numero_commenti;
+}
+
+public void setNumero_commenti(int numero_commenti) {
+    this.numero_commenti = numero_commenti;
+}
 }

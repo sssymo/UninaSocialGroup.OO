@@ -1,6 +1,7 @@
 package classi;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +69,8 @@ public class gruppo {
 
     @Override
     public String toString() {
-        return "Gruppo{" +
-                "nomeGruppo='" + nomeGruppo + '\'' +
-                ", idGruppo=" + idGruppo +
-                ", descrizioneGruppo='" + descrizioneGruppo + '\'' +
-                ", dataCreazione=" + dataCreazione +
-                ", tagList=" + tagList +
-                '}';
+
+        return nomeGruppo ;
     }
 }
 

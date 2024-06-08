@@ -81,7 +81,11 @@ public class Controller {
 public void showReportInterface(int currentUser) {
 	currentFrame.dispose();
 	//???
-	currentFrame=new ReportInterface(currentUser,this);
+	List<gruppo> g = GroupDao.getGroupsByCreatore(currentUser);
+	
+		
+
+	currentFrame=new ReportInterface(currentUser,this,g);
 
 }
    

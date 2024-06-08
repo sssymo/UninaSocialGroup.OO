@@ -129,7 +129,7 @@ public static List<Post> RecuperaPost(int idutente,int idgruppo){
 }
 
 // Query to retrieve the post with the highest number of likes
-final static String GET_POST_WITH_MAX_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY numero_like DESC LIMIT 1";
+final static String GET_POST_WITH_MAX_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY num_like DESC LIMIT 1";
 
 public Post getPostWithMaxLikes() {
 	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MAX_LIKES)) {
@@ -141,8 +141,8 @@ public Post getPostWithMaxLikes() {
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
 			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
-			int numero_like = rs.getInt("numero_like");
-			int numero_commenti = rs.getInt("numero_commenti"); 
+			int numero_like = rs.getInt("num_like");
+			int numero_commenti = rs.getInt("num_commenti"); 
 			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione, numero_like, numero_commenti);
 		}
 	} catch (SQLException e) {
@@ -152,9 +152,9 @@ public Post getPostWithMaxLikes() {
 }
 
 // Query to retrieve the post with the highest number of comments
-final static String GET_POST_WITH_MAX_COMMENTS = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY numero_commenti DESC LIMIT 1";
+final static String GET_POST_WITH_MAX_COMMENTS = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY num_commenti DESC LIMIT 1";
 
-public Post getPostWithMaxComments(int idg) {
+public static int getPostWithMaxComments(int idg) {
 	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MAX_COMMENTS)) {
 		stmt.setInt(1, idg);
 		ResultSet rs = stmt.executeQuery();
@@ -166,19 +166,21 @@ public Post getPostWithMaxComments(int idg) {
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
 			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
-			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione);
+			//return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione);
+		return rs.getInt("num_commenti");
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
-	return null;
+	return 0;
 }
 
 
 // Query to retrieve the post with the lowest number of likes
-final static String GET_POST_WITH_MIN_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY numero_like ASC LIMIT 1";
-public Post getPostWithMinLikes() {
+final static String GET_POST_WITH_MIN_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY num_like ASC LIMIT 1";
+public static int getPostWithMinLikes(int idg) {
 	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MIN_LIKES)) {
+		stmt.setInt(1, idg);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			int idpost = rs.getInt("idpost");
@@ -187,19 +189,20 @@ public Post getPostWithMinLikes() {
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
 			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
-			int numero_like = rs.getInt("numero_like");
-			int numero_commenti = rs.getInt("numero_commenti"); 
-			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione, numero_like, numero_commenti);
+			int numero_like = rs.getInt("num_like");
+			return numero_like;
+		//	int numero_commenti = rs.getInt("num_commenti"); 
+			//return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione, numero_like, numero_commenti);
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
-	return null;
+	return  0;
 }
 
 // Query to retrieve the post with the lowest number of comments
-final static String GET_POST_WITH_MIN_COMMENTS = "SELECT * FROM post WHERE idgruppo = ? ORDER BY numero_commenti ASC LIMIT 1";
-public Post getPostWithMinComments(int idgruppo) {
+final static String GET_POST_WITH_MIN_COMMENTS = "SELECT * FROM post WHERE idgruppo = ? ORDER BY num_commenti ASC LIMIT 1";
+public static int getPostWithMinComments(int idgruppo) {
 	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MIN_COMMENTS)) {
 		stmt.setInt(1, idgruppo);
 		ResultSet rs = stmt.executeQuery();
@@ -208,12 +211,27 @@ public Post getPostWithMinComments(int idgruppo) {
 			int idutente = rs.getInt("idutente");
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
-			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
-			return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione);
+		Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+		return rs.getInt("num_commenti");
+	
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
-		return null;
+		return 0;
   }
+
+public static int getMaxLikesByGroupCreationDate(int idGruppo, Date dataCreazione) {
+	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MAX_LIKES)) {
+		stmt.setInt(1,idGruppo);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+	
+			return  rs.getInt("num_like");
+}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return 0;
+}
 }

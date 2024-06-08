@@ -264,13 +264,29 @@ public class GroupDao {
 
 	public static List getGroupsByCreatore(int currentUser) {
 		// TODO Auto-generated method stub
-		ArrayList<String> ng=new ArrayList();
-		try (PreparedStatement statement = connection.prepareStatement("select gruppo.nome_gruppo,gruppo.data_creazione from gruppo,crea where crea.idutente=? and gruppo.idgruppo=crea.idgruppo")){
+		ArrayList<gruppo> ng=new ArrayList();
+		try (PreparedStatement statement = connection.prepareStatement("select gruppo.nome_gruppo,gruppo.idgruppo,gruppo.data_creazione,gruppo.descrizione_gruppo from gruppo,crea where crea.idutente=? and gruppo.idgruppo=crea.idgruppo")){
 			statement.setInt(1,currentUser);
 			ResultSet rs= statement.executeQuery();
-			while(rs.next()) {
-			ng.add(rs.getString(1));
-			}
+			while (rs.next()) {
+    			int id=rs.getInt(2);
+    			ArrayList<Tag> Tags = new ArrayList<>();
+    			try(PreparedStatement s2 = connection.prepareStatement("SELECT tipologia FROM possiede WHERE idgruppo=?")) {
+    	    		s2.setInt(1, id);
+    	    		ResultSet rs2=s2.executeQuery();
+    	    		while (rs2.next()) {
+    	    			Tag t= new Tag(rs2.getString(1)); 
+    	    			Tags.add(t);
+    	    		}
+    				
+    			}
+
+    			String nome= rs.getString(1);
+    			String desc=rs.getString(4);
+    			Date data=rs.getDate(3);
+    			gruppo g = new gruppo(nome,id,desc,data,Tags);
+    			ng.add(g);
+            }
 			return ng;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
