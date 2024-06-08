@@ -55,7 +55,7 @@ public class NotificationInterface extends JFrame {
 		scrollPane.setBackground(new Color(213, 220, 233));
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		
+		 //s
 		for (richiesta r : notifichedirichiestaaitg) {
 		    JLabel notificationLabel = new JLabel(UserDao.getUserNameById(r.getIdUtente()) + " ti ha chiesto di essere aggiunto a " + GroupDao.GetGroupNameFromId(r.getIdGruppo()));
 		    JButton accettaButton = new JButton("Accetta");

@@ -18,7 +18,7 @@ public class ShowGroupInfo extends JFrame {
     private gruppo group;
     private Controller controller;
     private PostDao postDao;
-
+//fw
     private String Tags="";
     public ShowGroupInfo(int currentUser, gruppo group, Controller controller, PostDao postDao) {
         this.currentUser = currentUser;

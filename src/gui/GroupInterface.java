@@ -80,7 +80,7 @@ public class GroupInterface extends JFrame {
                 controller.ShowGroupInfo(currentUser,group);
             }
         });
-
+//ok
         topRightPanel.add(buttonPanel, BorderLayout.NORTH);
         add(topRightPanel, BorderLayout.EAST);
 
