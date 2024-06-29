@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import classi.Post;
+import classi.Gruppo;
 public class PostDao {
 
     private static Connection conn;
@@ -58,7 +59,7 @@ public class PostDao {
 		return 0;
     }
     
-    private static final String INSERT_POST = "INSERT INTO post ( idutente ,idgruppo ,descrizione,data_pubblicazione,orario_pubblicazione) VALUES ( ?, ?, ?,?,?)";
+    private static final String INSERT_POST = "INSERT INTO post ( idutente ,idgruppo ,descrizione,data_pubblicazione,orario_pubblicazione,num_like,num_commenti) VALUES ( ?, ?, ?,?,?,?,?)";
     public static boolean InserisciPost(int currentUser,int idgruppo, String descpost,Timestamp currentTime) {
     	try(PreparedStatement stmt = conn.prepareStatement(INSERT_POST)){
     		stmt.setInt(1, currentUser);
@@ -67,6 +68,8 @@ public class PostDao {
     		
     		stmt.setTimestamp(4, currentTime);
     		stmt.setTimestamp(5, currentTime);
+    		stmt.setInt(7, 0);
+    		stmt.setInt(6, 0);
     		stmt.executeUpdate();   
     		
     	} catch (SQLException e) {
@@ -128,7 +131,6 @@ public static List<Post> RecuperaPost(int idutente,int idgruppo){
 	
 }
 
-// Query to retrieve the post with the highest number of likes
 final static String GET_POST_WITH_MAX_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY num_like DESC LIMIT 1";
 
 public Post getPostWithMaxLikes() {
@@ -151,7 +153,6 @@ public Post getPostWithMaxLikes() {
 	return null;
 }
 
-// Query to retrieve the post with the highest number of comments
 final static String GET_POST_WITH_MAX_COMMENTS = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY num_commenti DESC LIMIT 1";
 
 public static int getPostWithMaxComments(int idg) {
@@ -176,7 +177,6 @@ public static int getPostWithMaxComments(int idg) {
 }
 
 
-// Query to retrieve the post with the lowest number of likes
 final static String GET_POST_WITH_MIN_LIKES = "SELECT * FROM post  WHERE idgruppo = ? ORDER BY num_like ASC LIMIT 1";
 public static int getPostWithMinLikes(int idg) {
 	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MIN_LIKES)) {
@@ -200,7 +200,6 @@ public static int getPostWithMinLikes(int idg) {
 	return  0;
 }
 
-// Query to retrieve the post with the lowest number of comments
 final static String GET_POST_WITH_MIN_COMMENTS = "SELECT * FROM post WHERE idgruppo = ? ORDER BY num_commenti ASC LIMIT 1";
 public static int getPostWithMinComments(int idgruppo) {
 	try (PreparedStatement stmt = conn.prepareStatement(GET_POST_WITH_MIN_COMMENTS)) {
@@ -234,4 +233,31 @@ public static int getMaxLikesByGroupCreationDate(int idGruppo, Date dataCreazion
 	}
 	return 0;
 }
+public static String query = "SELECT g.idgruppo, g.nome_gruppo, g.data_creazione, g.descrizione_gruppo " +
+        "FROM gruppo AS g, post AS p " +
+        "WHERE g.idgruppo = p.idgruppo AND p.idpost = ?";
+public static Gruppo getGroupFromPost(int idpost) {
+	Gruppo g= null;
+	try (PreparedStatement stmt = conn.prepareStatement(query)) {
+		stmt.setInt(1, idpost);
+		 try (ResultSet r = stmt.executeQuery()) {
+	            if (r.next()) {
+	                g = new Gruppo(
+	                    r.getInt("idgruppo"),
+	                    r.getString("nome_gruppo"),
+	                    r.getDate("data_creazione"),
+	                    r.getString("descrizione_gruppo")
+	                );
+	            }
+		return g;
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return g;
+} catch (SQLException e1) {
+	// TODO Auto-generated catch block
+	e1.printStackTrace();
+}
+	return g;}
 }

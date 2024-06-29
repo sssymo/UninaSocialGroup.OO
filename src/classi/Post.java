@@ -3,6 +3,7 @@ package classi;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Post {
 	public Post(int idpost2, int iduutente, int idgruppo2, String desc2, Date data_pubblicazione2,

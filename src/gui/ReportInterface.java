@@ -24,17 +24,18 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import classi.Post;
-import classi.gruppo;
+import classi.Gruppo;
 import classiDao.GroupDao;
 import classiDao.UserDao;
 import controller.Controller;
 import classiDao.PostDao;
+import javax.swing.UIManager;
 
 public class ReportInterface  extends JFrame {
 int currentUser;
 Controller controller;
 
-	public ReportInterface(int currentUser,Controller controller,List<gruppo> gruppiutente) {
+	public ReportInterface(int currentUser,Controller controller,List<Gruppo> gruppiutente) {
         this.currentUser = currentUser;
         this.controller = controller;
 
@@ -53,6 +54,7 @@ Controller controller;
         topPanel.setBackground(new Color(137, 156, 196));
 
         JLabel titleLabel = new JLabel("Report Interface", SwingConstants.CENTER);
+        titleLabel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleBackground"));
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
         topPanel.add(titleLabel, BorderLayout.CENTER);
@@ -63,26 +65,25 @@ Controller controller;
         centerPanel.setBackground(Color.WHITE);
 
         JPanel comboBoxPanel = new JPanel();
-        comboBoxPanel.setBackground(Color.WHITE);
+        comboBoxPanel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
         JTextArea reportTextArea = new JTextArea();
-        JComboBox<gruppo> groupComboBox = new JComboBox<>();
+        JComboBox<Gruppo> groupComboBox = new JComboBox<>();
+        groupComboBox.setBackground(UIManager.getColor("InternalFrame.resizeIconHighlight"));
         groupComboBox.setPreferredSize(new Dimension(200, 30));
         comboBoxPanel.add(new JLabel("Select Group: "));
         comboBoxPanel.add(groupComboBox);
 
-        // Popola la combobox con oggetti gruppo
-        for (gruppo g : gruppiutente) {
-            groupComboBox.addItem(g); //ho fatto un tostring apposito che stampa solo il nome, tanto a prescindere sa qual'è l'oggetto.
+        for (Gruppo g : gruppiutente) {
+            groupComboBox.addItem(g); //ho fatto un tostring apposito 
         }
 
         groupComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gruppo selectedGruppo = (gruppo) groupComboBox.getSelectedItem();
+                Gruppo selectedGruppo = (Gruppo) groupComboBox.getSelectedItem();
                 if (selectedGruppo != null) {
                    System.out.println(selectedGruppo.getDataCreazione()+" " +selectedGruppo.getNomeGruppo()+" "+selectedGruppo.getIdGruppo() );
-                    // Recupera i dati dal database utilizzando la data di creazione
-                	
+
                     int maxLikes = PostDao.getMaxLikesByGroupCreationDate(selectedGruppo.getIdGruppo(),selectedGruppo.getDataCreazione());
                     int minComments = PostDao.getPostWithMinComments(selectedGruppo.getIdGruppo());
                    int minLikes = PostDao.getPostWithMinLikes(selectedGruppo.getIdGruppo());
@@ -91,13 +92,15 @@ Controller controller;
                    System.out.println("Min Likes for Group: " + minLikes);
                    System.out.println("Max Comments for Group: " + maxComments);
                    System.out.println("Min Comments for Group: " + minComments);
-                    String reportText = "Group: " + selectedGruppo.getNomeGruppo() + "\n";
-                    reportText += "Creation Date: " + selectedGruppo.getDataCreazione() + "\n";
-                    reportText += "Max Likes: " + maxLikes + "\n";
-                    reportText += "Min Likes: " + minLikes + "\n";
-                    reportText += "Max Comments: " + maxComments+ "\n";
-                    reportText += "Min Comments: " + minComments + "\n";
+                    String reportText = "\n"+"  Groupname: " + selectedGruppo.getNomeGruppo() +"   ";
+                    reportText += "  Creation Date: " + selectedGruppo.getDataCreazione() + "\n"+"\n";
+                    reportText += "  Post with Max Likes: " + maxLikes +"   " ;
+                    reportText += "  Min Likes: " + minLikes + "\n"+"\n";
+                    reportText += "  Post with Max Comments: " + maxComments+"   ";
+                    reportText += "  Min Comments: " + minComments + "\n"+"\n";
+                    reportText += "  Number of Subscribed Users: " + GroupDao.getNumIscritti(selectedGruppo.getIdGruppo()) + "\n"+"\n";
                      reportTextArea.setText(reportText);
+
 
 
                 }
@@ -109,6 +112,7 @@ Controller controller;
         reportPanel.setBackground(Color.WHITE);
         
         reportTextArea.setEditable(false);
+        reportTextArea.setBackground(UIManager.getColor("InternalFrame.activeTitleGradient"));
         JScrollPane scrollPane = new JScrollPane(reportTextArea);
         reportPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -117,6 +121,7 @@ Controller controller;
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         JButton GoBackButton = new JButton("Torna Alla Home");
+        GoBackButton.setBackground(new Color(224, 255, 255));
         GoBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

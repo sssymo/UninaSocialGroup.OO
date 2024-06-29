@@ -74,19 +74,19 @@ public class LoginInterface extends JFrame {
             usernameField.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
-                    // Rimuovi il testo del placeholder quando il campo ottiene il focus
+                  
                     if (usernameField.getText().equals("Username")) {
                         usernameField.setText("");
-                        usernameField.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                        usernameField.setForeground(Color.BLACK); 
                     }
                 }
 
                 @Override
                 public void focusLost(FocusEvent e) {
-                    // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+              
                     if (usernameField.getText().isEmpty()) {
                         usernameField.setText("Username");
-                        usernameField.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                        usernameField.setForeground(Color.GRAY); 
                     }
                 }
 
@@ -118,21 +118,21 @@ public class LoginInterface extends JFrame {
             passwordField.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
-                    // Rimuovi il testo del placeholder quando il campo ottiene il focus
+              
                     if (new String(passwordField.getPassword()).equals("Password")) {
                         passwordField.setText("");
-                        passwordField.setForeground(Color.BLACK); // Ripristina il colore del testo normale
+                        passwordField.setForeground(Color.BLACK); 
                     }
                 }
 
                 @Override
                 public void focusLost(FocusEvent e) {
-                    // Aggiungi di nuovo il testo del placeholder se il campo è vuoto e perde il focus
+                  
                     if (new String(passwordField.getPassword()).isEmpty()) {
                     	passwordField.setVisible(true);
                     	passwordField.setText("Password");
                         
-                        passwordField.setForeground(Color.GRAY); // Imposta di nuovo il colore del testo del placeholder
+                        passwordField.setForeground(Color.GRAY);
                     }
                 }
             }); 

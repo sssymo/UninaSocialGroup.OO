@@ -9,7 +9,7 @@ public class Utente {
     private String bio;
     private int numPubblicazioni;
     private int numGruppiPartecipanti;
-    private List<Recensione> recensioni; // Elenco delle recensioni dell'utente
+    private List<Recensione> recensioni;
 
     // Costruttore
     public Utente(String username, int idUtente, String password, String bio) {
@@ -17,13 +17,12 @@ public class Utente {
         this.idUtente = idUtente;
         this.password = password;
         this.bio = bio;
-        this.numPubblicazioni = 0; // Inizialmente l'utente non ha pubblicazioni
-        this.numGruppiPartecipanti = 0; // Inizialmente l'utente non partecipa a nessun gruppo
+        this.numPubblicazioni = 0; 
+        this.numGruppiPartecipanti = 0; 
         this.recensioni = new ArrayList<>();
     }
     
 
-    // Metodi getter e setter per gli attributi
     public String getUsername() {
         return username;
     }
@@ -81,5 +80,5 @@ public class Utente {
         recensioni.remove(recensione);
     }
 
-    // Altri metodi utili per l'utente
+
 }

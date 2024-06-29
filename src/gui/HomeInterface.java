@@ -1,16 +1,16 @@
 package gui;
 
 import classi.Post;
-import classi.gruppo;
-import classi.notifica;
-import classi.richiesta;
+import classi.Gruppo;
+import classi.Notifica;
+import classi.Richiesta;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.PostDao;
 import classiDao.TagDao;
 import classiDao.UserDao;
 import controller.Controller;
-import classiDao.richiestaDAO;
+import classiDao.RichiestaDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,25 +18,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.List;
 
-public class Home extends JFrame {
+public class HomeInterface extends JFrame {
 	private JScrollPane scrollPane;
     private int currentUser;
     private GroupDao groupDao;
-    private richiestaDAO richiestaDao;
+    private RichiestaDAO richiestaDAO;
     private NotificaDAO notificationDao;
     private Controller controller;
     private PostDao postDao;
     JPanel groupPanelsPanel = new JPanel();
 private TagDao tagdao;
 JTextField searchField2 = new JTextField(30);
-    public Home(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, richiestaDAO richiestaDao, Controller controller,PostDao postDao,TagDao tagdao) {
+    public HomeInterface(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, RichiestaDAO richiestaDAO, Controller controller,PostDao postDao,TagDao tagdao) {
         this.currentUser = currentUser;
         this.controller = controller;
         this.notificationDao = notificationDao;
-        this.richiestaDao = richiestaDao;
+        this.richiestaDAO = richiestaDAO;
         this.tagdao=tagdao;
         this.postDao=postDao;
 
@@ -115,7 +118,7 @@ searchField2.addFocusListener(new FocusListener() {
         //questo è per fargli cambiare colo re quando ci passi sopra col mosue
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                searchButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+                searchButton.setBackground(new Color(200, 200, 200)); 
             }
         });
         searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -137,7 +140,7 @@ searchField2.addFocusListener(new FocusListener() {
            //questo è per fargli cambiare colo re quando ci passi sopra col mosue
            CreateGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
                public void mouseEntered(java.awt.event.MouseEvent evt) {
-            	   CreateGroupButton.setBackground(new Color(200, 200, 200)); // Cambia il colore del pulsante
+            	   CreateGroupButton.setBackground(new Color(200, 200, 200));
                }
            });
            CreateGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -163,12 +166,12 @@ searchField2.addFocusListener(new FocusListener() {
 
         groupsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-            	groupsButton.setBackground(new Color(200, 200, 200)); // Cambio il colore del pulsante
+            	groupsButton.setBackground(new Color(200, 200, 200)); 
             }
         });
         groupsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-            	groupsButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di default
+            	groupsButton.setBackground(UIManager.getColor("control")); 
         }
         });
         
@@ -233,7 +236,7 @@ searchField2.addFocusListener(new FocusListener() {
         //e quella dicreazione di un nuovo gruppo
         
         try {
-            List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
+            List<Gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
             
 
             
@@ -258,7 +261,7 @@ searchField2.addFocusListener(new FocusListener() {
             });
 
  
-            for (gruppo group : gruppi_isc) {
+            for (Gruppo group : gruppi_isc) {
                if(group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
                		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
                		|| searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ")|| searchField2.getText()=="") {
@@ -326,13 +329,13 @@ searchField2.addFocusListener(new FocusListener() {
                 UIManager.put("OptionPane.background", new Color(140,164,196)); 
             UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); 
 
-                List<gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+                List<Gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
                 
                 if (!gruppi_richiesti.isEmpty()) {
                     JPanel groupPanelsPanel = new JPanel(new GridLayout(0, 1, 10, 10)); 
                     groupPanelsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
                     groupPanelsPanel.setPreferredSize(new Dimension(200, 200));
-                    for (gruppo gruppo : gruppi_richiesti) {
+                    for (Gruppo gruppo : gruppi_richiesti) {
                         JPanel groupPanel = new JPanel(new BorderLayout());
                         groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
                         
@@ -350,7 +353,7 @@ searchField2.addFocusListener(new FocusListener() {
                         deleteButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent actionEvent) {
-                     		boolean deleted = richiestaDao.deleteRequest(currentUser, gruppo.getIdGruppo()); 			if (deleted) {
+                     		boolean deleted = richiestaDAO.deleteRequest(currentUser, gruppo.getIdGruppo()); 			if (deleted) {
 									reloadGroups();
 								} else {
 
@@ -359,14 +362,14 @@ searchField2.addFocusListener(new FocusListener() {
                             private void reloadGroups() {
                                 groupPanelsPanel.removeAll();
                          
-                                List<gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
+                                List<Gruppo> gruppi_richiesti = groupDao.getGroupsRequestedByUser(currentUser);
                                 if (gruppi_richiesti.isEmpty()) {
                                     JLabel noRequestsLabel = new JLabel("Nessuna richiesta inviata");
                                     noRequestsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
                                     noRequestsLabel.setHorizontalAlignment(SwingConstants.CENTER);
                                     groupPanelsPanel.add(noRequestsLabel, BorderLayout.CENTER);
                                 }
-                                for (gruppo gruppo : gruppi_richiesti) {
+                                for (Gruppo gruppo : gruppi_richiesti) {
                                     JPanel groupPanel = createGroupPanel(gruppo);
                                     groupPanelsPanel.add(groupPanel);
                                 }
@@ -374,7 +377,7 @@ searchField2.addFocusListener(new FocusListener() {
                                 groupPanelsPanel.repaint();
                             }
 
-                            private JPanel createGroupPanel(gruppo gruppo) {
+                            private JPanel createGroupPanel(Gruppo gruppo) {
                                 JPanel groupPanel = new JPanel(new BorderLayout());
                                 groupPanel.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 
@@ -390,7 +393,7 @@ searchField2.addFocusListener(new FocusListener() {
                                 deleteButton.addActionListener(new ActionListener() {
                                     @Override
                                     public void actionPerformed(ActionEvent actionEvent) {
-                                        boolean deleted = richiestaDao.deleteRequest(currentUser, gruppo.getIdGruppo()); 
+                                        boolean deleted = richiestaDAO.deleteRequest(currentUser, gruppo.getIdGruppo()); 
                                         if (deleted) {
                                             reloadGroups();
                                         } else {
@@ -409,10 +412,10 @@ searchField2.addFocusListener(new FocusListener() {
                     scrollPane.setPreferredSize(new Dimension(400, 250));
                     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
                  
-                    JOptionPane.showConfirmDialog(Home.this, scrollPane, "Gruppi Richiesti", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showConfirmDialog(HomeInterface.this, scrollPane, "Gruppi Richiesti", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     
                      } else {
-                    JOptionPane.showMessageDialog(Home.this, "Nessuna richiesta inviata");
+                    JOptionPane.showMessageDialog(HomeInterface.this, "Nessuna richiesta inviata");
                 }
             }
         });
@@ -438,30 +441,42 @@ searchField2.addFocusListener(new FocusListener() {
                 System.out.println("Azione eseguita!");
 
                 try {
-                    List<gruppo> groups = groupDao.searchGroupByName(searchTerm);
+                    List<Gruppo> groups = groupDao.searchGroupByName(searchTerm);
                     if (!groups.isEmpty()) {
                         JPanel groupPanel = new JPanel(new GridLayout(1, 1));
                         JPanel scrollPanel = new JPanel();
                         scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
 
-                        for (gruppo group : groups) {
+                        for (Gruppo group : groups) {
                             JButton joinButton = new JButton("+");
+                            
                             JLabel groupNameLabel = new JLabel(group.getNomeGruppo());
+                            joinButton.setToolTipText("Invia Richiesta");
+                            joinButton.addMouseListener((MouseListener) new MouseAdapter() {
+                                @Override
+                                public void mouseEntered(MouseEvent e) {
+                                    joinButton.setBackground(new Color(160, 196, 156)); 
+                                }
 
+                                @Override
+                                public void mouseExited(MouseEvent e) {
+                                    joinButton.setBackground(UIManager.getColor("Button.background")); 
+                                }
+                            });
                             joinButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     boolean a = false;
                                     try {
-                                        a = richiestaDao.insertRichiesta(currentUser, group.getIdGruppo());
+                                        a = richiestaDAO.insertRichiesta(currentUser, group.getIdGruppo());
                                     } catch (SQLException e1) {
                                         e1.printStackTrace();
                                     }
                                     if (a) {
-                                        JOptionPane.showMessageDialog(Home.this,
+                                        JOptionPane.showMessageDialog(HomeInterface.this,
                                                 "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
                                     } else {
-                                        JOptionPane.showMessageDialog(Home.this,
+                                        JOptionPane.showMessageDialog(HomeInterface.this,
                                                 "E' stata già inviata una richiesta, attendere l'accettazione da parte del creatore",
                                                 "Errore", JOptionPane.ERROR_MESSAGE);
                                     }
@@ -477,30 +492,28 @@ searchField2.addFocusListener(new FocusListener() {
                         JScrollPane scrollPane = new JScrollPane(scrollPanel);
                         scrollPane.setPreferredSize(new Dimension(150, 200));
                         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                        JOptionPane.showConfirmDialog(Home.this, scrollPane, "risultati", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showConfirmDialog(HomeInterface.this, scrollPane, "risultati", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     } else {
 
-                        JOptionPane.showMessageDialog(Home.this,
+                        JOptionPane.showMessageDialog(HomeInterface.this,
                                 "Nessun gruppo trovato con il nome: " + searchTerm);
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(Home.this,
+                    JOptionPane.showMessageDialog(HomeInterface.this,
                             "Si è verificato un errore durante la ricerca del gruppo.",
                             "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        //vedi le notifiche, per adesso le uniche notifiche che si vedono sono 
-        //quelle di richieste di accesso a gruppi
         notificationsButton.addActionListener(new ActionListener() {
         	
             @Override
             public void actionPerformed(ActionEvent e) {
             	try {
-					List<notifica> notifications = notificationDao.getNotificheForUser(currentUser);
-					List<richiesta> RichiesteDiEssereAggiuntoAiTuoiGruppi = richiestaDAO.VediRichiesteDiIscrizioneAiTuoiGruppi(currentUser);
+					List<Notifica> notifications = notificationDao.getNotificheForUser(currentUser);
+					List<Richiesta> RichiesteDiEssereAggiuntoAiTuoiGruppi = RichiestaDAO.VediRichiesteDiIscrizioneAiTuoiGruppi(currentUser);
 					controller.showNotificationsInterface(notifications,RichiesteDiEssereAggiuntoAiTuoiGruppi);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -585,7 +598,7 @@ searchField2.addFocusListener(new FocusListener() {
                 UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
             UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
 
-                int result = JOptionPane.showConfirmDialog(Home.this, dialogPanel,
+                int result = JOptionPane.showConfirmDialog(HomeInterface.this, dialogPanel,
                         "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
                 if (result == JOptionPane.OK_OPTION) {
@@ -655,7 +668,7 @@ searchField2.addFocusListener(new FocusListener() {
                             e1.printStackTrace();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(Home.this, "Nessun gruppo creato, il nome non può essere vuoto e i  tag non possono contenere caratteri speciali.", "Errore", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(HomeInterface.this, "Nessun gruppo creato, il nome non può essere vuoto e i  tag non possono contenere caratteri speciali.", "Errore", JOptionPane.ERROR_MESSAGE);
 
    }
 
@@ -681,10 +694,10 @@ searchField2.addFocusListener(new FocusListener() {
         groupPanelsPanel.removeAll();
         
         try {
-            List<gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
+            List<Gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
             searchField2.setMaximumSize(new Dimension(2000, 30)); 
             groupPanelsPanel.add(searchField2, BorderLayout.NORTH);
-            for (gruppo group : gruppi_isc) {
+            for (Gruppo group : gruppi_isc) {
                 if (group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
                 		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
                 		|| searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ") || searchField2.getText()=="") {
@@ -700,7 +713,7 @@ searchField2.addFocusListener(new FocusListener() {
         }
     }
 
-    private JPanel createGroupPanel(gruppo group) {
+    private JPanel createGroupPanel(Gruppo group) {
         JPanel groupPanel = new JPanel(new BorderLayout());
         groupPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 51, 153), 2));
         groupPanel.setMaximumSize(new Dimension(2000, 120));

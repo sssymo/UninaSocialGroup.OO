@@ -8,10 +8,10 @@ import classiDao.UserDao;
 import gui.*;
 import javax.swing.*;
 
-import classi.gruppo;
-import classi.notifica;
-import classi.richiesta;
-import classiDao.richiestaDAO;
+import classi.Gruppo;
+import classi.Notifica;
+import classi.Richiesta;
+import classiDao.RichiestaDAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ public class Controller {
     private TagDao Tagdao;
     private GroupDao groupDao;
     private NotificaDAO notificationDao;
-    private richiestaDAO richiestaDao;
+    private RichiestaDAO richiestaDAO;
     private JFrame currentFrame;
     private int currentUser;
     private String Username;
@@ -36,7 +36,7 @@ public class Controller {
         groupDao = new GroupDao(connection);
         Tagdao=new TagDao(connection);
         notificationDao = new NotificaDAO(connection);
-        richiestaDao = new richiestaDAO(connection);
+        richiestaDAO = new RichiestaDAO(connection);
         PostDao= new PostDao(connection);
         showLoginInterface();
     }
@@ -63,17 +63,17 @@ public class Controller {
     
     public void showHomePage() {
         currentFrame.dispose();
-        currentFrame = new Home(currentUser,Username,groupDao, notificationDao, richiestaDao, this,PostDao,Tagdao);
+        currentFrame = new HomeInterface(currentUser,Username,groupDao, notificationDao, richiestaDAO, this,PostDao,Tagdao);
     }
-    public void showNotificationsInterface(List<notifica> notifications,List<richiesta> richieste) {
+    public void showNotificationsInterface(List<Notifica> notifications,List<Richiesta> richieste) {
         currentFrame.dispose();
-        currentFrame = new NotificationInterface(currentUser, notifications,richieste, this);
+        currentFrame = new NotificationInterface(currentUser, notifications,richieste, this,notificationDao,richiestaDAO);
     }
 
-	public void showGroupInterface(int currentUser,gruppo group) {
+	public void showGroupInterface(int currentUser,Gruppo group) {
 		// TODO Auto-generated method stub
 		currentFrame.dispose();
-		notificationDao.SendNotificaForAccesso(currentUser, group.getIdGruppo());
+		//notificationDao.SendNotificaForAccesso(currentUser, group.getIdGruppo());
 		currentFrame = new GroupInterface(currentUser, group,this,PostDao,notificationDao);
 		
 	}
@@ -81,7 +81,7 @@ public class Controller {
 public void showReportInterface(int currentUser) {
 	currentFrame.dispose();
 	//???
-	List<gruppo> g = GroupDao.getGroupsByCreatore(currentUser);
+	List<Gruppo> g = GroupDao.getGroupsByCreatore(currentUser);
 	
 		
 
@@ -89,9 +89,9 @@ public void showReportInterface(int currentUser) {
 
 }
    
-public void ShowGroupInfo(int currentUser,gruppo group) {
+public void ShowGroupInfo(int currentUser,Gruppo group) {
 	currentFrame.dispose();
-	currentFrame=new ShowGroupInfo(currentUser,group,this,PostDao);
+	currentFrame=new GroupInfoInterface(currentUser,group,this,PostDao);
 }
 }
 

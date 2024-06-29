@@ -6,21 +6,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import classi.gruppo;
+import classi.Gruppo;
 import classiDao.GroupDao;
 import classiDao.PostDao;
 import classiDao.TagDao;
 import controller.Controller;
 
-public class ShowGroupInfo extends JFrame {
+public class GroupInfoInterface extends JFrame {
 
     private int currentUser;
-    private gruppo group;
+    private Gruppo group;
     private Controller controller;
     private PostDao postDao;
 //fw
     private String Tags="";
-    public ShowGroupInfo(int currentUser, gruppo group, Controller controller, PostDao postDao) {
+    public GroupInfoInterface(int currentUser, Gruppo group, Controller controller, PostDao postDao) {
         this.currentUser = currentUser;
         this.group = group;
         this.controller = controller;
@@ -40,6 +40,7 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         JLabel titleLabel = new JLabel("Informazioni Gruppo", SwingConstants.CENTER);
+        titleLabel.setBackground(new Color(0, 0, 128));
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
 
@@ -96,7 +97,7 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
                 public void actionPerformed(ActionEvent e) {
                   
         
-                    String newTags = JOptionPane.showInputDialog(ShowGroupInfo.this, "Inserisci i tag:", Tags);
+                    String newTags = JOptionPane.showInputDialog(GroupInfoInterface.this, "Inserisci i tag:", Tags);
                     if(newTags!=Tags) {
                  
                     	

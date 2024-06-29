@@ -11,25 +11,30 @@ import java.util.List;
 
 import org.postgresql.util.PGTimestamp;
 
-import classi.richiesta;
+import classi.Richiesta;
 
-public class richiestaDAO {
+public class RichiestaDAO {
     private static final String INSERT_RICHIESTA_SQL = "INSERT INTO richiesta (idrichiedente, idgruppo, data_richiesta , orario_richiesta) VALUES (?, ?, ?, ?)";
     private static final String GET_RICHIESTE_FOR_USER_SQL = "SELECT * FROM richiesta WHERE idrichiedente = ?";
 
-    public static richiestaDAO getInstance(Connection conn) {
-        return new richiestaDAO(conn);
+    public static RichiestaDAO getInstance(Connection conn) {
+        return new RichiestaDAO(conn);
     }
 
 	private static Connection conn;
 
-    public richiestaDAO(Connection conn) {
+    public RichiestaDAO(Connection conn) {
         this.conn = conn;
     }
 
     public boolean deleteRequest(int currentUser,int groupId) {
     	try (PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM richiesta where idrichiedente=? and idgruppo=?")) {
-            preparedStatement.setInt(1, currentUser);
+    		try (PreparedStatement preparedStatement2 = conn.prepareStatement("DELETE FROM accetta where idgruppo=?")){
+        		
+                preparedStatement2.setInt(1, groupId);
+                preparedStatement2.executeUpdate();
+    		}
+    		preparedStatement.setInt(1, currentUser);
             preparedStatement.setInt(2, groupId);
             preparedStatement.executeUpdate();
             return true;
@@ -58,13 +63,13 @@ public class richiestaDAO {
     }
     
     private final static String QVediRichiesteDiIscrizioneAiTuoiGruppi="SELECT r.idrichiedente,r.idgruppo,r.data_richiesta FROM richiesta as r,gruppo as g,crea as c WHERE c.idgruppo=g.idgruppo AND c.idutente=? AND r.idgruppo=c.idgruppo ORDER BY r.data_richiesta DESC ";
-public static List<richiesta> VediRichiesteDiIscrizioneAiTuoiGruppi(int currentUser) throws SQLException {
-	ArrayList<richiesta> notifichedirichiestaiscrizioneaituoigruppi = new ArrayList<>();
+public static List<Richiesta> VediRichiesteDiIscrizioneAiTuoiGruppi(int currentUser) throws SQLException {
+	ArrayList<Richiesta> notifichedirichiestaiscrizioneaituoigruppi = new ArrayList<>();
 	try (PreparedStatement stmt = conn.prepareStatement(QVediRichiesteDiIscrizioneAiTuoiGruppi)) {
 		stmt.setInt(1, currentUser);
 		ResultSet s=stmt.executeQuery();
 		while(s.next()) {
-			richiesta r= new richiesta(s.getInt(1),s.getInt(2),s.getTimestamp(3).toLocalDateTime());
+			Richiesta r= new Richiesta(s.getInt(1),s.getInt(2),s.getTimestamp(3).toLocalDateTime());
 			notifichedirichiestaiscrizioneaituoigruppi.add(r);
 		}
 	}
@@ -72,15 +77,33 @@ public static List<richiesta> VediRichiesteDiIscrizioneAiTuoiGruppi(int currentU
 	
 	
 }
+public boolean checkiscrizione(int idUtente, int idGruppo) {
+	try (PreparedStatement s = conn.prepareStatement("SELECT * FROM iscrizione WHERE idutente=? AND idgruppo=?")){
+		s.setInt(2, idGruppo);
+		s.setInt(1, idUtente);
+		ResultSet rs=s.executeQuery();
+	    while(rs.next()) {
+	    	return true;
+	    }
+	    	return false;
+	   
+	    
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	// TODO Auto-generated method stub
+	return false;
 
-    public List<richiesta> getRichiesteForUser(int idUtente) throws SQLException {
-        List<richiesta> richieste = new ArrayList<>();
+}
+    public List<Richiesta> getRichiesteForUser(int idUtente) throws SQLException {
+        List<Richiesta> richieste = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(GET_RICHIESTE_FOR_USER_SQL)) {
             stmt.setInt(1, idUtente);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    richiesta richiesta = new richiesta(
-                            rs.getInt("idutente"),
+                    Richiesta richiesta = new Richiesta(
+                            rs.getInt("idrichiedente"),
                             rs.getInt("idgruppo"),
                             rs.getTimestamp("data_ora").toLocalDateTime()
                             

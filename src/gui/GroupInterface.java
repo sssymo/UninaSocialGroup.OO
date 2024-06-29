@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import classi.Post;
-import classi.gruppo;
+import classi.Gruppo;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.PostDao;
@@ -19,14 +19,14 @@ import controller.Controller;
 
 public class GroupInterface extends JFrame {
 
-    private gruppo group;
+    private Gruppo group;
     private PostDao postDao;
     private NotificaDAO notificaDao;
     private JTextField postTextField ;
     private JPanel centerPanel;
     public JScrollPane scrollPane;
 
-    public GroupInterface(int currentUser, gruppo group, Controller controller, PostDao postDao, NotificaDAO notificaDao) {
+    public GroupInterface(int currentUser, Gruppo group, Controller controller, PostDao postDao, NotificaDAO notificaDao) {
         this.group = group;
         this.postDao = postDao;
         this.notificaDao = notificaDao;
@@ -53,7 +53,6 @@ public class GroupInterface extends JFrame {
 
         add(bannerLabel, BorderLayout.NORTH);
 
-        // Pnnello per i post al centro
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createLineBorder(new Color(	0,	51	,153), 2));
@@ -61,9 +60,8 @@ public class GroupInterface extends JFrame {
         JScrollPane scrollPane = new JScrollPane(centerPanel);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Pulsante "Indietro" in alto a destra
         JPanel topRightPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 0, 5)); // GridLayout con 2 righe, 1 colonna
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 0, 5));
         buttonPanel.setBackground(new Color(60, 92, 156));
         JButton backButton = new JButton("Indietro");
         buttonPanel.add(backButton);
@@ -76,7 +74,7 @@ public class GroupInterface extends JFrame {
         infoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Apri la finestra popup con le informazioni del gruppo
+              
                 controller.ShowGroupInfo(currentUser,group);
             }
         });
@@ -86,7 +84,6 @@ public class GroupInterface extends JFrame {
 
 
 
-        // annello per l'inserimento di un post in basso
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JTextField postTextField = new JTextField();
         bottomPanel.setBackground(new Color(60, 92, 156));
@@ -124,16 +121,16 @@ public class GroupInterface extends JFrame {
             
             @Override
             public void keyPressed(KeyEvent e) {
-                // Se viene premuto "Invio"
+            
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 	String desc = postTextField.getText();
-                	//se il post non è vuoto
+       
                 	if(!desc.isEmpty()) {
                         postTextField.setText("");
                         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                         PostDao.InserisciPost(currentUser, group.getIdGruppo(), desc, currentTime);
-                        notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(), desc, currentTime);
-                        updatePostPanel(); // Aggiorna il pannello dei post dopo l'inserimento di uo no uno nuovo
+                    //    notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(), desc, currentTime);
+                        updatePostPanel(); // Aaaggiorno il pannello dei post dopo l'inserimento di uo no uno nuovo
                     
                 	}
 
@@ -185,7 +182,7 @@ public class GroupInterface extends JFrame {
                     postTextField.setText("");
                     Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                     PostDao.InserisciPost(currentUser, group.getIdGruppo(), desc, currentTime);
-                    notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(), desc, currentTime);
+                   // notificaDao.SendNotificaForPost(currentUser, group.getIdGruppo(), desc, currentTime);
                     updatePostPanel(); 
                 
                     SwingUtilities.invokeLater(() -> {
@@ -197,12 +194,12 @@ public class GroupInterface extends JFrame {
 
             // aggiorno il pannello dei post
             private void updatePostPanel() {
-                centerPanel.removeAll(); // Rimuove tutti i componenti dal pannello centrale
+                centerPanel.removeAll(); 
                 JLabel groupInfoLabel = new JLabel("Gruppo creato da " + GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()) + " il " + group.getDataCreazione());
                 groupInfoLabel.setForeground(Color.white);
                 centerPanel.add(groupInfoLabel);
                 centerPanel.add(Box.createVerticalStrut(10));
-                List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); // Recupera i nuovi post dal database
+                List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); 
                 for (Post p : posts) {
                 	
                     JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());

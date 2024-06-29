@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import classi.Tag;
-import classi.gruppo;
+import classi.Gruppo;
 public class GroupDao {
     private static Connection connection;
     
@@ -14,23 +14,44 @@ public class GroupDao {
     }
 
     //funziona
-    public static boolean AcceptUtenteAGruppo(int idutente,int idgruppo) {
-    	try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO iscrizione (idutente,idgruppo) VALUES (?,?)")){
-    		stmt.setInt(1, idutente);
-    		stmt.setInt(2, idgruppo);
-    		stmt.executeUpdate();
-    		//successivamente elimino la richiesta
-    		try(PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM richiesta WHERE idrichiedente=? AND idgruppo=?")){
-        		stmt2.setInt(1, idutente);
-        		stmt2.setInt(2, idgruppo);
-        		stmt2.executeUpdate();
-    		}
-    		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;			
+    public static boolean AcceptUtenteAGruppo(int idutente, int idgruppo, int cusr) {
+        try (PreparedStatement stmt3 = connection.prepareStatement(
+                "INSERT INTO accetta (idgruppo, idrichiedente, idamministratore ) VALUES (?, ?, ?)")) {
+            stmt3.setInt(1, idgruppo);
+            stmt3.setInt(2, idutente);
+            stmt3.setInt(3, cusr);
+            stmt3.executeUpdate();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    "INSERT INTO iscrizione (idutente, idgruppo) VALUES (?, ?)")) {
+                stmt.setInt(1, idutente);
+                stmt.setInt(2, idgruppo);
+                stmt.executeUpdate();
+                
+            }
+            try (PreparedStatement stmt4 = connection.prepareStatement(
+                    "DELETE FROM accetta WHERE idgruppo=? AND idrichiedente=? AND idamministratore=?")) {
+                stmt4.setInt(1, idgruppo);
+                stmt4.setInt(2, idutente);
+                stmt4.setInt(3, cusr);
+                stmt4.executeUpdate();
+            }
+            // successivamente elimino la richiesta
+            try (PreparedStatement stmt2 = connection.prepareStatement(
+                    "DELETE FROM richiesta WHERE idrichiedente = ? AND idgruppo = ?")) {
+                stmt2.setInt(1, idutente);
+                stmt2.setInt(2, idgruppo);
+                stmt2.executeUpdate();
+            }
+
+            
+            return true;  
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  
+        }
     }
+
     public static String GetCreatoreFromIdGruppo(int idgruppo) {
     	String query="SELECT utente.nickname from crea,utente where utente.idutente=crea.idutente and crea.idgruppo=?";
     	try (PreparedStatement stmt = connection.prepareStatement(query)){
@@ -62,7 +83,7 @@ public class GroupDao {
     	return "error";
     }
     
-    public static gruppo GetGroupDataFromId(int id) {
+    public static Gruppo GetGroupDataFromId(int id) {
     	
     	try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM gruppo WHERE idgruppo=?")) {
     		statement.setInt(1, id);
@@ -79,7 +100,7 @@ public class GroupDao {
     	    		}
     				
     			}
-    			 gruppo g=new gruppo(r.getString(2),r.getInt(1),r.getString(4),r.getDate(3),Tags);
+    			 Gruppo g=new Gruppo(r.getString(2),r.getInt(1),r.getString(4),r.getDate(3),Tags);
     			 
     			 
     			 
@@ -95,8 +116,8 @@ public class GroupDao {
     	return null;
     }
     
-    public static ArrayList<gruppo> getGroupsByUser(int currentUser) throws SQLException {
-        ArrayList<gruppo> groups = new ArrayList<>();
+    public static ArrayList<Gruppo> getGroupsByUser(int currentUser) throws SQLException {
+        ArrayList<Gruppo> groups = new ArrayList<>();
         String query = "SELECT g.nome_gruppo, g.idgruppo, g.data_creazione, g.descrizione_gruppo "
                 + "FROM gruppo AS g, iscrizione AS i, utente AS u "
                 + "WHERE g.idgruppo = i.idgruppo "
@@ -125,7 +146,7 @@ public class GroupDao {
     			String nome= resultSet.getString(1);
     			String desc=resultSet.getString(4);
     			Date data=resultSet.getDate(3);
-    			gruppo g = new gruppo(nome,id,desc,data,Tags);
+    			Gruppo g = new Gruppo(nome,id,desc,data,Tags);
                 groups.add(g);
             }
         }catch (SQLException e) {
@@ -133,8 +154,8 @@ public class GroupDao {
         }
         return groups;
     }
-    public List<gruppo> searchGroupByName( String groupName) throws SQLException {
-    	ArrayList<gruppo> groups = new ArrayList<>();
+    public List<Gruppo> searchGroupByName( String groupName) throws SQLException {
+    	ArrayList<Gruppo> groups = new ArrayList<>();
     	String query= "SELECT * FROM gruppo WHERE nome_gruppo LIKE ?";
     	try(PreparedStatement stmt= connection.prepareStatement(query)){
     		stmt.setString(1,groupName + "%");
@@ -157,7 +178,7 @@ public class GroupDao {
     			String desc=res.getString(4);
     			Date data=res.getDate(3);
     			
-    			gruppo g = new gruppo(nome,id,desc,data,Tags);
+    			Gruppo g = new Gruppo(nome,id,desc,data,Tags);
     			groups.add(g);
     		}
     	}
@@ -167,8 +188,8 @@ public class GroupDao {
   private final String GET_ID_DEL_GRUPPO ="SELECT MAX(idgruppo) FROM gruppo ";
   private final String INSERT_IN_ISCRITTO ="INSERT INTO iscrizione (idutente,idgruppo ) VALUES ( ?, ?)";
   private static final String INSERT_IN_CREA = "INSERT INTO crea (idutente,idgruppo ) VALUES ( ?, ?)";
-  
-    //metodo per creazione gruppo
+  private static final String INSERT_IN_AMMINISTRA = "INSERT INTO amministra (idutente ,idgruppo) VALUES (?,?)";
+
     public int CreateGroup(String nome_gruppo,String desc,int currentUser) throws SQLException{
     	
     	try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_GRUPPO)) {
@@ -189,11 +210,8 @@ public class GroupDao {
                             p3.executeUpdate();
                             //successivamente inserisco anche in "iscritto" 
                             //in maniera che risulti tra quelli iscritti al suo gruppo
-                            try(PreparedStatement p4=connection.prepareStatement(INSERT_IN_ISCRITTO)){
-                                p4.setInt(1, currentUser);
-                                p4.setInt(2, id);
-                                p4.executeUpdate();
-                            }
+
+
                         }
                         return id;
                     } else {
@@ -212,8 +230,8 @@ public class GroupDao {
     
     }
 
-    public List<gruppo> getGroupsRequestedByUser(int userId) {
-        ArrayList<gruppo> groups = new ArrayList<>();
+    public List<Gruppo> getGroupsRequestedByUser(int userId) {
+        ArrayList<Gruppo> groups = new ArrayList<>();
         String query = "SELECT gruppo.nome_gruppo,gruppo.idgruppo,gruppo.data_creazione,gruppo.descrizione_gruppo " +
                        "FROM richiesta " +
                        "INNER JOIN gruppo ON gruppo.idgruppo = richiesta.idgruppo " +
@@ -238,7 +256,7 @@ public class GroupDao {
     			String nome= resultSet.getString(1);
     			String desc=resultSet.getString(4);
     			Date data=resultSet.getDate(3);
-    			gruppo g = new gruppo(nome,id,desc,data,Tags);
+    			Gruppo g = new Gruppo(nome,id,desc,data,Tags);
     			groups.add(g);
             }
         } catch (SQLException e) {
@@ -264,7 +282,7 @@ public class GroupDao {
 
 	public static List getGroupsByCreatore(int currentUser) {
 		// TODO Auto-generated method stub
-		ArrayList<gruppo> ng=new ArrayList();
+		ArrayList<Gruppo> ng=new ArrayList();
 		try (PreparedStatement statement = connection.prepareStatement("select gruppo.nome_gruppo,gruppo.idgruppo,gruppo.data_creazione,gruppo.descrizione_gruppo from gruppo,crea where crea.idutente=? and gruppo.idgruppo=crea.idgruppo")){
 			statement.setInt(1,currentUser);
 			ResultSet rs= statement.executeQuery();
@@ -284,7 +302,7 @@ public class GroupDao {
     			String nome= rs.getString(1);
     			String desc=rs.getString(4);
     			Date data=rs.getDate(3);
-    			gruppo g = new gruppo(nome,id,desc,data,Tags);
+    			Gruppo g = new Gruppo(nome,id,desc,data,Tags);
     			ng.add(g);
             }
 			return ng;
@@ -358,4 +376,6 @@ public class GroupDao {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 }

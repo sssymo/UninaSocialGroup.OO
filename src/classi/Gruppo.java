@@ -6,26 +6,34 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class gruppo {
+public class Gruppo {
     private String nomeGruppo;
     private int idGruppo;
     private String descrizioneGruppo;
     private Date dataCreazione;
     private List<Tag> tagList;
 
-    public gruppo(String nomeGruppo, int i, String descrizioneGruppo, Date data,List<Tag> tagList) {
+
+    public Gruppo(String nomeGruppo, int i, String descrizioneGruppo, Date data,List<Tag> tagList) {
         this.nomeGruppo = nomeGruppo;
         this.idGruppo = i;
         this.descrizioneGruppo = descrizioneGruppo;
         this.dataCreazione = data;
         this.tagList = tagList;
     }
+  //costruttore senza tag, per i casi in cui non serve visualizzare i tags (ad esempio nella reportinterface)
+    public Gruppo(int int1, String string, Date date, String string2) {
+		// TODO Auto-generated constructor stub
+        this.nomeGruppo = string;
+        this.idGruppo = int1;
+        this.descrizioneGruppo = string2;
+        this.dataCreazione = date;
+	}
 
-    public void addTag(Tag tag) {
+	public void addTag(Tag tag) {
         this.tagList.add(tag);
     }
 
-    // getters and setters for all attributes
     public String getNomeGruppo() {
         return nomeGruppo;
     }

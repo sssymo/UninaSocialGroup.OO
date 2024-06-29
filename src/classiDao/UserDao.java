@@ -70,7 +70,7 @@ public class UserDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Gestione dell'eccezione: ritorna false in caso di errore di accesso al database
+            return false; 
         }
     }
  // Metodo per salvare un utente nel database 
@@ -110,7 +110,6 @@ public class UserDao {
         }
     }
 
-    // Metodo per aggiornare i dati di un utente nel database
     public void aggiornaUtente(Utente utente) throws SQLException {
         String query = "UPDATE Utenti SET username = ?, password = ?, bio = ?, numPubblicazioni = ?, numGruppiPartecipanti = ? " +
                        "WHERE idUtente = ?";

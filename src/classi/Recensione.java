@@ -8,7 +8,6 @@ public class Recensione {
     private int idPost;
     private String testo;
 
-    // Costruttore, getter e setter
     public Recensione(int idRecensione, int idUtente, int idPost, String testo) {
         this.idRecensione = idRecensione;
         this.idUtente = idUtente;
