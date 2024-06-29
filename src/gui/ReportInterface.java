@@ -88,12 +88,15 @@ Controller controller;
                     int minComments = PostDao.getPostWithMinComments(selectedGruppo.getIdGruppo());
                    int minLikes = PostDao.getPostWithMinLikes(selectedGruppo.getIdGruppo());
                    int maxComments = PostDao.getPostWithMaxComments(selectedGruppo.getIdGruppo());
+                   int totalPosts = PostDao.GetNumPost(selectedGruppo.getIdGruppo());
+                   
                    System.out.println("Max Likes for Group: " + maxLikes);
                    System.out.println("Min Likes for Group: " + minLikes);
                    System.out.println("Max Comments for Group: " + maxComments);
                    System.out.println("Min Comments for Group: " + minComments);
                     String reportText = "\n"+"  Groupname: " + selectedGruppo.getNomeGruppo() +"   ";
                     reportText += "  Creation Date: " + selectedGruppo.getDataCreazione() + "\n"+"\n";
+                    reportText += "  Total Posts: " + totalPosts +"("+PostDao.GetNumPost(selectedGruppo.getIdGruppo(),currentUser)+")  " ;
                     reportText += "  Post with Max Likes: " + maxLikes +"   " ;
                     reportText += "  Min Likes: " + minLikes + "\n"+"\n";
                     reportText += "  Post with Max Comments: " + maxComments+"   ";
@@ -112,6 +115,7 @@ Controller controller;
         reportPanel.setBackground(Color.WHITE);
         
         reportTextArea.setEditable(false);
+        reportTextArea.setFont(new Font("Arial", Font.BOLD, 18));
         reportTextArea.setBackground(UIManager.getColor("InternalFrame.activeTitleGradient"));
         JScrollPane scrollPane = new JScrollPane(reportTextArea);
         reportPanel.add(scrollPane, BorderLayout.CENTER);

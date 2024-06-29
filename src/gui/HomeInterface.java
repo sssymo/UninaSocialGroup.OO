@@ -537,7 +537,24 @@ searchField2.addFocusListener(new FocusListener() {
                 gbc.gridy = 0;
                 gbc.anchor = GridBagConstraints.WEST;
 
-                JTextField groupNameField = new JTextField();
+                JTextField groupNameField = new JTextField("inserisci un nome");
+                groupNameField.setPreferredSize(new Dimension(150, 30));
+                groupNameField.addFocusListener(new FocusListener() {
+                    public void focusGained(FocusEvent e) {
+                        if (groupNameField.getText().equals("inserisci un nome")) {
+                        	groupNameField.setText("");
+                        	groupNameField.setForeground(Color.BLACK);
+                        }
+                    }
+
+                    public void focusLost(FocusEvent e) {
+                        if (groupNameField.getText().isEmpty()) {
+                        	groupNameField.setText("inserisci un nome");
+                        	groupNameField.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+                groupNameField.setForeground(Color.GRAY);
                 groupNameField.setPreferredSize(new Dimension(150, 30));
                 dialogPanel.add(new JLabel("Nome del Gruppo:"), gbc);
                 gbc.gridy++;
@@ -549,12 +566,28 @@ searchField2.addFocusListener(new FocusListener() {
                 gbc.fill = GridBagConstraints.BOTH;
                 gbc.weightx = 1.0;
                 gbc.weighty = 1.0;
-                JTextArea descriptionArea = new JTextArea();
-                descriptionArea.setPreferredSize(new Dimension(150, 50));
+                JTextArea descriptionArea = new JTextArea("inserisci una descrizione :) ");
+               
                 descriptionArea.setLineWrap(true);
                 descriptionArea.setWrapStyleWord(true);
                 JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
-             
+                descriptionArea.setPreferredSize(new Dimension(150, 30));
+                descriptionArea.addFocusListener(new FocusListener() {
+                    public void focusGained(FocusEvent e) {
+                        if (descriptionArea.getText().equals("inserisci una descrizione :) ")) {
+                        	descriptionArea.setText("");
+                        	descriptionArea.setForeground(Color.BLACK);
+                        }
+                    }
+
+                    public void focusLost(FocusEvent e) {
+                        if (descriptionArea.getText().isEmpty()) {
+                        	descriptionArea.setText("inserisci una descrizione :) ");
+                        	descriptionArea.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+                descriptionArea.setForeground(Color.GRAY);
                 dialogPanel.add(descriptionScrollPane, gbc);
                 gbc.gridy++;
                 dialogPanel.add(new JLabel("Tags:"), gbc);
@@ -639,6 +672,9 @@ searchField2.addFocusListener(new FocusListener() {
                     	    groupName.contains("9")) {
                     	    inserisci = false;
                     	}
+                    if(groupName.contains("inserisci un nome")) {
+                    	inserisci=false;
+                    }
                     
                     
                     

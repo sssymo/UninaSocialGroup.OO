@@ -38,7 +38,7 @@ public class GroupInterface extends JFrame {
         setIconImage(imgIconaFrame);
 
         BorderLayout layout = new BorderLayout();
-        setLayout(layout);
+        getContentPane().setLayout(layout);
 
         // Banner del gruppo
         JLabel bannerLabel = new JLabel(group.getNomeGruppo());
@@ -51,17 +51,17 @@ public class GroupInterface extends JFrame {
         
         
 
-        add(bannerLabel, BorderLayout.NORTH);
+        getContentPane().add(bannerLabel, BorderLayout.NORTH);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createLineBorder(new Color(	0,	51	,153), 2));
         centerPanel.setBackground(new Color(137, 156, 196));
         JScrollPane scrollPane = new JScrollPane(centerPanel);
-        add(scrollPane, BorderLayout.CENTER);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
 
         JPanel topRightPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 0, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 1, 10));
         buttonPanel.setBackground(new Color(60, 92, 156));
         JButton backButton = new JButton("Indietro");
         buttonPanel.add(backButton);
@@ -80,17 +80,18 @@ public class GroupInterface extends JFrame {
         });
 //ok
         topRightPanel.add(buttonPanel, BorderLayout.NORTH);
-        add(topRightPanel, BorderLayout.EAST);
+        getContentPane().add(topRightPanel, BorderLayout.EAST);
 
 
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JTextField postTextField = new JTextField();
+        postTextField.setMinimumSize(new Dimension(13, 27));
         bottomPanel.setBackground(new Color(60, 92, 156));
         JButton createPostButton = new JButton("Crea nuovo post");
         bottomPanel.add(postTextField, BorderLayout.CENTER);
         bottomPanel.add(createPostButton, BorderLayout.EAST);
-        add(bottomPanel, BorderLayout.SOUTH);
+        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -224,6 +225,7 @@ public class GroupInterface extends JFrame {
 
     private void loadInitialPosts(int currentUser) {
         JLabel groupInfoLabel = new JLabel("Gruppo creato da " + GroupDao.GetCreatoreFromIdGruppo(group.getIdGruppo()) + " il " + group.getDataCreazione());
+        groupInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         groupInfoLabel.setForeground(Color.white);
         centerPanel.add(groupInfoLabel);
         centerPanel.add(Box.createVerticalStrut(10));
