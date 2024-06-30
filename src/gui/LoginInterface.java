@@ -146,6 +146,18 @@ public class LoginInterface extends JFrame {
             loginPanel.add(passwordField, gbcPasswordField);
 
             JButton loginButton = new JButton("Accedi");
+            loginButton.setToolTipText("Accedi");
+            //questo è per fargli cambiare colo re quando ci passi sopra col mosue
+            loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                	loginButton.setBackground(new Color(200, 200, 200));
+                }
+            });
+            loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                	loginButton.setBackground(UIManager.getColor("control")); // Rcosì reimpoosto il colore del pulsante al colore di defaudefault
+            }
+            });
             loginButton.setFont(new Font("Georgia", Font.ITALIC, 20));
             GridBagConstraints gbcLoginButton = new GridBagConstraints();
             gbcLoginButton.insets = new Insets(10, 10, 10, 10);
@@ -156,6 +168,18 @@ public class LoginInterface extends JFrame {
             loginPanel.add(loginButton, gbcLoginButton);
 
             JButton registerButton = new JButton("Registrati");
+            registerButton.setToolTipText("Registrati");
+            //questo è per fargli cambiare colo re quando ci passi sopra col mosue
+            registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                	registerButton.setBackground(new Color(200, 200, 200));
+                }
+            });
+            registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                	registerButton.setBackground(UIManager.getColor("control")); // Rcosì reimpoosto il colore del pulsante al colore di defaudefault
+            }
+            });
             registerButton.setFont(new Font("Georgia", Font.ITALIC, 20));
             GridBagConstraints gbcRegisterButton = new GridBagConstraints();
             gbcRegisterButton.insets = new Insets(10, 10, 10, 10);

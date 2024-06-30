@@ -18,6 +18,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class NotificationInterface extends JFrame {
@@ -61,7 +65,9 @@ public class NotificationInterface extends JFrame {
 		
 		 //s
 		for (Richiesta r : notifichedirichiestaaitg) {
-		    JLabel notificationLabel = new JLabel(UserDao.getUserNameById(r.getIdUtente()) + " ti ha chiesto di essere aggiunto a " + GroupDao.GetGroupNameFromId(r.getIdGruppo()));
+		    JLabel notificationLabel = new JLabel(r.getDataRichiesta()+" "+UserDao.getUserNameById(r.getIdUtente()) + " ti ha chiesto di essere aggiunto a " + GroupDao.GetGroupNameFromId(r.getIdGruppo()));
+		 
+		    
 		    JButton accettaButton = new JButton("Accetta");
 
 		    JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -109,7 +115,10 @@ public class NotificationInterface extends JFrame {
 		    if (n.getIdpost() != 0) {
 		    	
 		        Gruppo link = PostDao.getGroupFromPost(n.getIdpost());
-		        JLabel notificationLabel = new JLabel(n.getDesc_notifica());
+
+	                 
+		        JLabel notificationLabel = new JLabel(
+		        		n.getData_notifica()+" "+n.getOrario_notifica().toString().substring(11,11+5)+" "+n.getDesc_notifica());
 
 		        JButton VAIALGRUPPO = new JButton(link.getNomeGruppo());
 
@@ -147,7 +156,8 @@ public class NotificationInterface extends JFrame {
 		    if (n.getIdGruppo() != 0) {
 		    	
 		    	Gruppo link2 = GroupDao.GetGroupDataFromId(n.getIdGruppo());
-		    	JLabel notificationLabel = new JLabel(n.getDesc_notifica());
+		        JLabel notificationLabel = new JLabel(
+		        		n.getData_notifica()+" "+n.getOrario_notifica().toString().substring(11,11+5)+" "+n.getDesc_notifica());
 
 		        JButton VAIALGRUPPO = new JButton(link2.getNomeGruppo());
 

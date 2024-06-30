@@ -1,19 +1,20 @@
 package classi;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class Notifica {
     private int idNotifica;
     private int idpost;
     private int idUtente;
     private int idGruppo;
-    private Timestamp data_notifica;
+    private Date data_notifica;
     private Timestamp orario_notifica;
     private String desc_notifica;
 private String tipo;
 
 
-    public Notifica(int idNotifica, int idpost, int idUtente, int idGruppo, Timestamp data_notifica, Timestamp orario_notifica, String desc_notifica,String tipo) {
+    public Notifica(int idNotifica, int idpost, int idUtente, int idGruppo, Date data_notifica, Timestamp orario_notifica, String desc_notifica,String tipo) {
         this.idNotifica = idNotifica;
         this.idpost = idpost;
         this.idUtente = idUtente;
@@ -62,7 +63,7 @@ private String tipo;
     }
 
   
-    public Timestamp getData_notifica() {
+    public Date getData_notifica() {
         return data_notifica;
     }
 

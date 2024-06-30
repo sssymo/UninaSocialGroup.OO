@@ -28,7 +28,7 @@ public class NotificaDAO {
         	
         	ResultSet rs=stmt.executeQuery();
         	while(rs.next()) {
-        		Notifica n =new Notifica(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4),rs.getTimestamp(5),rs.getTimestamp(6),rs.getString(7),rs.getString(8));
+        		Notifica n =new Notifica(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4),rs.getDate(5),rs.getTimestamp(6),rs.getString(7),rs.getString(8));
         		notifiche.add(n);
         	}
         	return notifiche;

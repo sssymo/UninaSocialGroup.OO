@@ -31,6 +31,18 @@ public class RegistrationInterface extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
         JButton returnToLoginButton = new JButton("Ritorna al Login");
+        returnToLoginButton.setToolTipText("Ritorna al Login");
+        //questo è per fargli cambiare colo re quando ci passi sopra col mosue
+        returnToLoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	returnToLoginButton.setBackground(new Color(200, 200, 200));
+            }
+        });
+        returnToLoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	returnToLoginButton.setBackground(UIManager.getColor("control")); // Rcosì reimpoosto il colore del pulsante al colore di defaudefault
+        }
+        });
         returnToLoginButton.setFont(new Font("Georgia", Font.ITALIC, 20));
         JLabel bioLabel = new JLabel("Bio:");
         bioLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
@@ -70,6 +82,18 @@ public class RegistrationInterface extends JFrame {
         
         JScrollPane bioScrollPane = new JScrollPane(bioArea);
         registerButton = new JButton("Registrati");
+        registerButton.setToolTipText("Registrati");
+        //questo è per fargli cambiare colo re quando ci passi sopra col mosue
+        registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	registerButton.setBackground(new Color(200, 200, 200));
+            }
+        });
+        registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	registerButton.setBackground(UIManager.getColor("control")); // Rcosì reimpoosto il colore del pulsante al colore di defaudefault
+        }
+        });
         registerButton.setFont(new Font("Georgia", Font.ITALIC, 20));
         passwordField.addFocusListener(new FocusListener() {
             @Override
@@ -217,7 +241,7 @@ public class RegistrationInterface extends JFrame {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
                 String bio = bioArea.getText();
-                if (username.isEmpty() || password.isEmpty()) {
+                if (username.isEmpty() || password.isEmpty() || username.contains("Username")) {
                     JOptionPane.showMessageDialog(RegistrationInterface.this,
                             "Username and password fields are required.",
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -235,6 +259,7 @@ public class RegistrationInterface extends JFrame {
                                 "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     } else {
+                    	//2 è un id messo in generale, poi il db si occuperà di assegnarlo
                         Utente u = new Utente(username, 2, password, bio);
                         try {
                             userDao.salvaUtente(u);
