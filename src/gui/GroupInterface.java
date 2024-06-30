@@ -63,21 +63,83 @@ public class GroupInterface extends JFrame {
         JPanel topRightPanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 1, 10));
         buttonPanel.setBackground(new Color(60, 92, 156));
-        JButton backButton = new JButton("Indietro");
-        buttonPanel.add(backButton);
-        topRightPanel.setBackground(new Color(60, 92, 156));
-        JButton leaveGroupButton = new JButton("Abbandona il gruppo");
-        buttonPanel.add(leaveGroupButton);
-        JButton infoButton = new JButton("Informazioni");
-        buttonPanel.add(infoButton);
-
-        infoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              
-                controller.ShowGroupInfo(currentUser,group);
+        ImageIcon originalIcon3 = new ImageIcon("./src/img/GoBackIcon.png");
+     Image img3 = originalIcon3.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+     ImageIcon resizedIcon3 = new ImageIcon(img3);
+     
+     ImageIcon originalIcon5 = new ImageIcon("./src/img/infogruppo.png");
+     Image img5 = originalIcon5.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+     ImageIcon resizedIcon5 = new ImageIcon(img5);
+     JButton infoButton = new JButton(resizedIcon5);
+     infoButton.setToolTipText("Informazioni Gruppo");
+     
+     infoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+         public void mouseEntered(java.awt.event.MouseEvent evt) {
+         	infoButton.setBackground(new Color(200, 200, 200)); 
+         }
+     });
+     infoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+         public void mouseExited(java.awt.event.MouseEvent evt) {
+         	infoButton.setBackground(UIManager.getColor("control")); 
+     }
+     });
+     JButton backButton = new JButton(resizedIcon3);
+     buttonPanel.add(backButton);
+     
+     backButton.setToolTipText("Torna Indietro");
+     
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	backButton.setBackground(new Color(200, 200, 200)); 
             }
         });
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	backButton.setBackground(UIManager.getColor("control")); 
+        }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                controller.showHomePage();
+            }
+        });
+     
+     buttonPanel.add(infoButton);
+     
+             infoButton.addActionListener(new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                   
+                     controller.ShowGroupInfo(currentUser,group);
+                 }
+             });
+        topRightPanel.setBackground(new Color(60, 92, 156));
+        
+        
+        ImageIcon originalIcon4 = new ImageIcon("./src/img/escidalgruppo.png");
+        Image img4 = originalIcon4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon4 = new ImageIcon(img4);
+        
+        JButton leaveGroupButton = new JButton(resizedIcon4);
+        
+        leaveGroupButton.setToolTipText("Esci Dal Gruppo");
+        
+        leaveGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	leaveGroupButton.setBackground(new Color(200, 200, 200)); 
+            }
+        });
+        leaveGroupButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	leaveGroupButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defaudefault
+        }
+        });
+        
+        buttonPanel.add(leaveGroupButton);
+        
+
 //ok
         topRightPanel.add(buttonPanel, BorderLayout.NORTH);
         getContentPane().add(topRightPanel, BorderLayout.EAST);
@@ -88,18 +150,10 @@ public class GroupInterface extends JFrame {
         JTextField postTextField = new JTextField();
         postTextField.setMinimumSize(new Dimension(13, 27));
         bottomPanel.setBackground(new Color(60, 92, 156));
-        JButton createPostButton = new JButton("Crea nuovo post");
+        JButton createPostButton = new JButton("Pubblica Post");
         bottomPanel.add(postTextField, BorderLayout.CENTER);
         bottomPanel.add(createPostButton, BorderLayout.EAST);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                controller.showHomePage();
-            }
-        });
 
         leaveGroupButton.addActionListener(new ActionListener() {
             @Override
@@ -173,6 +227,19 @@ public class GroupInterface extends JFrame {
 				// TODO Auto-generated method stub
 				
 			}
+        });
+        
+        createPostButton.setToolTipText("Pubblica Post");
+        
+        createPostButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            	createPostButton.setBackground(new Color(200, 200, 200)); 
+            }
+        });
+        createPostButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+            	createPostButton.setBackground(UIManager.getColor("control")); // così reimpoosto il colore del pulsante al colore di defaudefault
+        }
         });
         
         createPostButton.addActionListener(new ActionListener() {

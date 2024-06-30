@@ -131,7 +131,7 @@ searchField2.addFocusListener(new FocusListener() {
         
         
         //questo è per creare gruppi
-        ImageIcon originalIcon7 = new ImageIcon("./src/img/add.png");
+        ImageIcon originalIcon7 = new ImageIcon("./src/img/CreaGruppoIcon.png");
         Image img7 = originalIcon7.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon7 = new ImageIcon(img7);
            JButton CreateGroupButton = new JButton(resizedIcon7);
@@ -176,7 +176,7 @@ searchField2.addFocusListener(new FocusListener() {
         });
         
         //icona per visualizza notifiche
-        ImageIcon originalIcon = new ImageIcon("./src/img/campanellina.png");
+        ImageIcon originalIcon = new ImageIcon("./src/img/VediNotifiche.png");
      Image img = originalIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
      ImageIcon resizedIcon = new ImageIcon(img);
         JButton notificationsButton = new JButton(resizedIcon);
@@ -190,7 +190,7 @@ searchField2.addFocusListener(new FocusListener() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
             	notificationsButton.setBackground(UIManager.getColor("control"));     }
         });
-        ImageIcon originalIconr = new ImageIcon("./src/img/report.png");
+        ImageIcon originalIconr = new ImageIcon("./src/img/VediReport.png");
         Image imgr = originalIconr.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon resizedIconr = new ImageIcon(imgr);
         JButton reportButton = new JButton(resizedIconr);
@@ -283,7 +283,7 @@ searchField2.addFocusListener(new FocusListener() {
                 JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
                 groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
                 
-                ImageIcon originalIcon8 = new ImageIcon("./src/img/enter.png");
+                ImageIcon originalIcon8 = new ImageIcon("./src/img/AccediAlGruppo.png");
                 Image img8 = originalIcon8.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 ImageIcon resizedIcon8 = new ImageIcon(img8);
                 JButton accessButton = new JButton(resizedIcon8);
