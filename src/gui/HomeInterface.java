@@ -276,12 +276,19 @@ searchField2.addFocusListener(new FocusListener() {
                 nameLabel.setFont(new Font("Georgia", Font.ROMAN_BASELINE, 18));
                 groupPanel.add(nameLabel, BorderLayout.NORTH);
                 
-                JTextArea descriptionArea = new JTextArea(group.getDescrizioneGruppo());
+                JTextArea descriptionArea = new JTextArea();
                 descriptionArea.setEditable(false);
                 descriptionArea.setLineWrap(true);
                 descriptionArea.setWrapStyleWord(true);
-                JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
-                groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
+                JScrollPane descriptionScrollPane ;
+                if(!group.getDescrizioneGruppo().isEmpty()) {
+                	descriptionArea.setText(group.getDescrizioneGruppo());
+                	descriptionScrollPane= new JScrollPane(descriptionArea);
+                	groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
+                }
+                
+                
+                
                 
                 ImageIcon originalIcon8 = new ImageIcon("./src/img/AccediAlGruppo.png");
                 Image img8 = originalIcon8.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
@@ -759,14 +766,17 @@ searchField2.addFocusListener(new FocusListener() {
         nameLabel.setFont(new Font("Georgia", Font.ROMAN_BASELINE, 18));
         groupPanel.add(nameLabel, BorderLayout.NORTH);
 
-        JTextArea descriptionArea = new JTextArea(group.getDescrizioneGruppo());
+        JTextArea descriptionArea = new JTextArea();
         descriptionArea.setEditable(false);
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
-        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
-        groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
-
-        ImageIcon originalIcon8 = new ImageIcon("./src/img/enter.png");
+        JScrollPane descriptionScrollPane ;
+        if(!group.getDescrizioneGruppo().isEmpty()) {
+        	descriptionArea.setText(group.getDescrizioneGruppo());
+        	descriptionScrollPane= new JScrollPane(descriptionArea);
+        	groupPanel.add(descriptionScrollPane, BorderLayout.CENTER);
+        }
+        ImageIcon originalIcon8 = new ImageIcon("./src/img/AccediAlGruppo.png");
         Image img8 = originalIcon8.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon8 = new ImageIcon(img8);
         JButton accessButton = new JButton(resizedIcon8);

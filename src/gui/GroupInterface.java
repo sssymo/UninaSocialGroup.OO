@@ -204,7 +204,8 @@ public class GroupInterface extends JFrame {
                 centerPanel.add(Box.createVerticalStrut(10));
                 List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); 
                 for (Post p : posts) {
-                    JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
+                	
+                    JLabel postLabel = new JLabel( p.getData_pubblicazione()+" "+p.getOrario_pubblicazione()+" "+ UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
                     centerPanel.add(postLabel);
                     centerPanel.add(Box.createVerticalStrut(10));
                 }
@@ -270,8 +271,8 @@ public class GroupInterface extends JFrame {
                 List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo()); 
                 for (Post p : posts) {
                 	
-                    JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
-                    centerPanel.add(postLabel);
+                	JLabel postLabel = new JLabel( p.getData_pubblicazione()+" "+p.getOrario_pubblicazione().toString().substring(0,5)+" "+ UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
+                         centerPanel.add(postLabel);
                     centerPanel.add(Box.createVerticalStrut(10));
                 }
                 revalidate(); 
@@ -299,7 +300,7 @@ public class GroupInterface extends JFrame {
 
         List<Post> posts = postDao.RecuperaPost(currentUser, group.getIdGruppo());
         for (Post p : posts) {
-            JLabel postLabel = new JLabel(  UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
+        	JLabel postLabel = new JLabel( p.getData_pubblicazione()+" "+p.getOrario_pubblicazione().toString().substring(0,5)+" "+ UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
             centerPanel.add(postLabel);
             centerPanel.add(Box.createVerticalStrut(10));
             
