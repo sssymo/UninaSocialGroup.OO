@@ -688,7 +688,12 @@ searchField2.addFocusListener(new FocusListener() {
                     	if(inserisci==true) {
                     	
                         try {
-                            int id=groupDao.CreateGroup(groupName, description, currentUser);
+                        	if(description.contains("inserisci una descrizione :) ")) {
+                        		description="";
+                        		
+                        	}
+                        		int id=groupDao.CreateGroup(groupName, "", currentUser);
+                        	
 
 
                             String[] tags = TagList.split(",");
