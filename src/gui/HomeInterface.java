@@ -473,23 +473,31 @@ searchField2.addFocusListener(new FocusListener() {
                             joinButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    boolean a = false;
                                     try {
-                                        a = richiestaDAO.insertRichiesta(currentUser, group.getIdGruppo());
-                                    } catch (SQLException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                    if (a) {
+                                        boolean alreadyRequested = richiestaDAO.checkrichiesta(currentUser, group.getIdGruppo());
+                                        if (!alreadyRequested) {
+                                            boolean requestInserted = richiestaDAO.insertRichiesta(currentUser, group.getIdGruppo());
+                                            if (requestInserted) {
+                                                JOptionPane.showMessageDialog(HomeInterface.this,
+                                                        "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
+                                            } else {
+                                                JOptionPane.showMessageDialog(HomeInterface.this,
+                                                        "Errore nell'invio della richiesta. Riprovare più tardi.",
+                                                        "Errore", JOptionPane.ERROR_MESSAGE);
+                                            }
+                                        } else {
+                                            JOptionPane.showMessageDialog(HomeInterface.this,
+                                                    "E' stata già inviata una richiesta, attendere l'accettazione da parte del creatore",
+                                                    "Errore", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    } catch (SQLException ex) {
+                                        ex.printStackTrace();
                                         JOptionPane.showMessageDialog(HomeInterface.this,
-                                                "Richiesta inviata per unirsi al gruppo: " + group.getNomeGruppo());
-                                    } else {
-                                        JOptionPane.showMessageDialog(HomeInterface.this,
-                                                "E' stata già inviata una richiesta, attendere l'accettazione da parte del creatore",
+                                                "Si è verificato un errore nel processare la richiesta.",
                                                 "Errore", JOptionPane.ERROR_MESSAGE);
                                     }
                                 }
                             });
-
                             JPanel groupRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
                             groupRow.add(joinButton);
                             groupRow.add(groupNameLabel);
@@ -692,6 +700,7 @@ searchField2.addFocusListener(new FocusListener() {
                         		description="";
                         		
                         	}
+                        	
                         		int id=groupDao.CreateGroup(groupName, "", currentUser);
                         	
 

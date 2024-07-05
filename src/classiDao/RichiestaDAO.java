@@ -114,6 +114,20 @@ public boolean checkiscrizione(int idUtente, int idGruppo) {
         }
         return richieste;
     }
+    public boolean checkrichiesta(int idUtente, int idGruppo) {
+        String query = "SELECT 1 FROM richiesta WHERE idrichiedente = ? AND idgruppo = ? LIMIT 1";
 
+        try (PreparedStatement s = conn.prepareStatement(query)) {
+            s.setInt(1, idUtente);
+            s.setInt(2, idGruppo);
+
+            try (ResultSet rs = s.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
