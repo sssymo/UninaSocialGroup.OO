@@ -21,16 +21,15 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 public class NotificationInterface extends JFrame {
+	private static final long serialVersionUID = 1L;
 
-    private int currentUser;
 
-    private Controller controller;
     
 
 	public NotificationInterface(int currentUser, List<Notifica> notifiche, List<Richiesta> notifichedirichiestaaitg, Controller controller,NotificaDAO notificationDao,RichiestaDAO richiestaDAO) {
         String nickname = UserDao.getUserNameById(currentUser);
-        this.controller=controller;
-        this.currentUser = currentUser;
+   
+      
        
 
 		setTitle("UninaSocialNetwork - Notifiche " + nickname);

@@ -26,23 +26,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class HomeInterface extends JFrame {
-	private JScrollPane scrollPane;
+	private static final long serialVersionUID = 1L;
+
     private int currentUser;
-    private GroupDao groupDao;
-    private RichiestaDAO richiestaDAO;
-    private NotificaDAO notificationDao;
+
     private Controller controller;
-    private PostDao postDao;
+
     JPanel groupPanelsPanel = new JPanel();
-private TagDao tagdao;
+
 JTextField searchField2 = new JTextField(30);
     public HomeInterface(int currentUser, String nickname, GroupDao groupDao, NotificaDAO notificationDao, RichiestaDAO richiestaDAO, Controller controller,PostDao postDao,TagDao tagdao) {
         this.currentUser = currentUser;
         this.controller = controller;
-        this.notificationDao = notificationDao;
-        this.richiestaDAO = richiestaDAO;
-        this.tagdao=tagdao;
-        this.postDao=postDao;
+ 
 
         setTitle("Unina Social Network - Home");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,6 +71,7 @@ searchField2.addFocusListener(new FocusListener() {
         JPanel contentPane = new JPanel(new BorderLayout());
 
         JPanel bannerPanel = new JPanel() {
+        	private static final long serialVersionUID = 2L;
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -237,7 +234,7 @@ searchField2.addFocusListener(new FocusListener() {
         //e quella dicreazione di un nuovo gruppo
         
         try {
-            List<Gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
+            List<Gruppo> gruppi_isc = GroupDao.getGroupsByUser(currentUser);
             
 
             
@@ -620,7 +617,8 @@ searchField2.addFocusListener(new FocusListener() {
                 
                 
                 JTextField tagsField = new JTextField("separali con una virgola e falli terminare con un punto") {
-                    @Override
+                	private static final long serialVersionUID = 34423L;
+                	@Override
                     protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
 
@@ -725,7 +723,7 @@ searchField2.addFocusListener(new FocusListener() {
  
                                 if (!tag.isEmpty()) {
                    
-                                    tagdao.InsertTipologiaIfNotExistEAssociaAGruppo(tag, id);
+                                    TagDao.InsertTipologiaIfNotExistEAssociaAGruppo(tag, id);
                                 }
                             }
                            //rigenero la home
@@ -761,7 +759,7 @@ searchField2.addFocusListener(new FocusListener() {
         groupPanelsPanel.removeAll();
         
         try {
-            List<Gruppo> gruppi_isc = groupDao.getGroupsByUser(currentUser);
+            List<Gruppo> gruppi_isc = GroupDao.getGroupsByUser(currentUser);
             searchField2.setMaximumSize(new Dimension(2000, 30)); 
             groupPanelsPanel.add(searchField2, BorderLayout.NORTH);
             for (Gruppo group : gruppi_isc) {

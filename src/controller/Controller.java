@@ -27,18 +27,18 @@ public class Controller {
     private JFrame currentFrame;
     private int currentUser;
     private String Username;
-    private Connection connection;
+
 	private PostDao PostDao;
 
     public Controller(Connection connection) {
-        this.connection = connection;
+
         userDao = new UserDao(connection);
         groupDao = new GroupDao(connection);
         Tagdao=new TagDao(connection);
         notificationDao = new NotificaDAO(connection);
         richiestaDAO = new RichiestaDAO(connection);
         PostDao= new PostDao(connection);
-        showLoginInterface();
+        
     }
 
     public void showLoginInterface() {

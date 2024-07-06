@@ -11,7 +11,7 @@ import controller.Controller;
 import classi.*;
 public class RegistrationInterface extends JFrame {
 
-
+	private static final long serialVersionUID = 1L;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextArea bioArea;

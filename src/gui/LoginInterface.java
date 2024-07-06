@@ -16,10 +16,10 @@ import java.sql.SQLException;
 
 public class LoginInterface extends JFrame {
 
-    private UserDao userDao;
+
     private JTextField usernameField;
     private JPasswordField passwordField;
-
+    private static final long serialVersionUID = 1L;
     public LoginInterface(final UserDao userDao, final Controller controller) {
 
 

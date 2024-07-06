@@ -12,18 +12,11 @@ import classiDao.TagDao;
 import controller.Controller;
 
 public class GroupInfoInterface extends JFrame {
-
-    private int currentUser;
-    private Gruppo group;
-    private Controller controller;
-    private PostDao postDao;
-//fw
+	private static final long serialVersionUID = 1L;
+ 
     private String Tags="";
     public GroupInfoInterface(int currentUser, Gruppo group, Controller controller, PostDao postDao) {
-        this.currentUser = currentUser;
-        this.group = group;
-        this.controller = controller;
-        this.postDao = postDao;
+
 
         setTitle("Informazioni Gruppo - " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -66,7 +59,7 @@ Tags=TagDao.getTagsForGruppo(group.getIdGruppo());
         labelPanel.add(creatorLabel);
       
         labelPanel.add(creationDateLabel);
-        JLabel postsLabel = new JLabel("Numero Post: " + postDao.GetNumPost(group.getIdGruppo())+"("+PostDao.GetNumPost(group.getIdGruppo(),currentUser)+")");
+        JLabel postsLabel = new JLabel("Numero Post: " + PostDao.GetNumPost(group.getIdGruppo())+"("+PostDao.GetNumPost(group.getIdGruppo(),currentUser)+")");
         postsLabel.setForeground(Color.WHITE);
         labelPanel.add(postsLabel);
         labelPanel.add(membersLabel);

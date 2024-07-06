@@ -33,7 +33,7 @@ import javax.swing.UIManager;
 public class ReportInterface  extends JFrame {
 int currentUser;
 Controller controller;
-
+private static final long serialVersionUID = 1L;
 	public ReportInterface(int currentUser,Controller controller,List<Gruppo> gruppiutente) {
         this.currentUser = currentUser;
         this.controller = controller;

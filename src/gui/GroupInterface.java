@@ -18,18 +18,16 @@ import classiDao.UserDao;
 import controller.Controller;
 
 public class GroupInterface extends JFrame {
-
+	private static final long serialVersionUID = 1L;
     private Gruppo group;
-    private PostDao postDao;
-    private NotificaDAO notificaDao;
-    private JTextField postTextField ;
+  
     private JPanel centerPanel;
     public JScrollPane scrollPane;
 
     public GroupInterface(int currentUser, Gruppo group, Controller controller, PostDao postDao, NotificaDAO notificaDao) {
         this.group = group;
-        this.postDao = postDao;
-        this.notificaDao = notificaDao;
+       
+  
 
         setTitle("UninaSocialGroup - " + group.getNomeGruppo());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -298,7 +296,7 @@ public class GroupInterface extends JFrame {
         centerPanel.add(groupInfoLabel);
         centerPanel.add(Box.createVerticalStrut(10));
 
-        List<Post> posts = postDao.RecuperaPost(currentUser, group.getIdGruppo());
+        List<Post> posts = PostDao.RecuperaPost(currentUser, group.getIdGruppo());
         for (Post p : posts) {
         	JLabel postLabel = new JLabel( p.getData_pubblicazione()+" "+p.getOrario_pubblicazione().toString().substring(0,5)+" "+ UserDao.getUserNameById(p.getIdutente()) + " : " + p.getDesc());
             centerPanel.add(postLabel);
