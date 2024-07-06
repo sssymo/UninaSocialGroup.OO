@@ -2,8 +2,7 @@ package classi;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.List;
+
 
 public class Post {
 	public Post(int idpost2, int iduutente, int idgruppo2, String desc2, Date data_pubblicazione2,
@@ -26,8 +25,8 @@ public class Post {
 		this.idgruppo=idgruppo2;
 		this.idpost=idpost2;
 		this.orario_pubblicazione=ora_pubblicazione;
-		this.numero_like=numero_like;
-		this.numero_commenti=numero_commenti;
+		this.numero_like=numero_like2;
+		this.numero_commenti=numero_commenti2;
 	}
 	private int idpost;
 	private int idutente;

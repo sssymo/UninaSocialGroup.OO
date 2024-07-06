@@ -1,15 +1,16 @@
 package classi;
-import java.sql.Date;
+
 import java.time.LocalDateTime;
 public class Richiesta {
     private int idUtente;
     private int idGruppo;
     private LocalDateTime dataRichiesta;
-
-    public Richiesta(int idUtente, int idGruppo, LocalDateTime dataRichiesta) {
+    private LocalDateTime orarichiesta;
+    public Richiesta(int idUtente, int idGruppo, LocalDateTime dataRichiesta,LocalDateTime orarichiesta) {
         this.idUtente = idUtente;
         this.idGruppo = idGruppo;
         this.dataRichiesta = dataRichiesta;
+        this.orarichiesta=orarichiesta;
     }
 
 
@@ -43,5 +44,12 @@ public class Richiesta {
 
     public void setDataRichiesta(LocalDateTime dataRichiesta) {
         this.dataRichiesta = dataRichiesta;
+    }
+    public LocalDateTime getorarichiesta() {
+        return orarichiesta;
+    }
+
+    public void setorarichiesta(LocalDateTime orarichiesta) {
+        this.orarichiesta = orarichiesta;
     }
 }

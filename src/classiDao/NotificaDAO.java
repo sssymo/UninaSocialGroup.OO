@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class NotificaDAO {
     public List<Notifica> getNotificheForUser(int idUtente) throws SQLException {
         List<Notifica> notifiche = new ArrayList<>();
 
-        String query = "SELECT * FROM notifica WHERE idutente=? ORDER BY data_notifica ASC ,orario_notifica ASC";
+        String query = "SELECT * FROM notifica WHERE idutente=? ORDER BY data_notifica desc ,orario_notifica desc";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
         	stmt.setInt(1,idUtente);
         	

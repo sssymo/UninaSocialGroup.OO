@@ -11,15 +11,14 @@ import controller.Controller;
 import classi.*;
 public class RegistrationInterface extends JFrame {
 
-    private UserDao userDao;
+
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextArea bioArea;
     private JButton registerButton;
 
     public RegistrationInterface(final UserDao userDao, Controller controller) {
-        this.userDao = userDao;
-        this.userDao = userDao;
+
         setTitle("Unina Social Network - Registrazione");
         setSize(800, 600);
         ImageIcon IconaFrame = new ImageIcon("./src/img/UNINASOCIALGROPICON.png");

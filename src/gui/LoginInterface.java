@@ -3,7 +3,7 @@ import classiDao.UserDao;
 import controller.Controller;
 
 import javax.swing.*;
-import javax.swing.border.Border;
+
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -310,8 +310,4 @@ public class LoginInterface extends JFrame {
         setVisible(true);
     }
 
-	private static void setIconImages(ImageIcon resizedIcon1) {
-		// TODO Auto-generated method stub
-		
-	}
 }

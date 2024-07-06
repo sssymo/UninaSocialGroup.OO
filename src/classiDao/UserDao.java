@@ -99,8 +99,7 @@ public class UserDao {
                     String username = rs.getString("username");
                     String password = rs.getString("password");
                     String bio = rs.getString("bio");
-                    int numPubblicazioni = rs.getInt("numPubblicazioni");
-                    int numGruppiPartecipanti = rs.getInt("numGruppiPartecipanti");
+              
                     return new Utente(username, idUtente, password, bio);
                 } else {
                     System.out.println("Nessun utente trovato nel database con ID: " + idUtente);

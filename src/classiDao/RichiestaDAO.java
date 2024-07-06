@@ -5,11 +5,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.postgresql.util.PGTimestamp;
 
 import classi.Richiesta;
 
@@ -62,14 +61,14 @@ public class RichiestaDAO {
         }
     }
     
-    private final static String QVediRichiesteDiIscrizioneAiTuoiGruppi="SELECT r.idrichiedente,r.idgruppo,r.data_richiesta FROM richiesta as r,gruppo as g,crea as c WHERE c.idgruppo=g.idgruppo AND c.idutente=? AND r.idgruppo=c.idgruppo ORDER BY r.data_richiesta DESC ";
+    private final static String QVediRichiesteDiIscrizioneAiTuoiGruppi="SELECT r.idrichiedente,r.idgruppo,r.data_richiesta,orario_richiesta FROM richiesta as r,gruppo as g,crea as c WHERE c.idgruppo=g.idgruppo AND c.idutente=? AND r.idgruppo=c.idgruppo ORDER BY r.data_richiesta DESC ";
 public static List<Richiesta> VediRichiesteDiIscrizioneAiTuoiGruppi(int currentUser) throws SQLException {
 	ArrayList<Richiesta> notifichedirichiestaiscrizioneaituoigruppi = new ArrayList<>();
 	try (PreparedStatement stmt = conn.prepareStatement(QVediRichiesteDiIscrizioneAiTuoiGruppi)) {
 		stmt.setInt(1, currentUser);
 		ResultSet s=stmt.executeQuery();
 		while(s.next()) {
-			Richiesta r= new Richiesta(s.getInt(1),s.getInt(2),s.getTimestamp(3).toLocalDateTime());
+			Richiesta r= new Richiesta(s.getInt(1),s.getInt(2),s.getTimestamp(3).toLocalDateTime(),s.getTimestamp(4).toLocalDateTime());
 			notifichedirichiestaiscrizioneaituoigruppi.add(r);
 		}
 	}
@@ -105,7 +104,7 @@ public boolean checkiscrizione(int idUtente, int idGruppo) {
                     Richiesta richiesta = new Richiesta(
                             rs.getInt("idrichiedente"),
                             rs.getInt("idgruppo"),
-                            rs.getTimestamp("data_ora").toLocalDateTime()
+                            rs.getTimestamp("data_richiesta").toLocalDateTime(),rs.getTimestamp("orario_richiesta").toLocalDateTime()
                             
                     );
                     richieste.add(richiesta);

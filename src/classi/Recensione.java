@@ -1,6 +1,6 @@
 package classi;
-import java.util.ArrayList;
-import java.util.List;
+
+
 
 public class Recensione {
     private int idRecensione;

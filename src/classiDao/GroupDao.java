@@ -21,14 +21,14 @@ public class GroupDao {
             stmt3.setInt(2, idutente);
             stmt3.setInt(3, cusr);
             stmt3.executeUpdate();
-            
+            /*
             try (PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO iscrizione (idutente, idgruppo) VALUES (?, ?)")) {
                 stmt.setInt(1, idutente);
                 stmt.setInt(2, idgruppo);
                 stmt.executeUpdate();
                 
-            }
+            }*/
             try (PreparedStatement stmt4 = connection.prepareStatement(
                     "DELETE FROM accetta WHERE idgruppo=? AND idrichiedente=? AND idamministratore=?")) {
                 stmt4.setInt(1, idgruppo);
@@ -186,9 +186,8 @@ public class GroupDao {
     }
     
   private final String GET_ID_DEL_GRUPPO ="SELECT MAX(idgruppo) FROM gruppo ";
-  private final String INSERT_IN_ISCRITTO ="INSERT INTO iscrizione (idutente,idgruppo ) VALUES ( ?, ?)";
+
   private static final String INSERT_IN_CREA = "INSERT INTO crea (idutente,idgruppo ) VALUES ( ?, ?)";
-  private static final String INSERT_IN_AMMINISTRA = "INSERT INTO amministra (idutente ,idgruppo) VALUES (?,?)";
 
     public int CreateGroup(String nome_gruppo,String desc,int currentUser) throws SQLException{
     	
@@ -280,9 +279,9 @@ public class GroupDao {
 		
 	}
 
-	public static List getGroupsByCreatore(int currentUser) {
+	public static List<Gruppo> getGroupsByCreatore(int currentUser) {
 		// TODO Auto-generated method stub
-		ArrayList<Gruppo> ng=new ArrayList();
+		ArrayList<Gruppo> ng=new ArrayList<Gruppo>();
 		try (PreparedStatement statement = connection.prepareStatement("select gruppo.nome_gruppo,gruppo.idgruppo,gruppo.data_creazione,gruppo.descrizione_gruppo from gruppo,crea where crea.idutente=? and gruppo.idgruppo=crea.idgruppo")){
 			statement.setInt(1,currentUser);
 			ResultSet rs= statement.executeQuery();

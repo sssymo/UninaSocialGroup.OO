@@ -1,14 +1,15 @@
 package gui;
 
-import classi.Post;
+
 import classi.Gruppo;
 import classi.Notifica;
 import classi.Richiesta;
+import classi.Tag;
 import classiDao.GroupDao;
 import classiDao.NotificaDAO;
 import classiDao.PostDao;
 import classiDao.TagDao;
-import classiDao.UserDao;
+
 import controller.Controller;
 import classiDao.RichiestaDAO;
 
@@ -262,11 +263,20 @@ searchField2.addFocusListener(new FocusListener() {
 
  
             for (Gruppo group : gruppi_isc) {
-               if(group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
-               		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
-               		|| searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ")|| searchField2.getText()=="") {
-            	   
-             
+            	boolean matchesTag = false;
+                for (Tag tag : group.getTagList()) {
+                    if (tag.getNomeTag().equalsIgnoreCase(searchField2.getText())) { 
+                        matchesTag = true;
+                        break;
+                    }
+                }
+
+                if (matchesTag || 
+                    group.getNomeGruppo().contains(searchField2.getText()) ||
+                    searchField2.getText().isBlank() ||
+                    group.getDescrizioneGruppo().contains(searchField2.getText()) ||
+                    searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ") ||
+                    searchField2.getText().equals("")) {
                 JPanel groupPanel = new JPanel();
                 groupPanel.setLayout(new BorderLayout());
                 groupPanel.setBorder(BorderFactory.createLineBorder(new Color(	0,	51	,153), 2));
@@ -450,7 +460,7 @@ searchField2.addFocusListener(new FocusListener() {
                 try {
                     List<Gruppo> groups = groupDao.searchGroupByName(searchTerm);
                     if (!groups.isEmpty()) {
-                        JPanel groupPanel = new JPanel(new GridLayout(1, 1));
+                        
                         JPanel scrollPanel = new JPanel();
                         scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
 
@@ -643,8 +653,8 @@ searchField2.addFocusListener(new FocusListener() {
                 });
                 tagsField.setForeground(Color.GRAY);
                 dialogPanel.add(tagsField, gbc);
-                UIManager.put("OptionPane.background", new Color(140,164,196)); // Sfondo blu
-            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); // Testo bianco
+                UIManager.put("OptionPane.background", new Color(140,164,196)); 
+            UIManager.put("OptionPane.messageForeground",  new Color(140,164,196)); 
 
                 int result = JOptionPane.showConfirmDialog(HomeInterface.this, dialogPanel,
                         "Crea Nuovo Gruppo", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -701,7 +711,7 @@ searchField2.addFocusListener(new FocusListener() {
                         		
                         	}
                         	
-                        		int id=groupDao.CreateGroup(groupName, "", currentUser);
+                        		int id=groupDao.CreateGroup(groupName, description, currentUser);
                         	
 
 
@@ -755,9 +765,20 @@ searchField2.addFocusListener(new FocusListener() {
             searchField2.setMaximumSize(new Dimension(2000, 30)); 
             groupPanelsPanel.add(searchField2, BorderLayout.NORTH);
             for (Gruppo group : gruppi_isc) {
-                if (group.getTagList().contains(searchField2.getText()) || group.getNomeGruppo().contains(searchField2.getText())
-                		|| searchField2.getText().isEmpty()|| group.getDescrizioneGruppo().contains(searchField2.getText()) 
-                		|| searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ") || searchField2.getText()=="") {
+            	boolean matchesTag = false;
+                for (Tag tag : group.getTagList()) {
+                    if (tag.getNomeTag().equalsIgnoreCase(searchField2.getText())) { 
+                        matchesTag = true;
+                        break;
+                    }
+                }
+
+                if (matchesTag || 
+                    group.getNomeGruppo().contains(searchField2.getText()) ||
+                    searchField2.getText().isBlank() ||
+                    group.getDescrizioneGruppo().contains(searchField2.getText()) ||
+                    searchField2.getText().equals("cerca gruppi per nome, tag e descrizione. ") ||
+                    searchField2.getText().equals("")) {
                     JPanel groupPanel = createGroupPanel(group);
                     groupPanelsPanel.add(groupPanel);
                 }

@@ -161,12 +161,13 @@ public static int getPostWithMaxComments(int idg) {
 		ResultSet rs = stmt.executeQuery();
 		
 		if (rs.next()) {
+			/*
 			int idpost = rs.getInt("idpost");
 			int idutente = rs.getInt("idutente");
 			int idgruppo = rs.getInt("idgruppo");
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
-			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");*/
 			//return new Post(idpost, idutente, idgruppo, descrizione, data_pubblicazione, orario_pubblicazione);
 		return rs.getInt("num_commenti");
 		}
@@ -183,12 +184,13 @@ public static int getPostWithMinLikes(int idg) {
 		stmt.setInt(1, idg);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
+			/*
 			int idpost = rs.getInt("idpost");
 			int idutente = rs.getInt("idutente");
 			int idgruppo = rs.getInt("idgruppo");
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
-			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+			Time orario_pubblicazione = rs.getTime("orario_pubblicazione");*/
 			int numero_like = rs.getInt("num_like");
 			return numero_like;
 		//	int numero_commenti = rs.getInt("num_commenti"); 
@@ -206,11 +208,12 @@ public static int getPostWithMinComments(int idgruppo) {
 		stmt.setInt(1, idgruppo);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
+			/*
 			int idpost = rs.getInt("idpost");
 			int idutente = rs.getInt("idutente");
 			String descrizione = rs.getString("descrizione");
 			Date data_pubblicazione = rs.getDate("data_pubblicazione");
-		Time orario_pubblicazione = rs.getTime("orario_pubblicazione");
+		Time orario_pubblicazione = rs.getTime("orario_pubblicazione");*/
 		return rs.getInt("num_commenti");
 	
 		}

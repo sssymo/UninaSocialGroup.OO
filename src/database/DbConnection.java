@@ -1,10 +1,10 @@
 package database;
 
-import java.io.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Objects;
+
 
 public class DbConnection
 {
@@ -26,7 +26,7 @@ public class DbConnection
     public static Connection getConnection() throws SQLException 
     {
         String pwd = null;
-        BufferedReader b = null;
+       
         try
         {   
             if(conn==null || conn.isClosed())

@@ -17,25 +17,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
 import java.util.List;
 
 public class NotificationInterface extends JFrame {
 
     private int currentUser;
-    private GroupDao groupDao;
-    private RichiestaDAO richiestaDAO;
-    private NotificaDAO notificationDao;
+
     private Controller controller;
-    private PostDao postDao;
+    
 
 	public NotificationInterface(int currentUser, List<Notifica> notifiche, List<Richiesta> notifichedirichiestaaitg, Controller controller,NotificaDAO notificationDao,RichiestaDAO richiestaDAO) {
         String nickname = UserDao.getUserNameById(currentUser);
-        this.controller=controller;this.currentUser = currentUser;
+        this.controller=controller;
+        this.currentUser = currentUser;
        
 
 		setTitle("UninaSocialNetwork - Notifiche " + nickname);
@@ -65,7 +60,7 @@ public class NotificationInterface extends JFrame {
 		
 		 //s
 		for (Richiesta r : notifichedirichiestaaitg) {
-		    JLabel notificationLabel = new JLabel(r.getDataRichiesta()+" "+UserDao.getUserNameById(r.getIdUtente()) + " ti ha chiesto di essere aggiunto a " + GroupDao.GetGroupNameFromId(r.getIdGruppo()));
+		    JLabel notificationLabel = new JLabel(r.getDataRichiesta().toString().substring(0, 10)+" "+r.getorarichiesta().toString().substring(11, 16) +" "+UserDao.getUserNameById(r.getIdUtente()) + " ti ha chiesto di essere aggiunto a " + GroupDao.GetGroupNameFromId(r.getIdGruppo()));
 		 
 		    
 		    JButton accettaButton = new JButton("Accetta");
